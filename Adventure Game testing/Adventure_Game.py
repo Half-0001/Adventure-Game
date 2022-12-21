@@ -7,6 +7,8 @@ class Tile(pygame.sprite.Sprite):
 		self.image = surf
 		self.rect = self.image.get_rect(topleft = pos)
 
+
+
 pygame.init()
 screen = pygame.display.set_mode((720,720))
 tmx_data = load_pygame("../Tiled/map.tmx")
@@ -31,6 +33,10 @@ while True:
 		if event.type == pygame.QUIT:
 			pygame.quit()
 			sys.exit()
+		if event.type == pygame.KEYDOWN:
+			if event.key == pygame.K_ESCAPE:
+				pygame.quit()
+				sys.exit()
 
 	screen.fill('black')
 	sprite_group.draw(screen)
