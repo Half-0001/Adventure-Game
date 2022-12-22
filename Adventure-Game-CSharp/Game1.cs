@@ -81,7 +81,7 @@ namespace Adventure_Game_CSharp
             //manage collisions
             for (int i = 0; i < collisionManager.colliders.Count; i++)
             {
-                //if (player.playerRect.Intersects(new Rectangle(collisionManager.colliders[i].posX, collisionManager.colliders[i].posY, collisionManager.colliders[i].sizeX, collisionManager.colliders[i].sizeY))) //if player is colliding with a rect
+                
                 if (player.playerRect.Intersects(collisionManager.colliders[i].rect)) //if player is colliding with a rect
                 {
                     colliding = true;
