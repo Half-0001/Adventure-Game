@@ -55,6 +55,14 @@
             "MonoGame.Framework.DesktopGL": {
               "target": "Package",
               "version": "[3.8.1.303, )"
+            },
+            "Newtonsoft.Json": {
+              "target": "Package",
+              "version": "[13.0.2, )"
+            },
+            "tiledcs": {
+              "target": "Package",
+              "version": "[3.3.3, )"
             }
           },
           "imports": [

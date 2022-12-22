@@ -58,3 +58,6 @@ C:\Users\nyleh\Documents\GitHub\repos\Adventure-Game\Adventure-Game-CSharp\obj\D
 C:\Users\nyleh\Documents\GitHub\repos\Adventure-Game\Adventure-Game-CSharp\obj\Debug\net6.0\ref\Adventure-Game-CSharp.dll
 C:\Users\nyleh\Documents\GitHub\repos\Adventure-Game\Adventure-Game-CSharp\bin\Debug\net6.0\Content\Male 01.xnb
 C:\Users\nyleh\OneDrive\Documents\GitHub\Adventure-Game\Adventure-Game-CSharp\bin\Debug\net6.0\Content\Male 01.xnb
+C:\Users\nyleh\OneDrive\Documents\GitHub\Adventure-Game\Adventure-Game-CSharp\bin\Debug\net6.0\Newtonsoft.Json.dll
+C:\Users\nyleh\OneDrive\Documents\GitHub\Adventure-Game\Adventure-Game-CSharp\bin\Debug\net6.0\Content\map.tmx
+C:\Users\nyleh\OneDrive\Documents\GitHub\Adventure-Game\Adventure-Game-CSharp\bin\Debug\net6.0\TiledCS.dll

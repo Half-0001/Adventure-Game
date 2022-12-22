@@ -3,6 +3,9 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGame.Aseprite.Graphics;
 using System.Diagnostics;
+using System.Collections.Generic;
+using System;
+using System.Runtime.CompilerServices;
 
 namespace Adventure_Game_CSharp
 {
@@ -12,20 +15,16 @@ namespace Adventure_Game_CSharp
         private int speed = 100;
         private Dir direction = Dir.Down;
         private bool isMoving = false;
-        public Rectangle playerRect = new Rectangle(0, 0, 32, 32);
-        public Rectangle collisiontest = new Rectangle(200, 200, 100, 100);
-        Texture2D _texture;
-        private string collisionDir;
-        private bool colliding = true;
-
-
+        public Rectangle playerRect = new Rectangle(0, 0, 32, 36);
+        private Texture2D _texture;
+        private string collisionDir = "";
 
         public Vector2 Position
         {
             get { return position; }
             set { position = value; }
         }
-        public void PlayerUpdate(GameTime gameTime, AnimatedSprite _sprite, GraphicsDevice _graphics)
+        public void PlayerUpdate(GameTime gameTime, AnimatedSprite _sprite, GraphicsDevice _graphics, bool colliding)
         {
             _texture = new Texture2D(_graphics, 1, 1);
             _texture.SetData(new Color[] { Color.DarkSlateGray });
@@ -104,9 +103,9 @@ namespace Adventure_Game_CSharp
                 _sprite.Play("idle");
             }
 
-            if (playerRect.Intersects(collisiontest))
+            if (colliding)
             {
-                if (!colliding)
+                if (collisionDir == "")
                 {
                     switch (direction)
                     {
@@ -123,16 +122,15 @@ namespace Adventure_Game_CSharp
                             collisionDir = "down";
                             break;
                     }
-                    colliding = true;
                 }
-
                 
             }
-            if (playerRect.Intersects(collisiontest) == false)
+            if (colliding == false)
             {
                 collisionDir = "";
-                colliding = false;
-            }  
+                //colliding = false;
+            }
+            
         }
 
             
@@ -142,7 +140,6 @@ namespace Adventure_Game_CSharp
         {
             _sprite.Render(_spriteBatch);
             //_spriteBatch.Draw(_texture, playerRect, Color.White);
-            _spriteBatch.Draw(_texture, collisiontest, Color.Red);
         }
     }
 }
