@@ -57,7 +57,7 @@ namespace Adventure_Game_CSharp
             background = Content.Load<Texture2D>("map");
 
             //  Load the asprite file from the content pipeline.
-            AsepriteDocument aseprite = Content.Load<AsepriteDocument>("adventurer");
+            AsepriteDocument aseprite = Content.Load<AsepriteDocument>("Male 01");
 
             //  Create a new aniamted sprite instance using the aseprite doucment loaded.
             _sprite = new AnimatedSprite(aseprite);
@@ -70,9 +70,8 @@ namespace Adventure_Game_CSharp
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
             float dt = (float)gameTime.ElapsedGameTime.TotalSeconds;
-            _sprite.Play("idle");
 
-            player.PlayerUpdate(gameTime);
+            player.PlayerUpdate(gameTime, _sprite, GraphicsDevice);
 
             this.camera.Position = player.Position;
             this.camera.Update(gameTime);
@@ -89,9 +88,8 @@ namespace Adventure_Game_CSharp
             _spriteBatch.Begin(this.camera);
             _spriteBatch.Draw(background, new Vector2(0, 0), Color.White);
 
-            //draw player
-            //_spriteBatch.Draw(playerTexture, new Vector2(player.Position.X - playerRadius, player.Position.Y - playerRadius), Color.White);
-            _sprite.Render(_spriteBatch);
+            player.PlayerDraw(_spriteBatch, _sprite);
+            
             _spriteBatch.End();
             base.Draw(gameTime);
         }

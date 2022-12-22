@@ -11,6 +11,7 @@
 #-------------------------------- References --------------------------------#
 
 /reference:..\..\..\..\..\..\.nuget\packages\monogame.aseprite\2.0.4.1\contentFiles\netstandard2.0\MonoGame.Aseprite.ContentPipeline.dll
+/reference:..\..\..\..\..\..\.nuget\packages\monogame.aseprite\3.1.1\content\net6.0\MonoGame.Aseprite.ContentPipeline.dll
 
 #---------------------------------- Content ---------------------------------#
 
@@ -25,6 +26,18 @@
 /processorParam:Spacing=0
 /processorParam:InnerPadding=0
 /build:adventurer.aseprite
+
+#begin Male 01.aseprite
+/importer:AsepriteDocumentImporter
+/processor:AsepriteDocumentProcessor
+/processorParam:SheetType=Packed
+/processorParam:MergeDuplicateFrames=True
+/processorParam:IgnoreEmptyFrames=True
+/processorParam:OnlyVisibleLayers=True
+/processorParam:BorderPadding=0
+/processorParam:Spacing=0
+/processorParam:InnerPadding=0
+/build:Male 01.aseprite
 
 #begin map.png
 /importer:TextureImporter
