@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGame.Aseprite.Graphics;
+using System.Diagnostics;
 
 namespace Adventure_Game_CSharp
 {
@@ -11,10 +12,11 @@ namespace Adventure_Game_CSharp
         private int speed = 100;
         private Dir direction = Dir.Down;
         private bool isMoving = false;
-        private KeyboardState kStateOld = Keyboard.GetState();
         public Rectangle playerRect = new Rectangle(0, 0, 32, 32);
+        public Rectangle collisiontest = new Rectangle(200, 200, 100, 100);
         Texture2D _texture;
-
+        private string collisionDir;
+        private bool colliding = true;
 
 
 
@@ -67,20 +69,32 @@ namespace Adventure_Game_CSharp
                 switch (direction)
                 {
                     case Dir.Left:
-                        position.X -= speed * dt;
-                        _sprite.Play("walkLeft");
+                        if (collisionDir != "left")
+                        {
+                            position.X -= speed * dt;
+                            _sprite.Play("walkLeft");
+                        }
                         break;
                     case Dir.Up:
-                        position.Y -= speed * dt;
-                        _sprite.Play("walkUp");
+                        if (collisionDir != "up")
+                        {
+                            position.Y -= speed * dt;
+                            _sprite.Play("walkUp");
+                        }
                         break;
                     case Dir.Right:
-                        position.X += speed * dt;
-                        _sprite.Play("walkRight");
+                        if (collisionDir != "right")
+                        {
+                            position.X += speed * dt;
+                            _sprite.Play("walkRight");
+                        }
                         break;
                     case Dir.Down:
-                        position.Y += speed * dt;
-                        _sprite.Play("walkDown");
+                        if (collisionDir != "down")
+                        {
+                            position.Y += speed * dt;
+                            _sprite.Play("walkDown");
+                        }
                         break;
                 }
             }
@@ -89,12 +103,46 @@ namespace Adventure_Game_CSharp
             {
                 _sprite.Play("idle");
             }
+
+            if (playerRect.Intersects(collisiontest))
+            {
+                if (!colliding)
+                {
+                    switch (direction)
+                    {
+                        case Dir.Left:
+                            collisionDir = "left";
+                            break;
+                        case Dir.Right:
+                            collisionDir = "right";
+                            break;
+                        case Dir.Up:
+                            collisionDir = "up";
+                            break;
+                        case Dir.Down:
+                            collisionDir = "down";
+                            break;
+                    }
+                    colliding = true;
+                }
+
+                
+            }
+            if (playerRect.Intersects(collisiontest) == false)
+            {
+                collisionDir = "";
+                colliding = false;
+            }  
         }
+
+            
+        
 
         public void PlayerDraw(SpriteBatch _spriteBatch, AnimatedSprite _sprite)
         {
             _sprite.Render(_spriteBatch);
-            _spriteBatch.Draw(_texture, playerRect, Color.Purple);
+            //_spriteBatch.Draw(_texture, playerRect, Color.White);
+            _spriteBatch.Draw(_texture, collisiontest, Color.Red);
         }
     }
 }
