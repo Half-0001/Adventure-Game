@@ -5,6 +5,7 @@ using Comora;
 using MonoGame.Aseprite.Documents;
 using MonoGame.Aseprite.Graphics;
 using System.Diagnostics;
+using System.Collections.Generic;
 
 namespace Adventure_Game_CSharp
 {
@@ -25,7 +26,6 @@ namespace Adventure_Game_CSharp
 
         //classes
         private Camera camera;
-        
         Player player = new Player();
         CollisionManager collisionManager = new CollisionManager(0, 0, 0, 0);
 
@@ -33,7 +33,7 @@ namespace Adventure_Game_CSharp
         Texture2D background;
 
         //variables
-        private bool colliding = false;
+        private List<int> collidingWith = new List<int>();
 
         public Game1()
         {
@@ -81,15 +81,21 @@ namespace Adventure_Game_CSharp
             //manage collisions
             for (int i = 0; i < collisionManager.colliders.Count; i++)
             {
-                
+                if (!collidingWith.Contains(i))
                 if (player.playerRect.Intersects(collisionManager.colliders[i].rect)) //if player is colliding with a rect
                 {
-                    colliding = true;
+                    collidingWith.Add(i);
+                }
+                if (player.playerRect.Intersects(collisionManager.colliders[i].rect) == false) //if player not colliding with rect (number i)
+                {
+                    if (collidingWith.Contains(i))
+                        collidingWith.Remove(i);
                 }
             }
 
-            player.PlayerUpdate(gameTime, _sprite, GraphicsDevice, colliding);
-            colliding = false;
+            player.PlayerUpdate(gameTime, _sprite, GraphicsDevice, collidingWith);
+            
+            
             _sprite.Update(dt);
 
             this.camera.Position = player.Position;

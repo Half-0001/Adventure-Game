@@ -11,21 +11,24 @@ namespace Adventure_Game_CSharp
 {
     internal class Player
     {
-        private Vector2 position = new Vector2(500, 500);
+        private Vector2 position = new Vector2(500, 600);
         private int speed = 100;
         private Dir direction = Dir.Down;
         private bool isMoving = false;
         public Rectangle playerRect = new Rectangle(0, 0, 32, 36);
         private Texture2D _texture;
-        private string collisionDir = "";
+        private List<string> collisionDir = new List<string> { "" };
+        private int amountOfCollisions = 0;
+        private int amountOfCollisionsOld = 0;
 
         public Vector2 Position
         {
             get { return position; }
             set { position = value; }
         }
-        public void PlayerUpdate(GameTime gameTime, AnimatedSprite _sprite, GraphicsDevice _graphics, bool colliding)
+        public void PlayerUpdate(GameTime gameTime, AnimatedSprite _sprite, GraphicsDevice _graphics, List<int> collidingWith)
         {
+            amountOfCollisions = collidingWith.Count;
             _texture = new Texture2D(_graphics, 1, 1);
             _texture.SetData(new Color[] { Color.DarkSlateGray });
 
@@ -68,28 +71,28 @@ namespace Adventure_Game_CSharp
                 switch (direction)
                 {
                     case Dir.Left:
-                        if (collisionDir != "left")
+                        if (!collisionDir.Contains("left"))
                         {
                             position.X -= speed * dt;
                             _sprite.Play("walkLeft");
                         }
                         break;
                     case Dir.Up:
-                        if (collisionDir != "up")
+                        if (!collisionDir.Contains("up"))
                         {
                             position.Y -= speed * dt;
                             _sprite.Play("walkUp");
                         }
                         break;
                     case Dir.Right:
-                        if (collisionDir != "right")
+                        if (!collisionDir.Contains("right"))
                         {
                             position.X += speed * dt;
                             _sprite.Play("walkRight");
                         }
                         break;
                     case Dir.Down:
-                        if (collisionDir != "down")
+                        if (!collisionDir.Contains("down"))
                         {
                             position.Y += speed * dt;
                             _sprite.Play("walkDown");
@@ -103,33 +106,38 @@ namespace Adventure_Game_CSharp
                 _sprite.Play("idle");
             }
 
-            if (colliding)
+            if (amountOfCollisions != 0 && amountOfCollisions != amountOfCollisionsOld)
             {
-                if (collisionDir == "")
+                if (collisionDir.Contains("") || amountOfCollisions > amountOfCollisionsOld)
                 {
                     switch (direction)
                     {
                         case Dir.Left:
-                            collisionDir = "left";
+                            collisionDir.Add("left");
+                            collisionDir.Remove("");
                             break;
                         case Dir.Right:
-                            collisionDir = "right";
+                            collisionDir.Add("right");
+                            collisionDir.Remove("");
                             break;
                         case Dir.Up:
-                            collisionDir = "up";
+                            collisionDir.Add("up");
+                            collisionDir.Remove("");
                             break;
                         case Dir.Down:
-                            collisionDir = "down";
+                            collisionDir.Add("down");
+                            collisionDir.Remove("");
                             break;
                     }
                 }
                 
             }
-            if (colliding == false)
+            if (amountOfCollisions == 0)
             {
-                collisionDir = "";
-                //colliding = false;
+                collisionDir.Clear();
+                collisionDir.Add("");
             }
+            amountOfCollisionsOld = amountOfCollisions;
             
         }
 
@@ -139,7 +147,7 @@ namespace Adventure_Game_CSharp
         public void PlayerDraw(SpriteBatch _spriteBatch, AnimatedSprite _sprite)
         {
             _sprite.Render(_spriteBatch);
-            //_spriteBatch.Draw(_texture, playerRect, Color.White);
+            //_spriteBatch.Draw(_texture, playerRect, Color.White); //draw player collision rect for debug
         }
     }
 }
