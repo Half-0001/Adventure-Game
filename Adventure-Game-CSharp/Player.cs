@@ -25,7 +25,7 @@ namespace Adventure_Game_CSharp
             get { return position; }
             set { position = value; }
         }
-        public void PlayerUpdate(GameTime gameTime, AnimatedSprite _sprite, GraphicsDevice _graphics, List<int> collidingWith)
+        public void PlayerUpdate(GameTime gameTime, AnimatedSprite _sprite, GraphicsDevice _graphics, List<int> collidingWith, string teleportRectName)
         {
             amountOfCollisions = collidingWith.Count;
             _texture = new Texture2D(_graphics, 1, 1);
@@ -149,6 +149,12 @@ namespace Adventure_Game_CSharp
                 collisionDir.Clear();
                 collisionDir.Add("");
             }
+
+            if (teleportRectName == "House outside")
+                position = new Vector2(1730, 1036); //inside of house co-ords
+
+            if (teleportRectName == "House inside")
+                position = new Vector2(524, 590);
             amountOfCollisionsOld = amountOfCollisions;
             
         }
@@ -159,7 +165,7 @@ namespace Adventure_Game_CSharp
         public void PlayerDraw(SpriteBatch _spriteBatch, AnimatedSprite _sprite)
         {
             _sprite.Render(_spriteBatch);
-            //_spriteBatch.Draw(_texture, playerRect, Color.White); //draw player collision rect for debug
+                //_spriteBatch.Draw(_texture, playerRect, Color.White); //draw player collision rect for debug
         }
     }
 }

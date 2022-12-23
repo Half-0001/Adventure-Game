@@ -27,12 +27,14 @@ namespace Adventure_Game_CSharp
         private Camera camera;
         Player player = new Player();
         CollisionManager collisionManager = new CollisionManager(0, 0, 0, 0);
+        TeleportManager teleportManager = new TeleportManager(0, 0, 0, 0, "");
 
         //textures
         Texture2D background;
 
         //variables
         private List<int> collidingWith = new List<int>();
+        private string teleportRectName;
 
         public Game1()
         {
@@ -49,6 +51,7 @@ namespace Adventure_Game_CSharp
             _graphics.ApplyChanges();
             
             collisionManager.initCollisions(GraphicsDevice);
+            teleportManager.initTeleportManager(GraphicsDevice);
 
             this.camera = new Camera(_graphics.GraphicsDevice);
             camera.Zoom = 2f;
@@ -92,8 +95,17 @@ namespace Adventure_Game_CSharp
                 }
             }
 
-            player.PlayerUpdate(gameTime, _sprite, GraphicsDevice, collidingWith);
-            
+            //manage teleports
+            for (int i = 0; i < teleportManager.teleportColliders.Count; i++)
+            {
+                if (player.playerRect.Intersects(teleportManager.teleportColliders[i].teleportRect))
+                {
+                    teleportRectName = teleportManager.teleportColliders[i].rectName;
+                }
+            }
+
+            player.PlayerUpdate(gameTime, _sprite, GraphicsDevice, collidingWith, teleportRectName);
+            teleportRectName = "";
             
             _sprite.Update(dt);
 
@@ -109,6 +121,7 @@ namespace Adventure_Game_CSharp
 
             _spriteBatch.Draw(background, new Vector2(0, 0), Color.White);
             collisionManager.DrawCollisionBoxes(_spriteBatch);
+            teleportManager.DrawTeleportManager(_spriteBatch);
 
             player.PlayerDraw(_spriteBatch, _sprite);
             

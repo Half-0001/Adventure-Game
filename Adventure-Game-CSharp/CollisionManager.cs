@@ -11,6 +11,7 @@ namespace Adventure_Game_CSharp
     internal class CollisionManager
     {
         public Rectangle rect = new Rectangle();
+        
 
         private Texture2D _texture;
 
@@ -20,6 +21,9 @@ namespace Adventure_Game_CSharp
             rect = new Rectangle(a, b, c, d);
         }
 
+        TiledLayer objectLayer;
+        TiledLayer teleportLayer;
+
 
         public void initCollisions(GraphicsDevice _graphics) //initialize collision manager
         {
@@ -28,16 +32,25 @@ namespace Adventure_Game_CSharp
 
             var map = new TiledMap("Content/map.tmx");
             Debug.WriteLine(map.Layers[3].name);
-            var objectLayer = map.Layers[3]; //load tilemap and create colliders where collision boxes are marked on the tilemap
+            for (int i = 0; i < map.Layers.Length; i++)
+            {
+                if (map.Layers[i].name == "Collision Boxes")
+                {
+                    objectLayer = map.Layers[i]; //load tilemap and create colliders where collision boxes are marked on the tilemap
+                }
+                if (map.Layers[i].name == "Teleport")
+                {
+                    teleportLayer = map.Layers[i]; //load tilemap and create colliders where collision boxes are marked on the tilemap
+                }
+            }
             
             for (int i = 0; i < objectLayer.objects.Length; i++)
             {
                 colliders.Add(new CollisionManager((int)objectLayer.objects[i].x, (int)objectLayer.objects[i].y, (int)objectLayer.objects[i].width, (int)objectLayer.objects[i].height));
             }
-            
 
 
-            
+
         }
 
         public void DrawCollisionBoxes(SpriteBatch _spriteBatch) //draw collision boxes for debug
