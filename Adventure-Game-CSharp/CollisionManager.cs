@@ -26,9 +26,9 @@ namespace Adventure_Game_CSharp
             _texture = new Texture2D(_graphics, 1, 1);
             _texture.SetData(new Color[] { Color.DarkSlateGray }); 
 
-            var map = new TiledMap("Content/map.tmx"); 
-
-            var objectLayer = map.Layers[2]; //load tilemap and create colliders where collision boxes are marked on the tilemap
+            var map = new TiledMap("Content/map.tmx");
+            Debug.WriteLine(map.Layers[3].name);
+            var objectLayer = map.Layers[3]; //load tilemap and create colliders where collision boxes are marked on the tilemap
             
             for (int i = 0; i < objectLayer.objects.Length; i++)
             {

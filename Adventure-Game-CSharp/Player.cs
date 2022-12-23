@@ -2,7 +2,6 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGame.Aseprite.Graphics;
-using System.Diagnostics;
 using System.Collections.Generic;
 using System;
 using System.Runtime.CompilerServices;
@@ -62,13 +61,11 @@ namespace Adventure_Game_CSharp
                 direction = Dir.Down;
                 isMoving = true;
             }
-            if (kState.IsKeyDown(Keys.Space))
-                isMoving = false;
 
             if (isMoving)
             {
 
-                switch (direction)
+                switch (direction) //move player and play animations
                 {
                     case Dir.Left:
                         if (!collisionDir.Contains("left"))
@@ -103,10 +100,25 @@ namespace Adventure_Game_CSharp
 
             if (!isMoving)
             {
-                _sprite.Play("idle");
+                switch (direction)
+                {
+                    case Dir.Left: //play idle animations depending on which direction the player was last moving
+                        _sprite.Play("idle-left");
+                        break;
+                    case Dir.Right:
+                        _sprite.Play("idle-right");
+                        break;
+                    case Dir.Up:
+                        _sprite.Play("idle-up");
+                        break;
+                    case Dir.Down:
+                        _sprite.Play("idle-down");
+                        break;
+
+                }
             }
 
-            if (amountOfCollisions != 0 && amountOfCollisions != amountOfCollisionsOld)
+            if (amountOfCollisions != 0 && amountOfCollisions != amountOfCollisionsOld) //if a new item is added to the collisions list the player is stopped from moving in the current direction
             {
                 if (collisionDir.Contains("") || amountOfCollisions > amountOfCollisionsOld)
                 {

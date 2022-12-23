@@ -16,18 +16,6 @@
 
 #---------------------------------- Content ---------------------------------#
 
-#begin adventurer.aseprite
-/importer:AsepriteDocumentImporter
-/processor:AsepriteDocumentProcessor
-/processorParam:SheetType=Packed
-/processorParam:MergeDuplicateFrames=True
-/processorParam:IgnoreEmptyFrames=True
-/processorParam:OnlyVisibleLayers=True
-/processorParam:BorderPadding=0
-/processorParam:Spacing=0
-/processorParam:InnerPadding=0
-/build:adventurer.aseprite
-
 #begin Male 01.aseprite
 /importer:AsepriteDocumentImporter
 /processor:AsepriteDocumentProcessor

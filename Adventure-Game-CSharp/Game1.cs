@@ -4,7 +4,6 @@ using Microsoft.Xna.Framework.Input;
 using Comora;
 using MonoGame.Aseprite.Documents;
 using MonoGame.Aseprite.Graphics;
-using System.Diagnostics;
 using System.Collections.Generic;
 
 namespace Adventure_Game_CSharp
@@ -84,9 +83,9 @@ namespace Adventure_Game_CSharp
                 if (!collidingWith.Contains(i))
                 if (player.playerRect.Intersects(collisionManager.colliders[i].rect)) //if player is colliding with a rect
                 {
-                    collidingWith.Add(i);
+                    collidingWith.Add(i); //stores all the objects that the player is colliding with in a list
                 }
-                if (player.playerRect.Intersects(collisionManager.colliders[i].rect) == false) //if player not colliding with rect (number i)
+                if (player.playerRect.Intersects(collisionManager.colliders[i].rect) == false)
                 {
                     if (collidingWith.Contains(i))
                         collidingWith.Remove(i);
