@@ -35,6 +35,7 @@ namespace Adventure_Game_CSharp
         //variables
         private List<int> collidingWith = new List<int>();
         private string teleportRectName;
+        private bool insideHouse = false;
 
         public Game1()
         {
@@ -77,6 +78,7 @@ namespace Adventure_Game_CSharp
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
+
             
             float dt = (float)gameTime.ElapsedGameTime.TotalSeconds;
 
@@ -101,6 +103,12 @@ namespace Adventure_Game_CSharp
                 if (player.playerRect.Intersects(teleportManager.teleportColliders[i].teleportRect))
                 {
                     teleportRectName = teleportManager.teleportColliders[i].rectName;
+                    if (teleportRectName == "House outside") 
+                        insideHouse = true;
+
+                    if (teleportRectName == "House inside")
+                        insideHouse = false;
+
                 }
             }
 
@@ -109,7 +117,10 @@ namespace Adventure_Game_CSharp
             
             _sprite.Update(dt);
 
-            this.camera.Position = player.Position;
+            if (insideHouse)
+                this.camera.Position = new Vector2(player.Position.X, 880);
+            if (!insideHouse)
+                this.camera.Position = player.Position;
             this.camera.Update(gameTime);
             base.Update(gameTime);
         }

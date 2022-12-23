@@ -151,12 +151,20 @@ namespace Adventure_Game_CSharp
             }
 
             if (teleportRectName == "House outside")
+            {
                 position = new Vector2(1730, 1036); //inside of house co-ords
+                //camera.Position = new Vector2(position.X, 1336);
+            }
+
 
             if (teleportRectName == "House inside")
+            {
                 position = new Vector2(524, 590);
+                //camera.Position = position;
+            }
+
             amountOfCollisionsOld = amountOfCollisions;
-            
+            //return camera;
         }
 
             
