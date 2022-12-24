@@ -5,6 +5,8 @@ using Comora;
 using MonoGame.Aseprite.Documents;
 using MonoGame.Aseprite.Graphics;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System;
 
 namespace Adventure_Game_CSharp
 {
@@ -36,6 +38,10 @@ namespace Adventure_Game_CSharp
         private List<int> collidingWith = new List<int>();
         private string teleportRectName;
         private bool insideHouse = false;
+        private bool debugMode = false;
+        static KeyboardState kState;
+        static KeyboardState kStateOld;
+
 
         public Game1()
         {
@@ -93,6 +99,7 @@ namespace Adventure_Game_CSharp
                 if (player.playerRect.Intersects(collisionManager.colliders[i].rect) == false)
                 {
                     if (collidingWith.Contains(i))
+                        player.collisionDir.RemoveAt(collidingWith.IndexOf(i));
                         collidingWith.Remove(i);
                 }
             }
@@ -111,6 +118,14 @@ namespace Adventure_Game_CSharp
 
                 }
             }
+
+            //debug mode (press G to activate) - shows collision boxes
+            kState = Keyboard.GetState();
+            if (kState.IsKeyDown(Keys.G) && !kStateOld.IsKeyDown(Keys.G))
+            {
+                debugMode = !debugMode;
+            }
+            kStateOld = kState;
 
             player.PlayerUpdate(gameTime, _sprite, GraphicsDevice, collidingWith, teleportRectName);
             teleportRectName = "";
@@ -131,10 +146,10 @@ namespace Adventure_Game_CSharp
             _spriteBatch.Begin(this.camera);
 
             _spriteBatch.Draw(background, new Vector2(0, 0), Color.White);
-            collisionManager.DrawCollisionBoxes(_spriteBatch);
-            teleportManager.DrawTeleportManager(_spriteBatch);
+            collisionManager.DrawCollisionBoxes(_spriteBatch, debugMode);
+            teleportManager.DrawTeleportManager(_spriteBatch, debugMode);
 
-            player.PlayerDraw(_spriteBatch, _sprite);
+            player.PlayerDraw(_spriteBatch, _sprite, debugMode);
             
             _spriteBatch.End();
             base.Draw(gameTime);

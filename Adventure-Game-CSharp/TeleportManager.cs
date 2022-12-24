@@ -49,11 +49,12 @@ namespace Adventure_Game_CSharp
 
         }
 
-        public void DrawTeleportManager(SpriteBatch _spriteBatch) //draw collision boxes for debug
+        public void DrawTeleportManager(SpriteBatch _spriteBatch, bool debugMode) //draw collision boxes for debug
         {
             //_spriteBatch.Draw(_texture, new Rectangle(colliders[0].posX, colliders[0].posY, colliders[0].sizeX, colliders[0].sizeY), Color.Blue);
-            //for (int i = 0; i < teleportColliders.Count; i++)
-                //_spriteBatch.Draw(_texture, teleportColliders[i].teleportRect, Color.Red);
+            if (debugMode)
+                for (int i = 0; i < teleportColliders.Count; i++)
+                    _spriteBatch.Draw(_texture, teleportColliders[i].teleportRect, Color.Red);
         }
     }
 }

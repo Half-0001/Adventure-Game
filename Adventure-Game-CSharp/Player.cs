@@ -5,6 +5,7 @@ using MonoGame.Aseprite.Graphics;
 using System.Collections.Generic;
 using System;
 using System.Runtime.CompilerServices;
+using System.Diagnostics;
 
 namespace Adventure_Game_CSharp
 {
@@ -16,7 +17,7 @@ namespace Adventure_Game_CSharp
         private bool isMoving = false;
         public Rectangle playerRect = new Rectangle(0, 0, 32, 36);
         private Texture2D _texture;
-        private List<string> collisionDir = new List<string> { "" };
+        public List<string> collisionDir = new List<string> { "" };
         private int amountOfCollisions = 0;
         private int amountOfCollisionsOld = 0;
 
@@ -37,6 +38,12 @@ namespace Adventure_Game_CSharp
             isMoving = false;
             playerRect.X = (int)position.X;
             playerRect.Y = (int)position.Y;
+
+            
+            foreach (var item in collisionDir)
+                Debug.WriteLine(item);
+            foreach (var item in collidingWith)
+                Debug.WriteLine(item);
 
             if (kState.IsKeyDown(Keys.D))
             {
@@ -150,6 +157,14 @@ namespace Adventure_Game_CSharp
                 collisionDir.Add("");
             }
 
+            //if (amountOfCollisions == amountOfCollisionsOld - 1)
+            //{
+            //    collisionDir.RemoveAt(0);
+            //    if (collisionDir.Count == 0)
+            //        collisionDir.Add("");
+            //}
+
+
             if (teleportRectName == "House outside")
             {
                 position = new Vector2(1730, 1036); //inside of house co-ords
@@ -170,10 +185,11 @@ namespace Adventure_Game_CSharp
             
         
 
-        public void PlayerDraw(SpriteBatch _spriteBatch, AnimatedSprite _sprite)
+        public void PlayerDraw(SpriteBatch _spriteBatch, AnimatedSprite _sprite, bool debugMode)
         {
             _sprite.Render(_spriteBatch);
-                //_spriteBatch.Draw(_texture, playerRect, Color.White); //draw player collision rect for debug
+            if (debugMode)    
+                _spriteBatch.Draw(_texture, playerRect, Color.White); //draw player collision rect for debug
         }
     }
 }

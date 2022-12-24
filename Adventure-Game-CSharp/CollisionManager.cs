@@ -53,11 +53,12 @@ namespace Adventure_Game_CSharp
 
         }
 
-        public void DrawCollisionBoxes(SpriteBatch _spriteBatch) //draw collision boxes for debug
+        public void DrawCollisionBoxes(SpriteBatch _spriteBatch, bool debugMode) //draw collision boxes for debug
         {
             //_spriteBatch.Draw(_texture, new Rectangle(colliders[0].posX, colliders[0].posY, colliders[0].sizeX, colliders[0].sizeY), Color.Blue);
-            //for (int i = 0; i < colliders.Count; i++)
-                //_spriteBatch.Draw(_texture, colliders[i].rect, Color.Blue);
+            if (debugMode)    
+                for (int i = 0; i < colliders.Count; i++)
+                    _spriteBatch.Draw(_texture, colliders[i].rect, Color.Blue);
         }
     }
 }
