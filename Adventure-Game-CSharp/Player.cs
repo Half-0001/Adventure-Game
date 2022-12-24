@@ -174,7 +174,7 @@ namespace Adventure_Game_CSharp
 
             if (teleportRectName == "House inside")
             {
-                position = new Vector2(524, 590);
+                position = new Vector2(520, 550); //outside of coords
                 //camera.Position = position;
             }
 
