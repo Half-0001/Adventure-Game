@@ -33,11 +33,12 @@ namespace Adventure_Game_CSharp
 
         //textures
         Texture2D background;
+        SpriteFont spriteFont;
 
         //variables
         private List<int> collidingWith = new List<int>();
         private string teleportRectName;
-        private bool insideHouse = false;
+        //private bool insideHouse = false;
         private bool debugMode = false;
         static KeyboardState kState;
         static KeyboardState kStateOld;
@@ -70,6 +71,7 @@ namespace Adventure_Game_CSharp
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
             background = Content.Load<Texture2D>("map");
+            spriteFont = Content.Load<SpriteFont>("font");
 
             //  Load the asprite file from the content pipeline.
             AsepriteDocument aseprite = Content.Load<AsepriteDocument>("Male 01");
@@ -106,18 +108,9 @@ namespace Adventure_Game_CSharp
 
             //manage teleports
             for (int i = 0; i < teleportManager.teleportColliders.Count; i++)
-            {
                 if (player.playerRect.Intersects(teleportManager.teleportColliders[i].teleportRect))
-                {
                     teleportRectName = teleportManager.teleportColliders[i].rectName;
-                    if (teleportRectName == "House outside") 
-                        insideHouse = true;
 
-                    if (teleportRectName == "House inside")
-                        insideHouse = false;
-
-                }
-            }
 
             //debug mode (press G to activate) - shows collision boxes
             kState = Keyboard.GetState();
@@ -132,24 +125,24 @@ namespace Adventure_Game_CSharp
             
             _sprite.Update(dt);
 
-            if (insideHouse)
-                this.camera.Position = new Vector2(player.Position.X, 880);
-            if (!insideHouse)
-                this.camera.Position = player.Position;
+            //if (insideHouse)
+            //    this.camera.Position = new Vector2(player.Position.X, 880);
+            //if (!insideHouse)
+            this.camera.Position = player.Position;
             this.camera.Update(gameTime);
             base.Update(gameTime);
         }
 
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(Color.Black);
             _spriteBatch.Begin(this.camera);
 
             _spriteBatch.Draw(background, new Vector2(0, 0), Color.White);
             collisionManager.DrawCollisionBoxes(_spriteBatch, debugMode);
             teleportManager.DrawTeleportManager(_spriteBatch, debugMode);
 
-            player.PlayerDraw(_spriteBatch, _sprite, debugMode);
+            player.PlayerDraw(_spriteBatch, _sprite, debugMode, spriteFont);
             
             _spriteBatch.End();
             base.Draw(gameTime);

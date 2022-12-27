@@ -1,0 +1,8 @@
+When using the tile 'P. Cell 1' to draw the prison cells walls(1 width only) please, avoid drawing 
+them too close to each other and avoid 'curvy' patterns like a 'ladder' of tiles.
+
+These prison cells are meant to be drawn in a rectangular shape. The auto tile will 
+cover some curvy patterns but not too curvy so most will get bad results.
+Worth mentioning that when you place the 'P. Cell 1' tile, you are placing the top section of the wall.
+
+You can watch all the examples in the video showcasing all auto tiles available in this pack

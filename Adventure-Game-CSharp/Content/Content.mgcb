@@ -16,7 +16,7 @@
 
 #---------------------------------- Content ---------------------------------#
 
-#begin Male 01.aseprite
+#begin ../../assets/PIPOYA FREE RPG Character Sprites 32x32/Male/anim/Male 01.aseprite
 /importer:AsepriteDocumentImporter
 /processor:AsepriteDocumentProcessor
 /processorParam:SheetType=Packed
@@ -26,7 +26,14 @@
 /processorParam:BorderPadding=0
 /processorParam:Spacing=0
 /processorParam:InnerPadding=0
-/build:Male 01.aseprite
+/build:../../assets/PIPOYA FREE RPG Character Sprites 32x32/Male/anim/Male 01.aseprite;Male 01.aseprite
+
+#begin font.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:font.spritefont
 
 #begin map.png
 /importer:TextureImporter
