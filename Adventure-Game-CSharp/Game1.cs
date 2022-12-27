@@ -23,13 +23,14 @@ namespace Adventure_Game_CSharp
         private SpriteBatch _spriteBatch;
         private Point _resolution;
 
-        private AnimatedSprite _sprite;
+        
 
         //classes
         private Camera camera;
         Player player = new Player();
         CollisionManager collisionManager = new CollisionManager(0, 0, 0, 0);
         TeleportManager teleportManager = new TeleportManager(0, 0, 0, 0, "");
+        Enemy enemy = new Enemy();
 
         //textures
         Texture2D background;
@@ -73,22 +74,16 @@ namespace Adventure_Game_CSharp
             background = Content.Load<Texture2D>("map");
             spriteFont = Content.Load<SpriteFont>("font");
 
-            //  Load the asprite file from the content pipeline.
-            AsepriteDocument aseprite = Content.Load<AsepriteDocument>("Male 01");
+            player.LoadContent(Content, _resolution);
+            enemy.LoadContent(Content, _resolution);
 
-            //  Create a new aniamted sprite instance using the aseprite doucment loaded.
-            _sprite = new AnimatedSprite(aseprite);
-            _sprite.Scale = new Vector2(1.0f, 1.0f);
-            _sprite.Y = _resolution.Y - (_sprite.Height * _sprite.Scale.Y) - 16;
+
         }
 
         protected override void Update(GameTime gameTime)
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
-
-            
-            float dt = (float)gameTime.ElapsedGameTime.TotalSeconds;
 
             //manage collisions
             for (int i = 0; i < collisionManager.colliders.Count; i++)
@@ -120,14 +115,11 @@ namespace Adventure_Game_CSharp
             }
             kStateOld = kState;
 
-            player.PlayerUpdate(gameTime, _sprite, GraphicsDevice, collidingWith, teleportRectName);
+            player.PlayerUpdate(gameTime, GraphicsDevice, collidingWith, teleportRectName);
             teleportRectName = "";
-            
-            _sprite.Update(dt);
 
-            //if (insideHouse)
-            //    this.camera.Position = new Vector2(player.Position.X, 880);
-            //if (!insideHouse)
+            enemy.Update(gameTime);
+
             this.camera.Position = player.Position;
             this.camera.Update(gameTime);
             base.Update(gameTime);
@@ -142,8 +134,10 @@ namespace Adventure_Game_CSharp
             collisionManager.DrawCollisionBoxes(_spriteBatch, debugMode);
             teleportManager.DrawTeleportManager(_spriteBatch, debugMode);
 
-            player.PlayerDraw(_spriteBatch, _sprite, debugMode, spriteFont);
-            
+            enemy.Draw(_spriteBatch);
+            player.PlayerDraw(_spriteBatch, debugMode, spriteFont);
+
+
             _spriteBatch.End();
             base.Draw(gameTime);
         }
