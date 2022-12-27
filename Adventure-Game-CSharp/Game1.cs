@@ -30,7 +30,7 @@ namespace Adventure_Game_CSharp
         Player player = new Player();
         CollisionManager collisionManager = new CollisionManager(0, 0, 0, 0);
         TeleportManager teleportManager = new TeleportManager(0, 0, 0, 0, "");
-        Enemy enemy = new Enemy();
+        Enemy enemy = new Enemy(0, 0, null);
 
         //textures
         Texture2D background;
@@ -75,7 +75,7 @@ namespace Adventure_Game_CSharp
             spriteFont = Content.Load<SpriteFont>("font");
 
             player.LoadContent(Content, _resolution);
-            enemy.LoadContent(Content, _resolution);
+            enemy.LoadContent(Content, _resolution, GraphicsDevice);
 
 
         }
@@ -134,7 +134,7 @@ namespace Adventure_Game_CSharp
             collisionManager.DrawCollisionBoxes(_spriteBatch, debugMode);
             teleportManager.DrawTeleportManager(_spriteBatch, debugMode);
 
-            enemy.Draw(_spriteBatch);
+            enemy.Draw(_spriteBatch, debugMode);
             player.PlayerDraw(_spriteBatch, debugMode, spriteFont);
 
 

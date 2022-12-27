@@ -98,9 +98,8 @@ namespace Adventure_Game_CSharp
                         if (mState.LeftButton == ButtonState.Pressed && fallenDown == true)
                         {
                             _sprite.Play("attack-left");
-                            //mReleased = false;
                         }
-                        else if (!collisionDir.Contains("left"))  //TODO: Make animations much larger and fix when you can use them
+                        else if (!collisionDir.Contains("left")) 
                         {
                             position.X -= speed * dt;
                             _sprite.Play("walkLeft");
@@ -110,7 +109,6 @@ namespace Adventure_Game_CSharp
                         if (mState.LeftButton == ButtonState.Pressed && fallenDown == true)
                         {
                             _sprite.Play("attack-up");
-                            //mReleased = false;
                         }
                         else if (!collisionDir.Contains("up"))
                         {
@@ -122,7 +120,6 @@ namespace Adventure_Game_CSharp
                         if (mState.LeftButton == ButtonState.Pressed && fallenDown == true)
                         {
                             _sprite.Play("attack-right");
-                            //mReleased = false;
                         }
                         else if (!collisionDir.Contains("right"))
                         {
@@ -134,7 +131,6 @@ namespace Adventure_Game_CSharp
                         if (mState.LeftButton == ButtonState.Pressed && fallenDown == true)
                         {
                             _sprite.Play("attack-down");
-                            //mReleased = false;
                         }
                         else if (!collisionDir.Contains("down"))
                         {
@@ -153,7 +149,6 @@ namespace Adventure_Game_CSharp
                         if (mState.LeftButton == ButtonState.Pressed && fallenDown == true)
                         {
                             _sprite.Play("attack-left");
-                            //mReleased = false;
                         }
                         else
                             _sprite.Play("idle-left");
@@ -162,7 +157,6 @@ namespace Adventure_Game_CSharp
                         if (mState.LeftButton == ButtonState.Pressed && fallenDown == true)
                         {
                             _sprite.Play("attack-right");
-                            //mReleased = false;
                         }
                         else
                             _sprite.Play("idle-right");
@@ -171,7 +165,6 @@ namespace Adventure_Game_CSharp
                         if (mState.LeftButton == ButtonState.Pressed && fallenDown == true)
                         {
                             _sprite.Play("attack-up");
-                            //mReleased = false;
                         }
                         else     
                             _sprite.Play("idle-up");
@@ -180,7 +173,6 @@ namespace Adventure_Game_CSharp
                         if (mState.LeftButton == ButtonState.Pressed && fallenDown == true)
                         {
                             _sprite.Play("attack-down");
-                            //mReleased = false;
                         }
                         else
                             _sprite.Play("idle-down");
@@ -271,8 +263,6 @@ namespace Adventure_Game_CSharp
         public void PlayerDraw(SpriteBatch _spriteBatch, bool debugMode, SpriteFont spriteFont)
         {
             _sprite.Render(_spriteBatch);
-            if (debugMode)    
-                _spriteBatch.Draw(_texture, playerRect, Color.White); //draw player collision rect for debug
 
             if (eventTrigger == "inside door")
                 if (timer <= 5)
@@ -289,6 +279,13 @@ namespace Adventure_Game_CSharp
                     _spriteBatch.DrawString(spriteFont, "A sword lies on the ground beside you. You pick it up", new Vector2(position.X - (spriteFont.MeasureString("A sword lies on the ground beside you. You pick it up").Length() * 0.35f) / 2, position.Y), Color.White, 0f, new Vector2(0, 0), 0.35f, SpriteEffects.None, 0f);
                 if (timer > 7.2 && timer < 10)
                     _spriteBatch.DrawString(spriteFont, "(Press left click to swing the sword)", new Vector2(position.X - (spriteFont.MeasureString("(Press left click to swing the sword)").Length() * 0.35f) / 2, position.Y + 50), Color.White, 0f, new Vector2(0, 0), 0.35f, SpriteEffects.None, 0f);
+            }
+
+            if (debugMode)
+            {
+                _spriteBatch.Draw(_texture, playerRect, Color.White); //draw player collision rect for debug
+                _spriteBatch.DrawString(spriteFont, "X: " + MathF.Round(position.X, 0).ToString(), new Vector2(position.X - 220, position.Y - 230), Color.White);
+                _spriteBatch.DrawString(spriteFont, "Y: " + MathF.Round(position.Y, 0).ToString(), new Vector2(position.X - 220, position.Y - 200), Color.White);
             }
         }
     }
