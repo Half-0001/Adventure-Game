@@ -23,14 +23,12 @@ namespace Adventure_Game_CSharp
         private SpriteBatch _spriteBatch;
         private Point _resolution;
 
-        
-
         //classes
         private Camera camera;
         Player player = new Player();
         CollisionManager collisionManager = new CollisionManager(0, 0, 0, 0);
         TeleportManager teleportManager = new TeleportManager(0, 0, 0, 0, "");
-        Enemy enemy = new Enemy(0, 0, null);
+        Enemy enemy = new Enemy(0, 0, null, Point.Zero);
 
         //textures
         Texture2D background;
@@ -85,7 +83,7 @@ namespace Adventure_Game_CSharp
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            //manage collisions
+            //manage collisions TODO: Move to player class
             for (int i = 0; i < collisionManager.colliders.Count; i++)
             {
                 if (!collidingWith.Contains(i))
@@ -101,7 +99,7 @@ namespace Adventure_Game_CSharp
                 }
             }
 
-            //manage teleports
+            //manage teleports TODO: Move to player class
             for (int i = 0; i < teleportManager.teleportColliders.Count; i++)
                 if (player.playerRect.Intersects(teleportManager.teleportColliders[i].teleportRect))
                     teleportRectName = teleportManager.teleportColliders[i].rectName;
@@ -115,10 +113,10 @@ namespace Adventure_Game_CSharp
             }
             kStateOld = kState;
 
-            player.PlayerUpdate(gameTime, GraphicsDevice, collidingWith, teleportRectName);
+            player.PlayerUpdate(gameTime, GraphicsDevice, collidingWith, teleportRectName, enemy.enemies);
             teleportRectName = "";
 
-            enemy.Update(gameTime);
+            enemy.Update(gameTime, player.Position);
 
             this.camera.Position = player.Position;
             this.camera.Update(gameTime);

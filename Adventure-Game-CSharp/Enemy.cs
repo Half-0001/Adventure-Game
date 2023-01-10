@@ -6,6 +6,9 @@ using MonoGame.Aseprite.Graphics;
 using System.Collections.Generic;
 using MonoGame.Aseprite.Documents;
 using System;
+using System.Diagnostics;
+using System.Runtime.Serialization;
+using System.Runtime.CompilerServices;
 
 namespace Adventure_Game_CSharp
 {
@@ -13,51 +16,85 @@ namespace Adventure_Game_CSharp
     {
         public List<Enemy> enemies = new List<Enemy>();
 
+        Random random = new Random();
+
         private AnimatedSprite enemySprite;
-        private Vector2 position = new Vector2();
-        private int health;
+        public Vector2 position = new Vector2();
+        public int health;
         private int speed;
-        private Rectangle hitbox = new Rectangle();
+        public Rectangle hitbox = new Rectangle();
+        public Rectangle attackHitbox = new Rectangle();
+        private float timer = 0;
 
         Texture2D _texture;
 
-        public Enemy(int positionX, int positionY, AnimatedSprite sprite)
+        public Enemy(int positionX, int positionY, AsepriteDocument asepritefile, Point _resolution)
         {
             health = 100; 
-            speed = 90;
+            speed = 30;
             position.X = positionX;
             position.Y = positionY;
             hitbox = new Rectangle(positionX + 11, positionY + 11, 10, 10);
-            enemySprite = sprite;
+            attackHitbox = new Rectangle(positionX + 21, positionY + 11, 10, 10);
+
+            if (asepritefile != null) //each sprite has its own position variables, if "null" is passed into the creator (at the start of Game1.cs) then it throws an error. 
+            {
+                enemySprite = new AnimatedSprite(asepritefile);
+                enemySprite.Scale = new Vector2(1.0f, 1.0f);
+                enemySprite.Y = _resolution.Y - (enemySprite.Height * enemySprite.Scale.Y) - 16;
+            }
+            else
+                enemySprite = null;
+
         }
         public void LoadContent(ContentManager Content, Point _resolution, GraphicsDevice _graphics)
         {
-            //  Load the asprite file from the content pipeline.
+            //  Load the aseprite file from the content pipeline.
             AsepriteDocument asepritefile = Content.Load<AsepriteDocument>("Enemy 15-1");
 
-            //  Create a new aniamted sprite instance using the aseprite doucment loaded.
-            enemySprite = new AnimatedSprite(asepritefile);
-            enemySprite.Scale = new Vector2(1.0f, 1.0f);
-            enemySprite.Y = _resolution.Y - (enemySprite.Height * enemySprite.Scale.Y) - 16;
-
             //add enemies to list
-            enemies.Add(new Enemy(678, 1768, enemySprite));
+            for (int i = 0; i < 10; i++)
+                enemies.Add(new Enemy(random.Next(545, 2271), random.Next(1596, 2331), asepritefile, _resolution));
 
             //blank texture 
             _texture = new Texture2D(_graphics, 1, 1);
             _texture.SetData(new Color[] { Color.DarkSlateGray });
         }
 
-        public void Update(GameTime gameTime)
+        public void Update(GameTime gameTime, Vector2 playerPosition)
         {
             float dt = (float)gameTime.ElapsedGameTime.TotalSeconds;
             for (int i = 0; i < enemies.Count; i++)
             {
+                enemies[i].hitbox = new Rectangle((int)enemies[i].position.X + 11, (int)enemies[i].position.Y + 11, 10, 10);
+                enemies[i].attackHitbox = new Rectangle((int)enemies[i].position.X + 21, (int)enemies[i].position.Y + 11, 10, 10);
+
                 enemies[i].enemySprite.Update(dt);
                 enemies[i].enemySprite.Position = new Vector2(enemies[i].position.X, enemies[i].position.Y);
+
+                if (enemies[i].health > 0)
+                {
+                    if (Vector2.Distance(playerPosition, enemies[i].position) < 300)
+                    {
+                        Vector2 dir = enemies[i].position - playerPosition;
+                        dir.Normalize();
+                        enemies[i].position -= dir * speed * dt;
+                        if (dir.X > 0)
+                            enemies[i].enemySprite.Play("walk-left");
+                        if (dir.X < 0)
+                            enemies[i].enemySprite.Play("walk-right");
+                    }
+                }
+
+
+                if (enemies[i].health == 0)
+                {
+                    enemies[i].enemySprite.Play("walk-down");
+                    enemies[i].timer += (float)gameTime.ElapsedGameTime.TotalSeconds;
+                    if (enemies[i].timer > 1) //TODO: Make enemy dying animation
+                        enemies.RemoveAt(i);
+                }
             }
-            
-            
         }
 
         public void Draw(SpriteBatch _spriteBatch, bool debugMode)
@@ -71,8 +108,8 @@ namespace Adventure_Game_CSharp
                 for (int i = 0; i < enemies.Count; i++)
                 {
                     _spriteBatch.Draw(_texture, enemies[i].hitbox, Color.White); //draw hitbox
+                    _spriteBatch.Draw(_texture, enemies[i].attackHitbox, Color.Green); //draw hitbox
                 }
-
         }
     }
 }
