@@ -1240,7 +1240,7 @@
   <object id="72" x="1591.33" y="198.667" width="41.3333" height="106"/>
   <object id="76" x="221.5" y="1442" width="2162" height="62"/>
   <object id="78" x="2309.67" y="1449.33" width="26.6667" height="993.333"/>
-  <object id="79" x="236.667" y="2366" width="2164" height="88"/>
+  <object id="79" x="238" y="2358" width="2164" height="88"/>
   <object id="80" x="227" y="1475.5" width="26" height="948"/>
  </objectgroup>
  <objectgroup id="6" name="Teleport" visible="0">

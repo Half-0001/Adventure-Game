@@ -26,7 +26,6 @@ C:\Users\nyleh\OneDrive\Documents\GitHub\Adventure-Game\Adventure-Game-CSharp\ob
 C:\Users\nyleh\OneDrive\Documents\GitHub\Adventure-Game\Adventure-Game-CSharp\obj\Debug\net6.0\ref\Adventure-Game-CSharp.dll
 C:\Users\nyleh\OneDrive\Documents\GitHub\Adventure-Game\Adventure-Game-CSharp\bin\Debug\net6.0\Comora.dll
 C:\Users\nyleh\OneDrive\Documents\GitHub\Adventure-Game\Adventure-Game-CSharp\bin\Debug\net6.0\MonoGame.Aseprite.dll
-C:\Users\nyleh\Documents\GitHub\repos\Adventure-Game\Adventure-Game-CSharp\bin\Debug\net6.0\Content\adventurer.xnb
 C:\Users\nyleh\Documents\GitHub\repos\Adventure-Game\Adventure-Game-CSharp\bin\Debug\net6.0\Content\map.xnb
 C:\Users\nyleh\Documents\GitHub\repos\Adventure-Game\Adventure-Game-CSharp\bin\Debug\net6.0\Adventure-Game-CSharp.exe
 C:\Users\nyleh\Documents\GitHub\repos\Adventure-Game\Adventure-Game-CSharp\bin\Debug\net6.0\Adventure-Game-CSharp.deps.json
@@ -62,3 +61,8 @@ C:\Users\nyleh\OneDrive\Documents\GitHub\Adventure-Game\Adventure-Game-CSharp\bi
 C:\Users\nyleh\OneDrive\Documents\GitHub\Adventure-Game\Adventure-Game-CSharp\bin\Debug\net6.0\Content\map.tmx
 C:\Users\nyleh\OneDrive\Documents\GitHub\Adventure-Game\Adventure-Game-CSharp\bin\Debug\net6.0\Content\font.xnb
 C:\Users\nyleh\OneDrive\Documents\GitHub\Adventure-Game\Adventure-Game-CSharp\bin\Debug\net6.0\Content\Enemy 15-1.xnb
+C:\Users\nyleh\Documents\GitHub\repos\Adventure-Game\Adventure-Game-CSharp\bin\Debug\net6.0\Content\Enemy 15-1.xnb
+C:\Users\nyleh\Documents\GitHub\repos\Adventure-Game\Adventure-Game-CSharp\bin\Debug\net6.0\Content\font.xnb
+C:\Users\nyleh\Documents\GitHub\repos\Adventure-Game\Adventure-Game-CSharp\bin\Debug\net6.0\Content\map.tmx
+C:\Users\nyleh\Documents\GitHub\repos\Adventure-Game\Adventure-Game-CSharp\bin\Debug\net6.0\Newtonsoft.Json.dll
+C:\Users\nyleh\Documents\GitHub\repos\Adventure-Game\Adventure-Game-CSharp\bin\Debug\net6.0\TiledCS.dll
