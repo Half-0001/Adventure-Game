@@ -76,6 +76,7 @@ namespace Adventure_Game_CSharp
             enemy.LoadContent(Content, _resolution, GraphicsDevice);
 
 
+
         }
 
         protected override void Update(GameTime gameTime)

@@ -87,7 +87,7 @@ namespace Adventure_Game_CSharp
                 }
 
 
-                if (enemies[i].health == 0)
+                if (enemies[i].health <= 0)
                 {
                     enemies[i].enemySprite.Play("walk-down");
                     enemies[i].timer += (float)gameTime.ElapsedGameTime.TotalSeconds;

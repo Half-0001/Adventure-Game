@@ -25,12 +25,12 @@ namespace Adventure_Game_CSharp
         private int amountOfCollisionsOld = 0;
         private string eventTrigger = "";
         private float timer = 0;
-        private float attackAnimationTimer = 0;
         private bool fallenDown = false;
         private AnimatedSprite _sprite;
         private int health = 100;
         private bool canBeAttacked = true;
         private bool attacking = false;
+        private string attackAnimation;
 
 
         public Vector2 Position
@@ -63,6 +63,7 @@ namespace Adventure_Game_CSharp
             playerRect.Y = (int)position.Y;
             coverScreen.X = (int)position.X - 250;
             coverScreen.Y = (int)position.Y - 250;
+
 
             if (kState.IsKeyDown(Keys.D)) //set direction depending on what keys are pressed
             {
@@ -97,10 +98,7 @@ namespace Adventure_Game_CSharp
                     case Dir.Left:
                         if (mState.LeftButton == ButtonState.Pressed && fallenDown == true)
                         {
-                            //_sprite.Play("attack-left");
                             attacking = true;
-                            if (attackAnimationTimer > 1)
-                                attackAnimationTimer = 0;
                         }
                         else if (!collisionDir.Contains("left")) 
                         {
@@ -111,10 +109,7 @@ namespace Adventure_Game_CSharp
                     case Dir.Up:
                         if (mState.LeftButton == ButtonState.Pressed && fallenDown == true)
                         {
-                            //_sprite.Play("attack-up");
                             attacking = true;
-                            if (attackAnimationTimer > 1)
-                                attackAnimationTimer = 0;
                         }
                         else if (!collisionDir.Contains("up"))
                         {
@@ -125,10 +120,7 @@ namespace Adventure_Game_CSharp
                     case Dir.Right:
                         if (mState.LeftButton == ButtonState.Pressed && fallenDown == true)
                         {
-                            //_sprite.Play("attack-right");
                             attacking = true;
-                            if (attackAnimationTimer > 1)
-                                attackAnimationTimer = 0;
                         }
                         else if (!collisionDir.Contains("right"))
                         {
@@ -139,10 +131,7 @@ namespace Adventure_Game_CSharp
                     case Dir.Down:
                         if (mState.LeftButton == ButtonState.Pressed && fallenDown == true)
                         {
-                            //_sprite.Play("attack-down");
                             attacking = true;
-                            if (attackAnimationTimer > 1)
-                                attackAnimationTimer = 0;
                         }
                         else if (!collisionDir.Contains("down"))
                         {
@@ -160,10 +149,7 @@ namespace Adventure_Game_CSharp
                     case Dir.Left: //play idle animations depending on which direction the player was last moving
                         if (mState.LeftButton == ButtonState.Pressed && fallenDown == true)
                         {
-                            //_sprite.Play("attack-left");
                             attacking = true;
-                            if (attackAnimationTimer > 1)
-                                attackAnimationTimer = 0;
                         }
                         else
                         {
@@ -173,10 +159,7 @@ namespace Adventure_Game_CSharp
                     case Dir.Right:
                         if (mState.LeftButton == ButtonState.Pressed && fallenDown == true)
                         {
-                            //_sprite.Play("attack-right");
                             attacking = true;
-                            if (attackAnimationTimer > 1)
-                                attackAnimationTimer = 0;
                         }
                         else
                         {
@@ -186,10 +169,7 @@ namespace Adventure_Game_CSharp
                     case Dir.Up:
                         if (mState.LeftButton == ButtonState.Pressed && fallenDown == true)
                         {
-                            //_sprite.Play("attack-up");
                             attacking = true;
-                            if (attackAnimationTimer > 1)
-                                attackAnimationTimer = 0;
                         }
                         else
                         {
@@ -199,10 +179,7 @@ namespace Adventure_Game_CSharp
                     case Dir.Down:
                         if (mState.LeftButton == ButtonState.Pressed && fallenDown == true)
                         {
-                            //_sprite.Play("attack-down");
                             attacking = true;
-                            if (attackAnimationTimer > 1)
-                                attackAnimationTimer = 0;
                         }
                         else
                         {
@@ -212,64 +189,74 @@ namespace Adventure_Game_CSharp
 
                 }
             }
+            if (attackRect != new Rectangle(0, 0, 0, 0)) //reset the attack rect
+                attackRect = new Rectangle(0, 0, 0, 0);
 
+            Debug.WriteLine(attackAnimation);
 
             if (attacking)
             {
-                switch (direction)
+                if (attackAnimation != "up" && attackAnimation != "left" && attackAnimation != "right")
                 {
-                    case Dir.Down:
+                    if (direction == Dir.Down)
+                    {
                         _sprite.Play("attack-down");
+                        attackAnimation = "down";
                         if (_sprite.CurrentFrameIndex == 24)
                         {
+                            attackRect = new Rectangle((int)position.X, (int)position.Y, 32, 72);
+                            attackAnimation = "";
                             attacking = false;
                         }
-                        break;
-                    case Dir.Up:
+                    }
+                }
+
+                if (attackAnimation != "down" && attackAnimation != "left" && attackAnimation != "right")
+                {
+                    if (direction == Dir.Up)
+                    {
+
                         _sprite.Play("attack-up");
+                        attackAnimation = "up";
                         if (_sprite.CurrentFrameIndex == 41)
                         {
+                            attackRect = new Rectangle((int)position.X, (int)position.Y - 36, 32, 72);
+                            attackAnimation = "";
                             attacking = false;
                         }
-                        break;
-                    case Dir.Left:
+                    }
+                }
+
+                if (attackAnimation != "up" && attackAnimation != "down" && attackAnimation != "right")
+                {
+                    if (direction == Dir.Left)
+                    {
                         _sprite.Play("attack-left");
+                        attackAnimation = "left";
                         if (_sprite.CurrentFrameIndex == 36)
                         {
+                            attackRect = new Rectangle((int)position.X - 32, (int)position.Y, 64, 36);
+                            attackAnimation = "";
                             attacking = false;
                         }
-                        break;
-                    case Dir.Right:
+                    }
+                }
+
+                if (attackAnimation != "up" && attackAnimation != "left" && attackAnimation != "down")
+                {
+                    if (direction == Dir.Right)
+                    {
                         _sprite.Play("attack-right");
+                        attackAnimation = "right";
                         if (_sprite.CurrentFrameIndex == 30)
                         {
+                            attackRect = new Rectangle((int)position.X, (int)position.Y, 64, 36);
+                            attackAnimation = "";
                             attacking = false;
                         }
-                        break;
+                    }
                 }
             }
-
-            //attacking logic 
-            if (attackAnimationTimer == 0)
-                switch (direction)
-                {
-                    case Dir.Right:
-                        attackRect = new Rectangle((int)position.X, (int)position.Y, 64, 36);
-                        break;
-                    case Dir.Left:
-                        attackRect = new Rectangle((int)position.X - 32, (int)position.Y, 64, 36);
-                        break;
-                    case Dir.Up:
-                        attackRect = new Rectangle((int)position.X, (int)position.Y - 36, 32, 72);
-                        break;
-                    case Dir.Down:
-                        attackRect = new Rectangle((int)position.X, (int)position.Y, 32, 72);
-                        break;
-                }
-
-            if (attackAnimationTimer != 0)
-                attackRect = new Rectangle(0, 0, 0, 0);
-            attackAnimationTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
             
             for (int i = 0; i < enemies.Count; i++)
             {
@@ -392,19 +379,19 @@ namespace Adventure_Game_CSharp
             //draw health
             _spriteBatch.DrawString(spriteFont, "Health: "+health.ToString(), new Vector2(position.X - (spriteFont.MeasureString("Health: "+health.ToString()).Length() * 0.5f) / 2, position.Y + 200), Color.Red, 0f, new Vector2(0, 0), 0.5f, SpriteEffects.None, 0f);
 
-            if (eventTrigger == "through hole")
-            {
-                if (timer < 10)
-                {
-                    _spriteBatch.Draw(_texture, coverScreen, Color.Black);
-                }
-                if (timer > 2 && timer < 4.6)
-                    _spriteBatch.DrawString(spriteFont, "After what feels like forver, you finally reach the bottom", new Vector2(position.X - (spriteFont.MeasureString("After what feels like forver, you finally reach the bottom").Length() * 0.35f) / 2, position.Y - 50), Color.White, 0f, new Vector2(0, 0), 0.35f, SpriteEffects.None, 0f);
-                if (timer > 4.6 && timer < 7.2)
-                    _spriteBatch.DrawString(spriteFont, "A sword lies on the ground beside you. You pick it up", new Vector2(position.X - (spriteFont.MeasureString("A sword lies on the ground beside you. You pick it up").Length() * 0.35f) / 2, position.Y), Color.White, 0f, new Vector2(0, 0), 0.35f, SpriteEffects.None, 0f);
-                if (timer > 7.2 && timer < 10)
-                    _spriteBatch.DrawString(spriteFont, "(Press left click to swing the sword)", new Vector2(position.X - (spriteFont.MeasureString("(Press left click to swing the sword)").Length() * 0.35f) / 2, position.Y + 50), Color.White, 0f, new Vector2(0, 0), 0.35f, SpriteEffects.None, 0f);
-            }
+            //if (eventTrigger == "through hole")
+            //{
+            //    if (timer < 10)
+            //    {
+            //        _spriteBatch.Draw(_texture, coverScreen, Color.Black);
+            //    }
+            //    if (timer > 2 && timer < 4.6)
+            //        _spriteBatch.DrawString(spriteFont, "After what feels like forver, you finally reach the bottom", new Vector2(position.X - (spriteFont.MeasureString("After what feels like forver, you finally reach the bottom").Length() * 0.35f) / 2, position.Y - 50), Color.White, 0f, new Vector2(0, 0), 0.35f, SpriteEffects.None, 0f);
+            //    if (timer > 4.6 && timer < 7.2)
+            //        _spriteBatch.DrawString(spriteFont, "A sword lies on the ground beside you. You pick it up", new Vector2(position.X - (spriteFont.MeasureString("A sword lies on the ground beside you. You pick it up").Length() * 0.35f) / 2, position.Y), Color.White, 0f, new Vector2(0, 0), 0.35f, SpriteEffects.None, 0f);
+            //    if (timer > 7.2 && timer < 10)
+            //        _spriteBatch.DrawString(spriteFont, "(Press left click to swing the sword)", new Vector2(position.X - (spriteFont.MeasureString("(Press left click to swing the sword)").Length() * 0.35f) / 2, position.Y + 50), Color.White, 0f, new Vector2(0, 0), 0.35f, SpriteEffects.None, 0f);
+            //}
 
             if (debugMode)
             {
