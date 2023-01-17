@@ -31,7 +31,6 @@ namespace Adventure_Game_CSharp
         private int health = 100;
         private bool canBeAttacked = true;
         private bool attacking = false;
-        private string attackAnimation = "";
 
 
         public Vector2 Position
@@ -145,25 +144,17 @@ namespace Adventure_Game_CSharp
                 switch (direction)
                 {
                     case Dir.Left: //play idle animations depending on which direction the player was last moving
-                        {
                             _sprite.Play("idle-left");
-                        }
-                        break;
+                            break;
                     case Dir.Right:
-                        {
                             _sprite.Play("idle-right");
-                        }
-                        break;
+                            break;
                     case Dir.Up:
-                        {
                             _sprite.Play("idle-up");
-                        }
-                        break;
+                            break;
                     case Dir.Down:
-                        {
                             _sprite.Play("idle-down");
-                        }
-                        break;
+                            break;
 
                 }
             }
@@ -172,65 +163,45 @@ namespace Adventure_Game_CSharp
 
             if (attacking)
             {
-                if (attackAnimation == "down" || attackAnimation == "")
+                
+                if (direction == Dir.Down)
                 {
-                    if (direction == Dir.Down)
+                    _sprite.Play("attack-down");
+                    if (_sprite.CurrentFrameIndex == 24)
                     {
-                        _sprite.Play("attack-down");
-                        attackAnimation = "down";
-                        if (_sprite.CurrentFrameIndex == 24)
-                        {
-                            attackRect = new Rectangle((int)position.X, (int)position.Y, 32, 72);
-                            attackAnimation = "";
-                            attacking = false;
-                        }
+                        attackRect = new Rectangle((int)position.X, (int)position.Y, 32, 72);
+                        attacking = false;
                     }
                 }
 
-                if (attackAnimation == "up" || attackAnimation == "")
+                if (direction == Dir.Up)
                 {
-                    if (direction == Dir.Up)
-                    {
 
-                        _sprite.Play("attack-up");
-                        attackAnimation = "up";
-                        if (_sprite.CurrentFrameIndex == 41)
-                        {
-                            attackRect = new Rectangle((int)position.X, (int)position.Y - 36, 32, 72);
-                            attackAnimation = "";
-                            attacking = false;
-                        }
+                    _sprite.Play("attack-up");
+                    if (_sprite.CurrentFrameIndex == 41)
+                    {
+                        attackRect = new Rectangle((int)position.X, (int)position.Y - 36, 32, 72);
+                        attacking = false;
                     }
                 }
 
-                if (attackAnimation == "left" || attackAnimation == "")
+                if (direction == Dir.Left)
                 {
-                    Debug.WriteLine(_sprite.CurrentFrameIndex);
-                    if (direction == Dir.Left)
+                    _sprite.Play("attack-left");
+                    if (_sprite.CurrentFrameIndex == 36)
                     {
-                        _sprite.Play("attack-left");
-                        attackAnimation = "left";
-                        if (_sprite.CurrentFrameIndex == 36)
-                        {
-                            attackRect = new Rectangle((int)position.X - 32, (int)position.Y, 64, 36);
-                            attackAnimation = "";
-                            attacking = false;
-                        }
+                        attackRect = new Rectangle((int)position.X - 32, (int)position.Y, 64, 36);
+                        attacking = false;
                     }
                 }
 
-                if (attackAnimation == "right" || attackAnimation == "")
+                if (direction == Dir.Right)
                 {
-                    if (direction == Dir.Right)
+                    _sprite.Play("attack-right");
+                    if (_sprite.CurrentFrameIndex == 30)
                     {
-                        _sprite.Play("attack-right");
-                        attackAnimation = "right";
-                        if (_sprite.CurrentFrameIndex == 30)
-                        {
-                            attackRect = new Rectangle((int)position.X, (int)position.Y, 64, 36);
-                            attackAnimation = "";
-                            attacking = false;
-                        }
+                        attackRect = new Rectangle((int)position.X, (int)position.Y, 64, 36);
+                        attacking = false;
                     }
                 }
             }
@@ -309,7 +280,7 @@ namespace Adventure_Game_CSharp
 
             if (teleportRectName == "inside door")
             {
-                position = new Vector2(1665, 230); //tunnel
+                position = new Vector2(1427, 230); //tunnel
                 eventTrigger = "inside door";
                 
             }
