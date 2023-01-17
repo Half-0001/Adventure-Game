@@ -8,6 +8,7 @@ using System.Diagnostics;
 using Microsoft.Xna.Framework.Content;
 using MonoGame.Aseprite.Documents;
 using System.Linq.Expressions;
+using System.Diagnostics.Contracts;
 
 namespace Adventure_Game_CSharp
 {
@@ -96,7 +97,7 @@ namespace Adventure_Game_CSharp
             if (isMoving && !attacking) //move player and play animations
             {
 
-                if (kState.IsKeyDown(Keys.E)) // && fallenDown == true)
+                if (kState.IsKeyDown(Keys.E) && fallenDown)
                 {
                     attacking = true;
                 }
@@ -136,7 +137,7 @@ namespace Adventure_Game_CSharp
 
             if (!isMoving && !attacking)
             {
-                if (kState.IsKeyDown(Keys.E)) // && fallenDown == true)
+                if (kState.IsKeyDown(Keys.E) && fallenDown)
                 {
                     attacking = true;
                 }
