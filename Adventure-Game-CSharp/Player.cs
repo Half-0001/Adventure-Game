@@ -7,6 +7,7 @@ using System;
 using System.Diagnostics;
 using Microsoft.Xna.Framework.Content;
 using MonoGame.Aseprite.Documents;
+using System.Linq.Expressions;
 
 namespace Adventure_Game_CSharp
 {
@@ -30,7 +31,7 @@ namespace Adventure_Game_CSharp
         private int health = 100;
         private bool canBeAttacked = true;
         private bool attacking = false;
-        private string attackAnimation;
+        private string attackAnimation = "";
 
 
         public Vector2 Position
@@ -64,76 +65,68 @@ namespace Adventure_Game_CSharp
             coverScreen.X = (int)position.X - 250;
             coverScreen.Y = (int)position.Y - 250;
 
-
-            if (kState.IsKeyDown(Keys.D)) //set direction depending on what keys are pressed
+            if (!attacking)
             {
-                direction = Dir.Right;
-                isMoving = true;
+                if (kState.IsKeyDown(Keys.D)) //set direction depending on what keys are pressed
+                {
+                    direction = Dir.Right;
+                    isMoving = true;
+                }
+
+                if (kState.IsKeyDown(Keys.A))
+                {
+                    direction = Dir.Left;
+                    isMoving = true;
+                }
+
+                if (kState.IsKeyDown(Keys.W))
+                {
+                    direction = Dir.Up;
+                    isMoving = true;
+                }
+
+                if (kState.IsKeyDown(Keys.S))
+                {
+                    direction = Dir.Down;
+                    isMoving = true;
+                }
             }
 
-            if (kState.IsKeyDown(Keys.A))
-            {
-                direction = Dir.Left;
-                isMoving = true;
-            }
-
-            if (kState.IsKeyDown(Keys.W))
-            {
-                direction = Dir.Up;
-                isMoving = true;
-            }
-
-            if (kState.IsKeyDown(Keys.S))
-            {
-                direction = Dir.Down;
-                isMoving = true;
-            }
 
 
             if (isMoving && !attacking) //move player and play animations
             {
 
+                if (kState.IsKeyDown(Keys.E)) // && fallenDown == true)
+                {
+                    attacking = true;
+                }
+
                 switch (direction) 
                 {
                     case Dir.Left:
-                        if (mState.LeftButton == ButtonState.Pressed && fallenDown == true)
-                        {
-                            attacking = true;
-                        }
-                        else if (!collisionDir.Contains("left")) 
+                        if (!collisionDir.Contains("left")) 
                         {
                             position.X -= speed * dt;
                             _sprite.Play("walkLeft");
                         }
                         break;
                     case Dir.Up:
-                        if (mState.LeftButton == ButtonState.Pressed && fallenDown == true)
-                        {
-                            attacking = true;
-                        }
-                        else if (!collisionDir.Contains("up"))
+                        if (!collisionDir.Contains("up"))
                         {
                             position.Y -= speed * dt;
                             _sprite.Play("walkUp");
                         }
                         break;
                     case Dir.Right:
-                        if (mState.LeftButton == ButtonState.Pressed && fallenDown == true)
-                        {
-                            attacking = true;
-                        }
-                        else if (!collisionDir.Contains("right"))
+                        if (!collisionDir.Contains("right"))
                         {
                             position.X += speed * dt;
                             _sprite.Play("walkRight");
                         }
                         break;
                     case Dir.Down:
-                        if (mState.LeftButton == ButtonState.Pressed && fallenDown == true)
-                        {
-                            attacking = true;
-                        }
-                        else if (!collisionDir.Contains("down"))
+                        if (!collisionDir.Contains("down"))
                         {
                             position.Y += speed * dt;
                             _sprite.Play("walkDown");
@@ -144,44 +137,29 @@ namespace Adventure_Game_CSharp
 
             if (!isMoving && !attacking)
             {
+                if (kState.IsKeyDown(Keys.E)) // && fallenDown == true)
+                {
+                    attacking = true;
+                }
+
                 switch (direction)
                 {
                     case Dir.Left: //play idle animations depending on which direction the player was last moving
-                        if (mState.LeftButton == ButtonState.Pressed && fallenDown == true)
-                        {
-                            attacking = true;
-                        }
-                        else
                         {
                             _sprite.Play("idle-left");
                         }
                         break;
                     case Dir.Right:
-                        if (mState.LeftButton == ButtonState.Pressed && fallenDown == true)
-                        {
-                            attacking = true;
-                        }
-                        else
                         {
                             _sprite.Play("idle-right");
                         }
                         break;
                     case Dir.Up:
-                        if (mState.LeftButton == ButtonState.Pressed && fallenDown == true)
-                        {
-                            attacking = true;
-                        }
-                        else
                         {
                             _sprite.Play("idle-up");
                         }
                         break;
                     case Dir.Down:
-                        if (mState.LeftButton == ButtonState.Pressed && fallenDown == true)
-                        {
-                            attacking = true;
-                        }
-                        else
                         {
                             _sprite.Play("idle-down");
                         }
@@ -192,11 +170,9 @@ namespace Adventure_Game_CSharp
             if (attackRect != new Rectangle(0, 0, 0, 0)) //reset the attack rect
                 attackRect = new Rectangle(0, 0, 0, 0);
 
-            Debug.WriteLine(attackAnimation);
-
             if (attacking)
             {
-                if (attackAnimation != "up" && attackAnimation != "left" && attackAnimation != "right")
+                if (attackAnimation == "down" || attackAnimation == "")
                 {
                     if (direction == Dir.Down)
                     {
@@ -211,7 +187,7 @@ namespace Adventure_Game_CSharp
                     }
                 }
 
-                if (attackAnimation != "down" && attackAnimation != "left" && attackAnimation != "right")
+                if (attackAnimation == "up" || attackAnimation == "")
                 {
                     if (direction == Dir.Up)
                     {
@@ -227,8 +203,9 @@ namespace Adventure_Game_CSharp
                     }
                 }
 
-                if (attackAnimation != "up" && attackAnimation != "down" && attackAnimation != "right")
+                if (attackAnimation == "left" || attackAnimation == "")
                 {
+                    Debug.WriteLine(_sprite.CurrentFrameIndex);
                     if (direction == Dir.Left)
                     {
                         _sprite.Play("attack-left");
@@ -242,7 +219,7 @@ namespace Adventure_Game_CSharp
                     }
                 }
 
-                if (attackAnimation != "up" && attackAnimation != "left" && attackAnimation != "down")
+                if (attackAnimation == "right" || attackAnimation == "")
                 {
                     if (direction == Dir.Right)
                     {
