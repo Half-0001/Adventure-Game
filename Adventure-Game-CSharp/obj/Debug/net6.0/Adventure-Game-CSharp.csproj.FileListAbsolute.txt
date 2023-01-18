@@ -32,3 +32,4 @@ C:\Users\nyleh\Documents\GitHub\repos\Adventure-Game\Adventure-Game-CSharp\obj\D
 C:\Users\nyleh\Documents\GitHub\repos\Adventure-Game\Adventure-Game-CSharp\obj\Debug\net6.0\Adventure-Game-CSharp.pdb
 C:\Users\nyleh\Documents\GitHub\repos\Adventure-Game\Adventure-Game-CSharp\obj\Debug\net6.0\Adventure-Game-CSharp.genruntimeconfig.cache
 C:\Users\nyleh\Documents\GitHub\repos\Adventure-Game\Adventure-Game-CSharp\obj\Debug\net6.0\ref\Adventure-Game-CSharp.dll
+C:\Users\nyleh\Documents\GitHub\repos\Adventure-Game\Adventure-Game-CSharp\bin\Debug\net6.0\Content\Male 16-1.xnb

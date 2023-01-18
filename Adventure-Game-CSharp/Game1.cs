@@ -29,6 +29,7 @@ namespace Adventure_Game_CSharp
         CollisionManager collisionManager = new CollisionManager(0, 0, 0, 0);
         TeleportManager teleportManager = new TeleportManager(0, 0, 0, 0, "");
         Enemy enemy = new Enemy(0, 0, null, Point.Zero);
+        NPC npc = new NPC(0, 0, null, Point.Zero);
 
         //textures
         Texture2D background;
@@ -63,6 +64,8 @@ namespace Adventure_Game_CSharp
             this.camera = new Camera(_graphics.GraphicsDevice);
             camera.Zoom = 2f;
             base.Initialize();
+
+            collisionManager.colliders.Add(new CollisionManager(npc.npcs[0].hitbox.X, npc.npcs[0].hitbox.Y, npc.npcs[0].hitbox.Size.X, npc.npcs[0].hitbox.Size.Y));
         }
 
         protected override void LoadContent()
@@ -74,7 +77,7 @@ namespace Adventure_Game_CSharp
 
             player.LoadContent(Content, _resolution);
             enemy.LoadContent(Content, _resolution, GraphicsDevice);
-
+            npc.LoadContent(Content, _resolution, GraphicsDevice);
 
 
         }
@@ -83,28 +86,32 @@ namespace Adventure_Game_CSharp
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
-
-            //manage collisions TODO: Move to player class
-            for (int i = 0; i < collisionManager.colliders.Count; i++)
+            if (!player.accessingInventory)
             {
-                if (!collidingWith.Contains(i))
-                if (player.playerRect.Intersects(collisionManager.colliders[i].rect)) //if player is colliding with a rect
+                //manage collisions TODO: Move to player class
+                for (int i = 0; i < collisionManager.colliders.Count; i++)
                 {
-                    collidingWith.Add(i); //stores all the objects that the player is colliding with in a list
-                }
-                if (player.playerRect.Intersects(collisionManager.colliders[i].rect) == false)
-                {
-                    if (collidingWith.Contains(i))
-                        player.collisionDir.RemoveAt(collidingWith.IndexOf(i));
+                    if (!collidingWith.Contains(i))
+                        if (player.playerRect.Intersects(collisionManager.colliders[i].rect)) //if player is colliding with a rect
+                        {
+                            collidingWith.Add(i); //stores all the objects that the player is colliding with in a list
+                        }
+                    if (player.playerRect.Intersects(collisionManager.colliders[i].rect) == false)
+                    {
+                        if (collidingWith.Contains(i))
+                            player.collisionDir.RemoveAt(collidingWith.IndexOf(i));
                         collidingWith.Remove(i);
+                    }
                 }
+
+                //manage teleports TODO: Move to player class
+                for (int i = 0; i < teleportManager.teleportColliders.Count; i++)
+                    if (player.playerRect.Intersects(teleportManager.teleportColliders[i].teleportRect))
+                        teleportRectName = teleportManager.teleportColliders[i].rectName;
+
+                enemy.Update(gameTime, player.Position);
+                npc.Update(gameTime);
             }
-
-            //manage teleports TODO: Move to player class
-            for (int i = 0; i < teleportManager.teleportColliders.Count; i++)
-                if (player.playerRect.Intersects(teleportManager.teleportColliders[i].teleportRect))
-                    teleportRectName = teleportManager.teleportColliders[i].rectName;
-
 
             //debug mode (press G to activate) - shows collision boxes
             kState = Keyboard.GetState();
@@ -117,7 +124,7 @@ namespace Adventure_Game_CSharp
             player.PlayerUpdate(gameTime, GraphicsDevice, collidingWith, teleportRectName, enemy.enemies);
             teleportRectName = "";
 
-            enemy.Update(gameTime, player.Position);
+
 
             this.camera.Position = player.Position;
             this.camera.Update(gameTime);
@@ -133,6 +140,7 @@ namespace Adventure_Game_CSharp
             collisionManager.DrawCollisionBoxes(_spriteBatch, debugMode);
             teleportManager.DrawTeleportManager(_spriteBatch, debugMode);
 
+            npc.Draw(_spriteBatch, debugMode);
             enemy.Draw(_spriteBatch, debugMode);
             player.PlayerDraw(_spriteBatch, debugMode, spriteFont);
 

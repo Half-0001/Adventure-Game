@@ -67,7 +67,7 @@ namespace Adventure_Game_CSharp
             for (int i = 0; i < enemies.Count; i++)
             {
                 enemies[i].hitbox = new Rectangle((int)enemies[i].position.X + 11, (int)enemies[i].position.Y + 11, 10, 10);
-                enemies[i].attackHitbox = new Rectangle((int)enemies[i].position.X + 21, (int)enemies[i].position.Y + 11, 10, 10);
+                
 
                 enemies[i].enemySprite.Update(dt);
                 enemies[i].enemySprite.Position = new Vector2(enemies[i].position.X, enemies[i].position.Y);
@@ -78,6 +78,7 @@ namespace Adventure_Game_CSharp
                     {
                         Vector2 dir = enemies[i].position - playerPosition;
                         dir.Normalize();
+                        enemies[i].attackHitbox = new Rectangle(enemies[i].hitbox.X + (int)(dir * 12).X, (int)enemies[i].hitbox.Y + (int)(dir * 12).Y, 10, 10);
                         enemies[i].position -= dir * speed * dt;
                         if (dir.X > 0)
                             enemies[i].enemySprite.Play("walk-left");
