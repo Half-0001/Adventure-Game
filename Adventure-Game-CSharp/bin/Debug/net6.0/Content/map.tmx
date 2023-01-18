@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.9" tiledversion="1.9.2" orientation="orthogonal" renderorder="right-down" width="90" height="100" tilewidth="32" tileheight="32" infinite="0" nextlayerid="9" nextobjectid="118">
+<map version="1.9" tiledversion="1.9.2" orientation="orthogonal" renderorder="right-down" width="90" height="100" tilewidth="32" tileheight="32" infinite="0" nextlayerid="9" nextobjectid="120">
  <editorsettings>
   <export format="json"/>
  </editorsettings>
@@ -552,7 +552,7 @@
   <object id="54" x="1949" y="888.167" width="69" height="40"/>
   <object id="55" x="1894.75" y="639.667" width="141.25" height="250.5"/>
   <object id="70" x="1328.67" y="138" width="599.333" height="74"/>
-  <object id="71" x="1330" y="285.334" width="617.334" height="34"/>
+  <object id="71" x="1330" y="280.667" width="617.334" height="38.6667"/>
   <object id="72" x="1308" y="193.334" width="41.3333" height="106"/>
   <object id="76" x="221.5" y="1440.67" width="1384.67" height="62"/>
   <object id="79" x="238" y="2356.67" width="1100" height="88"/>
@@ -582,10 +582,11 @@
   <object id="115" x="278" y="3043" width="323" height="157"/>
   <object id="116" x="222" y="2444" width="196" height="604"/>
  </objectgroup>
- <objectgroup id="6" name="Teleport" visible="0">
+ <objectgroup id="6" name="Teleport">
   <object id="56" name="House inside" x="1720" y="1049.92" width="45.5" height="44"/>
   <object id="57" name="House outside" x="499.5" y="497.667" width="53" height="22.8333"/>
   <object id="66" name="inside door" x="1842" y="739" width="50.6667" height="25.5"/>
   <object id="67" name="Hole" x="1891" y="211.667" width="29.6667" height="75.3334"/>
+  <object id="119" name="NPC1" x="1408.67" y="2692" width="57.3333" height="47.3333"/>
  </objectgroup>
 </map>

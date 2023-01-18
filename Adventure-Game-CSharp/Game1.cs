@@ -2,8 +2,6 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Comora;
-using MonoGame.Aseprite.Documents;
-using MonoGame.Aseprite.Graphics;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System;
@@ -38,6 +36,8 @@ namespace Adventure_Game_CSharp
         //variables
         private List<int> collidingWith = new List<int>();
         private string teleportRectName;
+        private int counter = 0;
+
         //private bool insideHouse = false;
         private bool debugMode = false;
         static KeyboardState kState;
@@ -109,8 +109,21 @@ namespace Adventure_Game_CSharp
                     if (player.playerRect.Intersects(teleportManager.teleportColliders[i].teleportRect))
                         teleportRectName = teleportManager.teleportColliders[i].rectName;
 
+
                 enemy.Update(gameTime, player.Position);
-                npc.Update(gameTime);
+                npc.Update(gameTime, counter, enemy.enemies.Count);
+
+                //add more enemies when player talks to npc
+                if (teleportRectName == "NPC1" && counter == 0)
+                {
+                    enemy.AddEnemies(1, 284, 1139, 1554, 2324);
+                    counter++;
+                }
+                if (counter == 1 && enemy.enemies.Count == 0)
+                {
+                    collisionManager.colliders.RemoveAt(collisionManager.colliders.Count - 1);
+                    collisionManager.colliders.Add(new CollisionManager(npc.npcs[0].hitbox.X, npc.npcs[0].hitbox.Y, npc.npcs[0].hitbox.Size.X, npc.npcs[0].hitbox.Size.Y));
+                }
             }
 
             //debug mode (press G to activate) - shows collision boxes

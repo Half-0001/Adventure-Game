@@ -7,8 +7,6 @@ using System;
 using System.Diagnostics;
 using Microsoft.Xna.Framework.Content;
 using MonoGame.Aseprite.Documents;
-using System.Linq.Expressions;
-using System.Diagnostics.Contracts;
 
 namespace Adventure_Game_CSharp
 {
@@ -36,6 +34,9 @@ namespace Adventure_Game_CSharp
         private List<string> inventory = new List<string> { "Ham", "Bones" };
         public bool accessingInventory = false;
 
+        private string npcText = "In order for me to allow you passage you must first \nslay all the ghosts in this area";
+        private int textDraw;
+        private float textDrawTimer;
 
         public Vector2 Position
         {
@@ -50,13 +51,13 @@ namespace Adventure_Game_CSharp
             //  Create a new aniamted sprite instance using the aseprite doucment loaded.
             _sprite = new AnimatedSprite(aseprite);
             _sprite.Scale = new Vector2(1.0f, 1.0f);
-            _sprite.Y = _resolution.Y - (_sprite.Height * _sprite.Scale.Y) - 16;
+            _sprite.Y = _resolution.Y - (_sprite.Height * _sprite.Scale.Y) - 16;    
         }
         public void PlayerUpdate(GameTime gameTime, GraphicsDevice _graphics, List<int> collidingWith, string teleportRectName, List<Enemy> enemies)
         {
             amountOfCollisions = collidingWith.Count;
             _texture = new Texture2D(_graphics, 1, 1);
-            _texture.SetData(new Color[] { Color.DarkSlateGray });
+            _texture.SetData(new Color[] { Color.White });
 
             KeyboardState kState = Keyboard.GetState();
             float dt = (float)gameTime.ElapsedGameTime.TotalSeconds;
@@ -301,6 +302,11 @@ namespace Adventure_Game_CSharp
                     fallenDown = true;
                 }
 
+                if (teleportRectName == "NPC1")
+                { 
+                    eventTrigger = "display text 1";
+                }
+
                 if (eventTrigger == "inside door")
                 {
                     if (timer <= 5)
@@ -317,14 +323,27 @@ namespace Adventure_Game_CSharp
                 }
             }
 
-
+            //text drawing logic
+            if (eventTrigger == "display text 1")
+            {
+                if (textDraw < npcText.Length)
+                {
+                    textDrawTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
+                    if (textDrawTimer > 0.05)
+                    {
+                        textDraw++;
+                        textDrawTimer = 0;
+                    }
+                }
+                if (textDraw == npcText.Length && textDrawTimer < 4)
+                {
+                    textDrawTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
+                }
+            }
             _sprite.Update(dt);
             kStateOld = kState;
 
         }
-        
-            
-        
 
         public void PlayerDraw(SpriteBatch _spriteBatch, bool debugMode, SpriteFont spriteFont)
         {
@@ -339,6 +358,14 @@ namespace Adventure_Game_CSharp
                 //draw health
                 _spriteBatch.DrawString(spriteFont, "Health: " + health.ToString(), new Vector2(position.X - (spriteFont.MeasureString("Health: " + health.ToString()).Length() * 0.5f) / 2, position.Y + 200), Color.Red, 0f, new Vector2(0, 0), 0.5f, SpriteEffects.None, 0f);
 
+
+                //draw text box
+                if (eventTrigger == "display text 1" && textDrawTimer < 4)
+                {
+                    _spriteBatch.Draw(_texture, new Rectangle((int)position.X - 120, (int)position.Y + 140, 280, 80), Color.White);
+                    _spriteBatch.Draw(_texture, new Rectangle((int)position.X - 115, (int)position.Y + 145, 270, 70), Color.Black);
+                    _spriteBatch.DrawString(spriteFont, npcText.Remove(textDraw, npcText.Length - textDraw), new Vector2(position.X - 110, position.Y + 145), Color.White, 0f, new Vector2(0, 0), 0.35f, SpriteEffects.None, 0f);
+                }
             }
 
             if (accessingInventory)

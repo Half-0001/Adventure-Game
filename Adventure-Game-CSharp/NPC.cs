@@ -7,8 +7,6 @@ using System.Collections.Generic;
 using MonoGame.Aseprite.Documents;
 using System;
 using System.Diagnostics;
-using System.Runtime.Serialization;
-using System.Runtime.CompilerServices;
 
 namespace Adventure_Game_CSharp
 {
@@ -44,8 +42,8 @@ namespace Adventure_Game_CSharp
             //  Load the aseprite file from the content pipeline.
             AsepriteDocument asepritefile = Content.Load<AsepriteDocument>("Male 16-1");
 
-            //add enemies to list
-            for (int i = 0; i < 10; i++)
+            //add npc
+            for (int i = 0; i < 1; i++)
                 npcs.Add(new NPC(1424, 2742, asepritefile, _resolution));
 
             //blank texture 
@@ -53,14 +51,24 @@ namespace Adventure_Game_CSharp
             _texture.SetData(new Color[] { Color.DarkSlateGray });
         }
 
-        public void Update(GameTime gameTime)
+        public void Update(GameTime gameTime, int counter, int enemyCount)
         {
             float dt = (float)gameTime.ElapsedGameTime.TotalSeconds;
-            for (int i = 0; i < npcs.Count; i++)
+            if (counter != 1 && enemyCount != 0)
             {
-                npcs[i].npcSprite.Position = new Vector2(npcs[i].position.X, npcs[i].position.Y);
-                npcs[i].npcSprite.Play("idle");
-                npcs[i].npcSprite.Update(dt);
+                for (int i = 0; i < npcs.Count; i++)
+                {
+                    npcs[i].npcSprite.Position = new Vector2(npcs[i].position.X, npcs[i].position.Y);
+                    npcs[i].npcSprite.Play("idle");
+                    npcs[i].npcSprite.Update(dt);
+                }
+            }
+            if (counter == 1 && enemyCount == 0)
+            {
+                npcs[0].position = new Vector2(1470, 2660);
+                npcs[0].hitbox = new Rectangle((int)npcs[0].position.X, (int)npcs[0].position.Y - 5, 30, 30);
+                npcs[0].npcSprite.Position = new Vector2(1470, 2660);
+                npcs[0].npcSprite.Play("idle-left");
             }
         }
 

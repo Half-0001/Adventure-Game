@@ -7,8 +7,6 @@ using System.Collections.Generic;
 using MonoGame.Aseprite.Documents;
 using System;
 using System.Diagnostics;
-using System.Runtime.Serialization;
-using System.Runtime.CompilerServices;
 
 namespace Adventure_Game_CSharp
 {
@@ -26,7 +24,9 @@ namespace Adventure_Game_CSharp
         public Rectangle attackHitbox = new Rectangle();
         private float timer = 0;
 
+        AsepriteDocument asepritefile;
         Texture2D _texture;
+        Point resolution;
 
         public Enemy(int positionX, int positionY, AsepriteDocument asepritefile, Point _resolution)
         {
@@ -50,11 +50,11 @@ namespace Adventure_Game_CSharp
         public void LoadContent(ContentManager Content, Point _resolution, GraphicsDevice _graphics)
         {
             //  Load the aseprite file from the content pipeline.
-            AsepriteDocument asepritefile = Content.Load<AsepriteDocument>("Enemy 15-1");
-
+            asepritefile = Content.Load<AsepriteDocument>("Enemy 15-1");
+            resolution = _resolution;
             //add enemies to list
-            for (int i = 0; i < 10; i++)
-                enemies.Add(new Enemy(random.Next(545, 2271), random.Next(1596, 2331), asepritefile, _resolution));
+            for (int i = 0; i < 1; i++)
+                enemies.Add(new Enemy(random.Next(800, 1305), random.Next(1566, 2340), asepritefile, _resolution));
 
             //blank texture 
             _texture = new Texture2D(_graphics, 1, 1);
@@ -111,6 +111,12 @@ namespace Adventure_Game_CSharp
                     _spriteBatch.Draw(_texture, enemies[i].hitbox, Color.White); //draw hitbox
                     _spriteBatch.Draw(_texture, enemies[i].attackHitbox, Color.Green); //draw hitbox
                 }
+        }
+
+        public void AddEnemies(int amount, int xmin, int xmax, int ymin, int ymax)
+        {
+            for (int i = 0; i < amount; i++)
+                enemies.Add(new Enemy(random.Next(xmin, xmax), random.Next(ymin, ymax), asepritefile, resolution));
         }
     }
 }
