@@ -56,7 +56,6 @@ namespace Adventure_Game_CSharp
             _texture.SetData(new Color[] { Color.DarkSlateGray });
 
             KeyboardState kState = Keyboard.GetState();
-            MouseState mState = Mouse.GetState();
             float dt = (float)gameTime.ElapsedGameTime.TotalSeconds;
             _sprite.Position = new Vector2(position.X - 20, position.Y - 20);
             isMoving = false;
@@ -97,11 +96,6 @@ namespace Adventure_Game_CSharp
             if (isMoving && !attacking) //move player and play animations
             {
 
-                if (kState.IsKeyDown(Keys.E) && fallenDown)
-                {
-                    attacking = true;
-                }
-
                 switch (direction) 
                 {
                     case Dir.Left:
@@ -135,12 +129,14 @@ namespace Adventure_Game_CSharp
                 }
             }
 
+            if (kState.IsKeyDown(Keys.E) && fallenDown) //player attacking
+            {
+                attacking = true;
+            } 
+
             if (!isMoving && !attacking)
             {
-                if (kState.IsKeyDown(Keys.E) && fallenDown)
-                {
-                    attacking = true;
-                }
+
 
                 switch (direction)
                 {
@@ -162,7 +158,7 @@ namespace Adventure_Game_CSharp
             if (attackRect != new Rectangle(0, 0, 0, 0)) //reset the attack rect
                 attackRect = new Rectangle(0, 0, 0, 0);
 
-            if (attacking)
+            if (attacking) 
             {
                 
                 if (direction == Dir.Down)
@@ -217,7 +213,7 @@ namespace Adventure_Game_CSharp
                 {
                     if (canBeAttacked)
                     {
-                        health -= 25;
+                        health -= 15;
                         timer = 0;
                         canBeAttacked = false;
                         break;
@@ -302,11 +298,9 @@ namespace Adventure_Game_CSharp
 
             if (eventTrigger == "through hole")
             {
-                if (timer <= 10)
-                {
-                    timer += (float)gameTime.ElapsedGameTime.TotalSeconds;
 
-                }
+                timer += (float)gameTime.ElapsedGameTime.TotalSeconds;
+
                 if (timer >= 10)
                     eventTrigger = "";
             }
@@ -314,7 +308,7 @@ namespace Adventure_Game_CSharp
             _sprite.Update(dt);
 
         }
-
+        
             
         
 
@@ -325,22 +319,23 @@ namespace Adventure_Game_CSharp
             if (eventTrigger == "inside door")
                 if (timer <= 5)
                     _spriteBatch.DrawString(spriteFont, "The door locks behind you, the only way through is down the hole", new Vector2(position.X - 200, position.Y - 200), Color.White, 0f, new Vector2(0, 0), 0.35f, SpriteEffects.None, 0f);
+            
             //draw health
             _spriteBatch.DrawString(spriteFont, "Health: "+health.ToString(), new Vector2(position.X - (spriteFont.MeasureString("Health: "+health.ToString()).Length() * 0.5f) / 2, position.Y + 200), Color.Red, 0f, new Vector2(0, 0), 0.5f, SpriteEffects.None, 0f);
 
-            //if (eventTrigger == "through hole")
-            //{
-            //    if (timer < 10)
-            //    {
-            //        _spriteBatch.Draw(_texture, coverScreen, Color.Black);
-            //    }
-            //    if (timer > 2 && timer < 4.6)
-            //        _spriteBatch.DrawString(spriteFont, "After what feels like forver, you finally reach the bottom", new Vector2(position.X - (spriteFont.MeasureString("After what feels like forver, you finally reach the bottom").Length() * 0.35f) / 2, position.Y - 50), Color.White, 0f, new Vector2(0, 0), 0.35f, SpriteEffects.None, 0f);
-            //    if (timer > 4.6 && timer < 7.2)
-            //        _spriteBatch.DrawString(spriteFont, "A sword lies on the ground beside you. You pick it up", new Vector2(position.X - (spriteFont.MeasureString("A sword lies on the ground beside you. You pick it up").Length() * 0.35f) / 2, position.Y), Color.White, 0f, new Vector2(0, 0), 0.35f, SpriteEffects.None, 0f);
-            //    if (timer > 7.2 && timer < 10)
-            //        _spriteBatch.DrawString(spriteFont, "(Press left click to swing the sword)", new Vector2(position.X - (spriteFont.MeasureString("(Press left click to swing the sword)").Length() * 0.35f) / 2, position.Y + 50), Color.White, 0f, new Vector2(0, 0), 0.35f, SpriteEffects.None, 0f);
-            //}
+            if (eventTrigger == "through hole")
+            {
+                if (timer < 10)
+                {
+                    _spriteBatch.Draw(_texture, coverScreen, Color.Black);
+                }
+                if (timer > 2 && timer < 4.6)
+                    _spriteBatch.DrawString(spriteFont, "After what feels like forver, you finally reach the bottom", new Vector2(position.X - (spriteFont.MeasureString("After what feels like forver, you finally reach the bottom").Length() * 0.35f) / 2, position.Y - 50), Color.White, 0f, new Vector2(0, 0), 0.35f, SpriteEffects.None, 0f);
+                if (timer > 4.6 && timer < 7.2)
+                    _spriteBatch.DrawString(spriteFont, "A sword lies on the ground beside you. You pick it up", new Vector2(position.X - (spriteFont.MeasureString("A sword lies on the ground beside you. You pick it up").Length() * 0.35f) / 2, position.Y), Color.White, 0f, new Vector2(0, 0), 0.35f, SpriteEffects.None, 0f);
+                if (timer > 7.2 && timer < 10)
+                    _spriteBatch.DrawString(spriteFont, "(Press E to swing the sword)", new Vector2(position.X - (spriteFont.MeasureString("(Press E to swing the sword)").Length() * 0.35f) / 2, position.Y + 50), Color.White, 0f, new Vector2(0, 0), 0.35f, SpriteEffects.None, 0f);
+            }
 
             if (debugMode)
             {
