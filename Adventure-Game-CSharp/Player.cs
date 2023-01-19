@@ -307,6 +307,16 @@ namespace Adventure_Game_CSharp
                     eventTrigger = "display text 1";
                 }
 
+                if (teleportRectName == "Dungeon house 1")
+                {
+                    position = new Vector2(2488, 310);
+                }
+
+                if (teleportRectName == "Dungeon house 1 inside")
+                {
+                    position = new Vector2(624, 2727); //add condition if (dungeon house != "") for optimisation
+                }
+
                 if (eventTrigger == "inside door")
                 {
                     if (timer <= 5)
