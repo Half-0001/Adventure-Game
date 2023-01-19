@@ -65,7 +65,7 @@ namespace Adventure_Game_CSharp
             }
             if (counter == 1 && enemyCount == 0)
             {
-                npcs[0].position = new Vector2(1470, 2660);
+                npcs[0].position = new Vector2(1470, 2650);
                 npcs[0].hitbox = new Rectangle((int)npcs[0].position.X, (int)npcs[0].position.Y - 5, 30, 30);
                 npcs[0].npcSprite.Position = new Vector2(1470, 2660);
                 npcs[0].npcSprite.Play("idle-left");

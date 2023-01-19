@@ -13,7 +13,7 @@ namespace Adventure_Game_CSharp
     internal class Player
     {
         private KeyboardState kStateOld;
-        private Vector2 position = new Vector2(1427, 230); //new Vector2(500, 600);
+        private Vector2 position = new Vector2(500, 600); //new Vector2(1792, 2042);
         private int speed = 100;
         private Dir direction = Dir.Down;
         private bool isMoving = false;
@@ -53,9 +53,9 @@ namespace Adventure_Game_CSharp
             _sprite.Scale = new Vector2(1.0f, 1.0f);
             _sprite.Y = _resolution.Y - (_sprite.Height * _sprite.Scale.Y) - 16;    
         }
-        public void PlayerUpdate(GameTime gameTime, GraphicsDevice _graphics, List<int> collidingWith, string teleportRectName, List<Enemy> enemies)
+        public void PlayerUpdate(GameTime gameTime, GraphicsDevice _graphics, int collisionAmount, string teleportRectName, List<Enemy> enemies)
         {
-            amountOfCollisions = collidingWith.Count;
+            amountOfCollisions = collisionAmount;
             _texture = new Texture2D(_graphics, 1, 1);
             _texture.SetData(new Color[] { Color.White });
 
@@ -276,45 +276,79 @@ namespace Adventure_Game_CSharp
                 amountOfCollisionsOld = amountOfCollisions;
 
                 //section to manage teleporting around the map
-                if (teleportRectName == "House outside")
+
+                if (teleportRectName != "")
                 {
-                    position = new Vector2(1730, 1006); //inside of house co-ords
-                }
+                    if (teleportRectName == "House outside")
+                    {
+                        position = new Vector2(1730, 1006); //inside of house co-ords
+                    }
 
 
-                if (teleportRectName == "House inside")
-                {
-                    position = new Vector2(520, 550); //outside of coords
-                }
+                    if (teleportRectName == "House inside")
+                    {
+                        position = new Vector2(520, 550); //outside of coords
+                    }
 
-                if (teleportRectName == "inside door")
-                {
-                    position = new Vector2(1427, 230); //tunnel
-                    eventTrigger = "inside door";
+                    if (teleportRectName == "inside door")
+                    {
+                        position = new Vector2(1427, 230); //tunnel
+                        eventTrigger = "inside door";
 
-                }
+                    }
 
-                if (teleportRectName == "Hole")
-                {
-                    position = new Vector2(403, 1650); //through hole
-                    eventTrigger = "through hole";
-                    timer = 0;
-                    fallenDown = true;
-                }
+                    if (teleportRectName == "Hole")
+                    {
+                        position = new Vector2(403, 1650); //through hole
+                        eventTrigger = "through hole";
+                        timer = 0;
+                        fallenDown = true;
+                    }
 
-                if (teleportRectName == "NPC1")
-                { 
-                    eventTrigger = "display text 1";
-                }
+                    if (teleportRectName == "NPC1")
+                    {
+                        eventTrigger = "display text 1";
+                    }
 
-                if (teleportRectName == "Dungeon house 1")
-                {
-                    position = new Vector2(2488, 310);
-                }
+                    if (teleportRectName == "Dungeon house 1")
+                    {
+                        position = new Vector2(2488, 310);
+                    }
 
-                if (teleportRectName == "Dungeon house 1 inside")
-                {
-                    position = new Vector2(624, 2727); //add condition if (dungeon house != "") for optimisation
+                    if (teleportRectName == "Dungeon house 1 inside")
+                    {
+                        position = new Vector2(624, 2705);
+                    }
+
+                    if (teleportRectName == "Dungeon house 2")
+                    {
+                        position = new Vector2(3129, 310);
+                    }
+
+                    if (teleportRectName == "Dungeon house 2 inside")
+                    {
+                        position = new Vector2(2029, 2190);
+                    }
+
+                    if (teleportRectName == "Dungeon house 3")
+                    {
+                        position = new Vector2(3129, 994);
+                    }
+
+                    if (teleportRectName == "Dungeon house 3 inside")
+                    {
+                        position = new Vector2(2091, 1820);
+                    }
+
+                    if (teleportRectName == "Dungeon house 4")
+                    {
+                        position = new Vector2(2488, 994);
+                    }
+
+                    if (teleportRectName == "Dungeon house 4 inside")
+                    {
+                        position = new Vector2(1648, 1935);
+                    }
                 }
 
                 if (eventTrigger == "inside door")

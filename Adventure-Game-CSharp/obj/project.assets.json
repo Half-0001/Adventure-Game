@@ -225,11 +225,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\nyleh\\Documents\\GitHub\\repos\\Adventure-Game\\Adventure-Game-CSharp\\Adventure-Game-CSharp.csproj",
+      "projectUniqueName": "C:\\Users\\nyleh\\OneDrive\\Documents\\GitHub\\Adventure-Game\\Adventure-Game-CSharp\\Adventure-Game-CSharp.csproj",
       "projectName": "Adventure-Game-CSharp",
-      "projectPath": "C:\\Users\\nyleh\\Documents\\GitHub\\repos\\Adventure-Game\\Adventure-Game-CSharp\\Adventure-Game-CSharp.csproj",
+      "projectPath": "C:\\Users\\nyleh\\OneDrive\\Documents\\GitHub\\Adventure-Game\\Adventure-Game-CSharp\\Adventure-Game-CSharp.csproj",
       "packagesPath": "C:\\Users\\nyleh\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\nyleh\\Documents\\GitHub\\repos\\Adventure-Game\\Adventure-Game-CSharp\\obj\\",
+      "outputPath": "C:\\Users\\nyleh\\OneDrive\\Documents\\GitHub\\Adventure-Game\\Adventure-Game-CSharp\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\nyleh\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -299,7 +299,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.401\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.402\\RuntimeIdentifierGraph.json"
       }
     }
   }

@@ -24,7 +24,7 @@ namespace Adventure_Game_CSharp
         //classes
         private Camera camera;
         Player player = new Player();
-        CollisionManager collisionManager = new CollisionManager(0, 0, 0, 0);
+        CollisionManager collisionManager = new CollisionManager(0, 0, 0, 0, "");
         TeleportManager teleportManager = new TeleportManager(0, 0, 0, 0, "");
         Enemy enemy = new Enemy(0, 0, null, Point.Zero);
         NPC npc = new NPC(0, 0, null, Point.Zero);
@@ -65,7 +65,7 @@ namespace Adventure_Game_CSharp
             camera.Zoom = 2f;
             base.Initialize();
 
-            collisionManager.colliders.Add(new CollisionManager(npc.npcs[0].hitbox.X, npc.npcs[0].hitbox.Y, npc.npcs[0].hitbox.Size.X, npc.npcs[0].hitbox.Size.Y));
+            collisionManager.colliders.Add(new CollisionManager(npc.npcs[0].hitbox.X, npc.npcs[0].hitbox.Y, npc.npcs[0].hitbox.Size.X, npc.npcs[0].hitbox.Size.Y, "Level3"));
         }
 
         protected override void LoadContent()
@@ -122,7 +122,7 @@ namespace Adventure_Game_CSharp
                 if (counter == 1 && enemy.enemies.Count == 0)
                 {
                     collisionManager.colliders.RemoveAt(collisionManager.colliders.Count - 1);
-                    collisionManager.colliders.Add(new CollisionManager(npc.npcs[0].hitbox.X, npc.npcs[0].hitbox.Y, npc.npcs[0].hitbox.Size.X, npc.npcs[0].hitbox.Size.Y));
+                    collisionManager.colliders.Add(new CollisionManager(npc.npcs[0].hitbox.X, npc.npcs[0].hitbox.Y, npc.npcs[0].hitbox.Size.X, npc.npcs[0].hitbox.Size.Y, "Level3"));
                 }
             }
 
@@ -134,10 +134,11 @@ namespace Adventure_Game_CSharp
             }
             kStateOld = kState;
 
-            player.PlayerUpdate(gameTime, GraphicsDevice, collidingWith, teleportRectName, enemy.enemies);
+            player.PlayerUpdate(gameTime, GraphicsDevice, collidingWith.Count, teleportRectName, enemy.enemies);
+            collisionManager.OptimiseCollisions(teleportRectName);
             teleportRectName = "";
 
-
+            Debug.WriteLine(collisionManager.colliders.Count);
 
             this.camera.Position = player.Position;
             this.camera.Update(gameTime);
