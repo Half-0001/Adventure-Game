@@ -38,10 +38,11 @@ namespace Adventure_Game_CSharp
         private string teleportRectName;
         private int counter = 0;
 
-        //private bool insideHouse = false;
         private bool debugMode = false;
         static KeyboardState kState;
         static KeyboardState kStateOld;
+
+        private bool modifiedCollisionBoxes = false;
 
 
         public Game1()
@@ -75,7 +76,7 @@ namespace Adventure_Game_CSharp
             background = Content.Load<Texture2D>("map");
             spriteFont = Content.Load<SpriteFont>("font");
 
-            player.LoadContent(Content, _resolution);
+            player.LoadContent(Content, _resolution, GraphicsDevice);
             enemy.LoadContent(Content, _resolution, GraphicsDevice);
             npc.LoadContent(Content, _resolution, GraphicsDevice);
 
@@ -85,7 +86,7 @@ namespace Adventure_Game_CSharp
         protected override void Update(GameTime gameTime)
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-                Exit();
+                Exit(); 
             if (!player.accessingInventory)
             {
                 //manage collisions TODO: Move to player class
@@ -134,11 +135,15 @@ namespace Adventure_Game_CSharp
             }
             kStateOld = kState;
 
-            player.PlayerUpdate(gameTime, GraphicsDevice, collidingWith.Count, teleportRectName, enemy.enemies);
-            collisionManager.OptimiseCollisions(teleportRectName);
+            player.PlayerUpdate(gameTime, collidingWith.Count, teleportRectName, enemy.enemies);
+            modifiedCollisionBoxes = collisionManager.OptimiseCollisions(teleportRectName);
+            if (modifiedCollisionBoxes)
+            {
+                collidingWith.Clear();
+                modifiedCollisionBoxes = false;
+            }
+                
             teleportRectName = "";
-
-            Debug.WriteLine(collisionManager.colliders.Count);
 
             this.camera.Position = player.Position;
             this.camera.Update(gameTime);

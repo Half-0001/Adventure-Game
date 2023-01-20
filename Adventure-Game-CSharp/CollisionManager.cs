@@ -11,16 +11,14 @@ namespace Adventure_Game_CSharp
     internal class CollisionManager
     {
         public Rectangle rect = new Rectangle();
-        private string className;
         
 
         private Texture2D _texture;
 
         public List<CollisionManager> colliders = new List<CollisionManager>(); //list where colliders are stored
-        public CollisionManager(int a, int b, int c, int d, string _className)  //collider creator 
+        public CollisionManager(int a, int b, int c, int d, string className)  //collider creator 
         {
             rect = new Rectangle(a, b, c, d);
-            className = _className;
         }
 
         TiledLayer objectLayer;
@@ -42,38 +40,43 @@ namespace Adventure_Game_CSharp
             
             for (int i = 0; i < objectLayer.objects.Length; i++)
             {
-                colliders.Add(new CollisionManager((int)objectLayer.objects[i].x, (int)objectLayer.objects[i].y, (int)objectLayer.objects[i].width, (int)objectLayer.objects[i].height, objectLayer.objects[i].@class));
+                if (objectLayer.objects[i].@class == "Level1")
+                    colliders.Add(new CollisionManager((int)objectLayer.objects[i].x, (int)objectLayer.objects[i].y, (int)objectLayer.objects[i].width, (int)objectLayer.objects[i].height, objectLayer.objects[i].@class));
             }
 
         }
 
-        public void OptimiseCollisions(string teleportRectName)
+        public bool OptimiseCollisions(string teleportRectName) //loads and unloads collision boxes depending on where the player is on the map
         {
             
-            if (teleportRectName != "") //function for unloading collision boxes that are unaccessable
+            if (teleportRectName != "") 
             {
                 if (teleportRectName == "inside door")
                 {
-                    for (int i = 0; i < colliders.Count; i++)
+                    colliders.Clear();
+                    for (int i = 0; i < objectLayer.objects.Length; i++)
                     {
-                        if (colliders[i].className == "Level1")
-                        {
-                            colliders.RemoveAt(i);
-                        }
+                        if (objectLayer.objects[i].@class == "Level2")
+                            colliders.Add(new CollisionManager((int)objectLayer.objects[i].x, (int)objectLayer.objects[i].y, (int)objectLayer.objects[i].width, (int)objectLayer.objects[i].height, objectLayer.objects[i].@class));
                     }
+                    return true;
                 }
 
-                if (teleportRectName == "Hole")
+                else if (teleportRectName == "Hole")
                 {
-                    for (int i = 0; i < colliders.Count; i++)
+                    colliders.Clear();
+                    for (int i = 0; i < objectLayer.objects.Length; i++)
                     {
-                        if (colliders[i].className == "Level2")
-                        {
-                            colliders.RemoveAt(i);
-                        }
+                        if (objectLayer.objects[i].@class == "Level3")
+                            colliders.Add(new CollisionManager((int)objectLayer.objects[i].x, (int)objectLayer.objects[i].y, (int)objectLayer.objects[i].width, (int)objectLayer.objects[i].height, objectLayer.objects[i].@class));
                     }
+                    return true;
                 }
+                else
+                    return false;
             }
+            else
+                return false;
         }
 
         public void DrawCollisionBoxes(SpriteBatch _spriteBatch, bool debugMode) //draw collision boxes for debug
