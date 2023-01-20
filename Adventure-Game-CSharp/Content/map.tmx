@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.9" tiledversion="1.9.2" orientation="orthogonal" renderorder="right-down" width="90" height="100" tilewidth="32" tileheight="32" infinite="1" nextlayerid="9" nextobjectid="170">
+<map version="1.9" tiledversion="1.9.2" orientation="orthogonal" renderorder="right-down" width="90" height="100" tilewidth="32" tileheight="32" infinite="1" nextlayerid="9" nextobjectid="192">
  <editorsettings>
   <export format="json"/>
  </editorsettings>
@@ -2335,7 +2335,7 @@
 </chunk>
   </data>
  </layer>
- <objectgroup id="4" name="Collision Boxes">
+ <objectgroup id="4" name="Collision Boxes" visible="0">
   <object id="8" class="Level1" x="704.667" y="511" width="61.6667" height="55.3333"/>
   <object id="11" class="Level1" x="544" y="799" width="64" height="63.6667"/>
   <object id="20" class="Level1" x="320" y="766.667" width="64" height="64"/>
@@ -2402,8 +2402,28 @@
   <object id="144" class="Level3" x="2299" y="2043" width="37" height="345"/>
   <object id="157" class="Level3" x="1634" y="2070" width="83" height="180"/>
   <object id="158" class="Level3" x="1544" y="2197" width="212" height="75"/>
+  <object id="170" class="Level3" x="3023.5" y="106.5" width="230" height="89.5"/>
+  <object id="171" class="Level3" x="3228.5" y="180" width="19.6667" height="170.5"/>
+  <object id="172" class="Level3" x="3164" y="315.5" width="97.8333" height="66"/>
+  <object id="173" class="Level3" x="3011.5" y="317.5" width="94.5" height="52.5"/>
+  <object id="174" class="Level3" x="3020.33" y="182" width="27.1667" height="155.5"/>
+  <object id="175" class="Level3" x="2384.42" y="109.167" width="224.667" height="89.5"/>
+  <object id="176" class="Level3" x="2589.42" y="182.667" width="26.3333" height="170.5"/>
+  <object id="177" class="Level3" x="2524.92" y="318.167" width="89.8333" height="66"/>
+  <object id="178" class="Level3" x="2372.42" y="320.167" width="94.5" height="52.5"/>
+  <object id="179" class="Level3" x="2378.58" y="184.667" width="29.8333" height="155.5"/>
+  <object id="180" class="Level3" x="2385.75" y="778.5" width="235.333" height="89.5"/>
+  <object id="181" class="Level3" x="2590.75" y="852" width="21" height="170.5"/>
+  <object id="182" class="Level3" x="2526.25" y="987.5" width="91.1667" height="66"/>
+  <object id="183" class="Level3" x="2373.75" y="989.5" width="94.5" height="52.5"/>
+  <object id="184" class="Level3" x="2369.25" y="854" width="40.5" height="155.5"/>
+  <object id="185" class="Level3" x="3024.42" y="781.167" width="226" height="89.5"/>
+  <object id="186" class="Level3" x="3229.42" y="854.667" width="25" height="170.5"/>
+  <object id="187" class="Level3" x="3164.92" y="990.167" width="87.1667" height="66"/>
+  <object id="188" class="Level3" x="3012.42" y="992.167" width="94.5" height="52.5"/>
+  <object id="189" class="Level3" x="3007.92" y="856.667" width="40.5" height="155.5"/>
  </objectgroup>
- <objectgroup id="6" name="Teleport">
+ <objectgroup id="6" name="Event">
   <object id="56" name="House inside" x="1720" y="1049.92" width="45.5" height="44"/>
   <object id="57" name="House outside" x="499.5" y="497.667" width="53" height="22.8333"/>
   <object id="66" name="inside door" x="1842" y="739" width="50.6667" height="25.5"/>
@@ -2417,5 +2437,6 @@
   <object id="153" name="Dungeon house 2 inside" x="3095.5" y="359" width="83" height="31"/>
   <object id="154" name="Dungeon house 3 inside" x="3090" y="1032.5" width="91.5" height="32"/>
   <object id="155" name="Dungeon house 4 inside" x="2457" y="1031" width="79" height="32"/>
+  <object id="190" name="Chest" x="2421.5" y="190.5" width="48" height="68"/>
  </objectgroup>
 </map>

@@ -8,20 +8,20 @@ using System.Diagnostics;
 
 namespace Adventure_Game_CSharp
 {
-    internal class TeleportManager
+    internal class EventManager
     {
         public Rectangle teleportRect = new Rectangle();
         public string rectName;
 
         private Texture2D _texture;
 
-        public List<TeleportManager> teleportColliders = new List<TeleportManager>(); //list where colliders are stored
-        public TeleportManager(int a, int b, int c, int d, string name)  //collider creator 
+        public List<EventManager> teleportColliders = new List<EventManager>(); //list where colliders are stored
+        public EventManager(int a, int b, int c, int d, string name)  //collider creator 
         {
             teleportRect = new Rectangle(a, b, c, d);
             rectName = name;
         }
-        TiledLayer teleportLayer;
+        TiledLayer eventLayer;
 
 
         public void initTeleportManager(GraphicsDevice _graphics) //initialize collision manager
@@ -33,16 +33,16 @@ namespace Adventure_Game_CSharp
             for (int i = 0; i < map.Layers.Length; i++)
             {
                 //Debug.WriteLine(map.Layers[i].name);
-                if (map.Layers[i].name == "Teleport")
+                if (map.Layers[i].name == "Event")
                 {
-                    teleportLayer = map.Layers[i]; //load tilemap and create colliders where collision boxes are marked on the tilemap
+                    eventLayer = map.Layers[i]; //load tilemap and create colliders where collision boxes are marked on the tilemap
                 }
             }
 
-            for (int i = 0; i < teleportLayer.objects.Length; i++)
+            for (int i = 0; i < eventLayer.objects.Length; i++)
             {
-                teleportColliders.Add(new TeleportManager((int)teleportLayer.objects[i].x, (int)teleportLayer.objects[i].y, (int)teleportLayer.objects[i].width, (int)teleportLayer.objects[i].height, teleportLayer.objects[i].name));
-                Debug.WriteLine(teleportLayer.objects[i].name);
+                teleportColliders.Add(new EventManager((int)eventLayer.objects[i].x, (int)eventLayer.objects[i].y, (int)eventLayer.objects[i].width, (int)eventLayer.objects[i].height, eventLayer.objects[i].name));
+                Debug.WriteLine(eventLayer.objects[i].name);
             }
 
 

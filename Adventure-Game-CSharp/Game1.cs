@@ -25,7 +25,7 @@ namespace Adventure_Game_CSharp
         private Camera camera;
         Player player = new Player();
         CollisionManager collisionManager = new CollisionManager(0, 0, 0, 0, "");
-        TeleportManager teleportManager = new TeleportManager(0, 0, 0, 0, "");
+        EventManager eventManager = new EventManager(0, 0, 0, 0, "");
         Enemy enemy = new Enemy(0, 0, null, Point.Zero);
         NPC npc = new NPC(0, 0, null, Point.Zero);
 
@@ -35,7 +35,7 @@ namespace Adventure_Game_CSharp
 
         //variables
         private List<int> collidingWith = new List<int>();
-        private string teleportRectName;
+        private string eventRectName;
         private int counter = 0;
 
         private bool debugMode = false;
@@ -60,7 +60,7 @@ namespace Adventure_Game_CSharp
             _graphics.ApplyChanges();
             
             collisionManager.initCollisions(GraphicsDevice);
-            teleportManager.initTeleportManager(GraphicsDevice);
+            eventManager.initTeleportManager(GraphicsDevice);
 
             this.camera = new Camera(_graphics.GraphicsDevice);
             camera.Zoom = 2f;
@@ -106,16 +106,16 @@ namespace Adventure_Game_CSharp
                 }
 
                 //manage teleports TODO: Move to player class
-                for (int i = 0; i < teleportManager.teleportColliders.Count; i++)
-                    if (player.playerRect.Intersects(teleportManager.teleportColliders[i].teleportRect))
-                        teleportRectName = teleportManager.teleportColliders[i].rectName;
+                for (int i = 0; i < eventManager.teleportColliders.Count; i++)
+                    if (player.playerRect.Intersects(eventManager.teleportColliders[i].teleportRect))
+                        eventRectName = eventManager.teleportColliders[i].rectName;
 
 
                 enemy.Update(gameTime, player.Position);
                 npc.Update(gameTime, counter, enemy.enemies.Count);
 
                 //add more enemies when player talks to npc
-                if (teleportRectName == "NPC1" && counter == 0)
+                if (eventRectName == "NPC1" && counter == 0)
                 {
                     enemy.AddEnemies(1, 284, 1139, 1554, 2324);
                     counter++;
@@ -135,15 +135,15 @@ namespace Adventure_Game_CSharp
             }
             kStateOld = kState;
 
-            player.PlayerUpdate(gameTime, collidingWith.Count, teleportRectName, enemy.enemies);
-            modifiedCollisionBoxes = collisionManager.OptimiseCollisions(teleportRectName);
+            player.PlayerUpdate(gameTime, collidingWith.Count, eventRectName, enemy.enemies);
+            modifiedCollisionBoxes = collisionManager.OptimiseCollisions(eventRectName);
             if (modifiedCollisionBoxes)
             {
                 collidingWith.Clear();
                 modifiedCollisionBoxes = false;
             }
                 
-            teleportRectName = "";
+            eventRectName = "";
 
             this.camera.Position = player.Position;
             this.camera.Update(gameTime);
@@ -157,7 +157,7 @@ namespace Adventure_Game_CSharp
 
             _spriteBatch.Draw(background, new Vector2(0, 0), Color.White);
             collisionManager.DrawCollisionBoxes(_spriteBatch, debugMode);
-            teleportManager.DrawTeleportManager(_spriteBatch, debugMode);
+            eventManager.DrawTeleportManager(_spriteBatch, debugMode);
 
             npc.Draw(_spriteBatch, debugMode);
             enemy.Draw(_spriteBatch, debugMode);

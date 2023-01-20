@@ -16,13 +16,11 @@ namespace Adventure_Game_CSharp
         private Vector2 position = new Vector2(500, 600); //new Vector2(1792, 2042);
         private int speed = 100;
         private Dir direction = Dir.Down;
-        private bool isMoving = false;
         public Rectangle playerRect = new Rectangle(0, 0, 32, 36);
         private Rectangle coverScreen = new Rectangle(0, 0, 500, 500);
         private Rectangle attackRect = new Rectangle(0, 0, 0, 0);
         private Texture2D _texture;
         public List<string> collisionDir = new List<string> { "" };
-        private int amountOfCollisions = 0;
         private int amountOfCollisionsOld = 0;
         private string eventTrigger = "";
         private float timer = 0;
@@ -30,9 +28,10 @@ namespace Adventure_Game_CSharp
         private int health = 100;
         private bool canBeAttacked = true;
         private bool attacking = false;
-        private List<string> inventory = new List<string> { "Ham", "Bones" };
+        private List<string> inventory = new List<string> { "Bottle 'O Pop ", "Bones" };
         public bool accessingInventory = false;
         private int level = 1;
+        private bool isMoving;
 
         private string npcText = "In order for me to allow you passage you must first \nslay all the ghosts in this area";
         private int textDraw;
@@ -56,14 +55,11 @@ namespace Adventure_Game_CSharp
             _texture = new Texture2D(_graphics, 1, 1);
             _texture.SetData(new Color[] { Color.White });
         }
-        public void PlayerUpdate(GameTime gameTime, int collisionAmount, string teleportRectName, List<Enemy> enemies)
+        public void PlayerUpdate(GameTime gameTime, int amountOfCollisions, string eventRectName, List<Enemy> enemies)
         {
-            amountOfCollisions = collisionAmount;
-
             KeyboardState kState = Keyboard.GetState();
             float dt = (float)gameTime.ElapsedGameTime.TotalSeconds;
             _sprite.Position = new Vector2(position.X - 20, position.Y - 20);
-            //isMoving = false;
             playerRect.X = (int)position.X;
             playerRect.Y = (int)position.Y;
             coverScreen.X = (int)position.X - 250;
@@ -75,18 +71,16 @@ namespace Adventure_Game_CSharp
                 accessingInventory = !accessingInventory;
             }
 
-            if (!accessingInventory && !attacking)
+            if (!accessingInventory)
             {
                 isMoving = SetDirection(kState);
                 
-                if (isMoving) //move player and play animations
+                if (isMoving && !attacking) //move player and play animations
                 {
                     MovePlayer(dt);
                 }
 
-
-
-                if (!isMoving)
+                if (!isMoving && !attacking)
                 {
                     PlayIdleAnimations();
                 }
@@ -94,17 +88,57 @@ namespace Adventure_Game_CSharp
                 if (attackRect != new Rectangle(0, 0, 0, 0)) //reset the attack rect
                     attackRect = new Rectangle(0, 0, 0, 0);
 
-                if (kState.IsKeyDown(Keys.E) && !(level <= 2)) //player attacking
+                if (kState.IsKeyDown(Keys.E) && level == 3) //player attacking
                 {
                     attacking = true;
                 }
-
+            
                 if (attacking)
                 {
-                    Attack();
+                    //Attack();
+                    if (direction == Dir.Down)
+                    {
+                        _sprite.Play("attack-down");
+                        if (_sprite.CurrentFrameIndex == 24)
+                        {
+                            attackRect = new Rectangle((int)position.X, (int)position.Y, 32, 72);
+                            attacking = false;
+                        }
+                    }
+
+                    if (direction == Dir.Up)
+                    {
+
+                        _sprite.Play("attack-up");
+                        if (_sprite.CurrentFrameIndex == 41)
+                        {
+                            attackRect = new Rectangle((int)position.X, (int)position.Y - 36, 32, 72);
+                            attacking = false;
+                        }
+                    }
+
+                    if (direction == Dir.Left)
+                    {
+                        _sprite.Play("attack-left");
+                        if (_sprite.CurrentFrameIndex == 36)
+                        {
+                            attackRect = new Rectangle((int)position.X - 32, (int)position.Y, 64, 36);
+                            attacking = false;
+                        }
+                    }
+
+                    if (direction == Dir.Right)
+                    {
+                        _sprite.Play("attack-right");
+                        if (_sprite.CurrentFrameIndex == 30)
+                        {
+                            attackRect = new Rectangle((int)position.X, (int)position.Y, 64, 36);
+                            attacking = false;
+                        }
+                    }
                 }
 
-                if (level > 2)
+                if (level == 3)
                 {
                     for (int i = 0; i < enemies.Count; i++)
                     {
@@ -123,16 +157,15 @@ namespace Adventure_Game_CSharp
                             }
                         }
                     }
+
+
+                    if (canBeAttacked == false)
+                    {
+                        timer += (float)gameTime.ElapsedGameTime.TotalSeconds; //cooldown before the player can be attacked again
+                        if (timer > 2)
+                            canBeAttacked = true;
+                    }
                 }
-
-
-                if (canBeAttacked == false)
-                {
-                    timer += (float)gameTime.ElapsedGameTime.TotalSeconds; //cooldown before the player can be attacked again
-                    if (timer > 2)
-                        canBeAttacked = true;
-                }
-
 
                 //collisions
                 if (amountOfCollisions != 0 && amountOfCollisions != amountOfCollisionsOld) //if a new item is added to the collisions list the player is stopped from moving in the current direction
@@ -170,9 +203,9 @@ namespace Adventure_Game_CSharp
 
                 //section to manage teleporting around the map
 
-                if (teleportRectName != "")
+                if (eventRectName != "")
                 {
-                    TeleportPlayer(teleportRectName);
+                    TeleportPlayer(eventRectName);
                 }
 
                 if (eventTrigger == "inside door")
@@ -188,6 +221,21 @@ namespace Adventure_Game_CSharp
 
                     if (timer >= 10)
                         eventTrigger = "";
+                }
+
+                if (eventTrigger == "house 4 text 2")
+                {
+                    timer += (float)gameTime.ElapsedGameTime.TotalSeconds;
+                }
+
+                if (eventTrigger == "house 4 text 1")
+                {
+                    timer += (float)gameTime.ElapsedGameTime.TotalSeconds;
+                }
+
+                if (eventTrigger == "Chest")
+                {
+                    timer += (float)gameTime.ElapsedGameTime.TotalSeconds;
                 }
             }
 
@@ -218,9 +266,23 @@ namespace Adventure_Game_CSharp
             {
                 _sprite.Render(_spriteBatch);
 
+                //event drawing
                 if (eventTrigger == "inside door")
                     if (timer <= 5)
                         _spriteBatch.DrawString(spriteFont, "The door locks behind you, the only way through is down the hole", new Vector2(position.X - 200, position.Y - 200), Color.White, 0f, new Vector2(0, 0), 0.35f, SpriteEffects.None, 0f);
+
+                if (eventTrigger == "house 4 text 2")
+                    if (timer <= 5)
+                        _spriteBatch.DrawString(spriteFont, "You use the key to enter the house, The rust on the lock prevents you from retrieving the key", new Vector2(position.X - 200, position.Y - 200), Color.White, 0f, new Vector2(0, 0), 0.35f, SpriteEffects.None, 0f);
+
+                if (eventTrigger == "house 4 text 1")
+                    if (timer <= 2)
+                        _spriteBatch.DrawString(spriteFont, "the door to this house seems to be locked, perhaps you can find a key somewhere", new Vector2(position.X - 200, position.Y - 200), Color.White, 0f, new Vector2(0, 0), 0.35f, SpriteEffects.None, 0f);
+                
+                if (eventTrigger == "Chest")
+                    if (timer <= 2)
+                        _spriteBatch.DrawString(spriteFont, "In the chest lies a rusty key, you pick it up", new Vector2(position.X - 200, position.Y - 200), Color.White, 0f, new Vector2(0, 0), 0.35f, SpriteEffects.None, 0f);
+
 
                 //draw health
                 _spriteBatch.DrawString(spriteFont, "Health: " + health.ToString(), new Vector2(position.X - (spriteFont.MeasureString("Health: " + health.ToString()).Length() * 0.5f) / 2, position.Y + 200), Color.Red, 0f, new Vector2(0, 0), 0.5f, SpriteEffects.None, 0f);
@@ -338,20 +400,20 @@ namespace Adventure_Game_CSharp
             }
         }
 
-        private void TeleportPlayer(string teleportRectName)
+        private void TeleportPlayer(string eventRectName)
         {
-            if (teleportRectName == "House outside")
+            if (eventRectName == "House outside")
             {
                 position = new Vector2(1730, 1006); //inside of house co-ords
             }
 
 
-            if (teleportRectName == "House inside")
+            if (eventRectName == "House inside")
             {
                 position = new Vector2(520, 550); //outside of coords
             }
 
-            if (teleportRectName == "inside door")
+            if (eventRectName == "inside door")
             {
                 position = new Vector2(1427, 230); //tunnel
                 eventTrigger = "inside door";
@@ -359,57 +421,84 @@ namespace Adventure_Game_CSharp
 
             }
 
-            if (teleportRectName == "Hole")
+            if (eventRectName == "Hole")
             {
+                if (!inventory.Contains("Sword"))
+                    inventory.Add("Sword");
                 position = new Vector2(403, 1650); //through hole
                 eventTrigger = "through hole";
                 timer = 0;
                 level = 3;
             }
 
-            if (teleportRectName == "NPC1")
+            if (eventRectName == "NPC1")
             {
                 eventTrigger = "display text 1";
             }
 
-            if (teleportRectName == "Dungeon house 1")
+            if (eventRectName == "Dungeon house 1")
             {
                 position = new Vector2(2488, 310);
             }
 
-            if (teleportRectName == "Dungeon house 1 inside")
+            if (eventRectName == "Dungeon house 1 inside")
             {
                 position = new Vector2(624, 2705);
             }
 
-            if (teleportRectName == "Dungeon house 2")
+            if (eventRectName == "Dungeon house 2")
             {
                 position = new Vector2(3129, 310);
             }
 
-            if (teleportRectName == "Dungeon house 2 inside")
+            if (eventRectName == "Dungeon house 2 inside")
             {
                 position = new Vector2(2029, 2190);
             }
 
-            if (teleportRectName == "Dungeon house 3")
+            if (eventRectName == "Dungeon house 3")
             {
                 position = new Vector2(3129, 994);
             }
 
-            if (teleportRectName == "Dungeon house 3 inside")
+            if (eventRectName == "Dungeon house 3 inside")
             {
                 position = new Vector2(2091, 1820);
             }
 
-            if (teleportRectName == "Dungeon house 4")
+            if (eventRectName == "Dungeon house 4")
             {
-                position = new Vector2(2488, 994);
+                if (!inventory.Contains("Key"))
+                {
+                    eventTrigger = "house 4 text 1";
+                    timer = 0;
+                }
+                else
+                {
+                    eventTrigger = "house 4 text 2";
+                    timer = 0;
+                    position = new Vector2(2488, 994);
+                }
+                    
             }
 
-            if (teleportRectName == "Dungeon house 4 inside")
+            if (eventRectName == "Chest")
+            {
+                timer = 0;
+                eventTrigger = "Chest";
+            }
+
+            if (eventRectName == "Dungeon house 4 inside")
             {
                 position = new Vector2(1648, 1935);
+            }
+            
+            if (eventRectName == "Chest")
+            {
+                if (!inventory.Contains("Key"))
+                {
+                    inventory.Add("Key");
+                }
             }
         }
 
@@ -435,46 +524,7 @@ namespace Adventure_Game_CSharp
 
         private void Attack()
         {
-            if (direction == Dir.Down)
-            {
-                _sprite.Play("attack-down");
-                if (_sprite.CurrentFrameIndex == 24)
-                {
-                    attackRect = new Rectangle((int)position.X, (int)position.Y, 32, 72);
-                    attacking = false;
-                }
-            }
 
-            if (direction == Dir.Up)
-            {
-
-                _sprite.Play("attack-up");
-                if (_sprite.CurrentFrameIndex == 41)
-                {
-                    attackRect = new Rectangle((int)position.X, (int)position.Y - 36, 32, 72);
-                    attacking = false;
-                }
-            }
-
-            if (direction == Dir.Left)
-            {
-                _sprite.Play("attack-left");
-                if (_sprite.CurrentFrameIndex == 36)
-                {
-                    attackRect = new Rectangle((int)position.X - 32, (int)position.Y, 64, 36);
-                    attacking = false;
-                }
-            }
-
-            if (direction == Dir.Right)
-            {
-                _sprite.Play("attack-right");
-                if (_sprite.CurrentFrameIndex == 30)
-                {
-                    attackRect = new Rectangle((int)position.X, (int)position.Y, 64, 36);
-                    attacking = false;
-                }
-            }
         }
     }
 }
