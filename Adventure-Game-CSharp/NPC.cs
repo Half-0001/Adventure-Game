@@ -40,7 +40,7 @@ namespace Adventure_Game_CSharp
         public void LoadContent(ContentManager Content, Point _resolution, GraphicsDevice _graphics)
         {
             //  Load the aseprite file from the content pipeline.
-            AsepriteDocument asepritefile = Content.Load<AsepriteDocument>("Male 16-1");
+            AsepriteDocument asepritefile = Content.Load<AsepriteDocument>("Male 16-1"); 
 
             //add npc
             for (int i = 0; i < 1; i++)
@@ -51,7 +51,7 @@ namespace Adventure_Game_CSharp
             _texture.SetData(new Color[] { Color.DarkSlateGray });
         }
 
-        public void Update(GameTime gameTime, int counter, int enemyCount)
+        public void Update(GameTime gameTime, int counter, int enemyCount) //TODO: Fix NPC hitbox before all enemies have been killed
         {
             float dt = (float)gameTime.ElapsedGameTime.TotalSeconds;
             if (counter != 1 && enemyCount != 0)

@@ -124,7 +124,10 @@ namespace Adventure_Game_CSharp
                 {
                     collisionManager.colliders.RemoveAt(collisionManager.colliders.Count - 1);
                     collisionManager.colliders.Add(new CollisionManager(npc.npcs[0].hitbox.X, npc.npcs[0].hitbox.Y, npc.npcs[0].hitbox.Size.X, npc.npcs[0].hitbox.Size.Y, "Level3"));
+                    enemy.AddEnemies2(1, 748, 1966, 3118, 3375);
+                    enemy.AddEnemies2(1, 2515, 3196, 1651, 3333);
                 }
+
             }
 
             //debug mode (press G to activate) - shows collision boxes

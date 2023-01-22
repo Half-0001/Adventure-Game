@@ -73,7 +73,8 @@ namespace Adventure_Game_CSharp
 
             if (!accessingInventory)
             {
-                isMoving = SetDirection(kState);
+                if (!attacking)
+                    isMoving = SetDirection(kState);
                 
                 if (isMoving && !attacking) //move player and play animations
                 {
@@ -95,47 +96,7 @@ namespace Adventure_Game_CSharp
             
                 if (attacking)
                 {
-                    //Attack();
-                    if (direction == Dir.Down)
-                    {
-                        _sprite.Play("attack-down");
-                        if (_sprite.CurrentFrameIndex == 24)
-                        {
-                            attackRect = new Rectangle((int)position.X, (int)position.Y, 32, 72);
-                            attacking = false;
-                        }
-                    }
-
-                    if (direction == Dir.Up)
-                    {
-
-                        _sprite.Play("attack-up");
-                        if (_sprite.CurrentFrameIndex == 41)
-                        {
-                            attackRect = new Rectangle((int)position.X, (int)position.Y - 36, 32, 72);
-                            attacking = false;
-                        }
-                    }
-
-                    if (direction == Dir.Left)
-                    {
-                        _sprite.Play("attack-left");
-                        if (_sprite.CurrentFrameIndex == 36)
-                        {
-                            attackRect = new Rectangle((int)position.X - 32, (int)position.Y, 64, 36);
-                            attacking = false;
-                        }
-                    }
-
-                    if (direction == Dir.Right)
-                    {
-                        _sprite.Play("attack-right");
-                        if (_sprite.CurrentFrameIndex == 30)
-                        {
-                            attackRect = new Rectangle((int)position.X, (int)position.Y, 64, 36);
-                            attacking = false;
-                        }
-                    }
+                    Attack();
                 }
 
                 if (level == 3)
@@ -524,7 +485,46 @@ namespace Adventure_Game_CSharp
 
         private void Attack()
         {
+            if (direction == Dir.Down)
+            {
+                _sprite.Play("attack-down");
+                if (_sprite.CurrentFrameIndex == 24)
+                {
+                    attackRect = new Rectangle((int)position.X, (int)position.Y, 32, 72);
+                    attacking = false;
+                }
+            }
 
+            if (direction == Dir.Up)
+            {
+
+                _sprite.Play("attack-up");
+                if (_sprite.CurrentFrameIndex == 41)
+                {
+                    attackRect = new Rectangle((int)position.X, (int)position.Y - 36, 32, 72);
+                    attacking = false;
+                }
+            }
+
+            if (direction == Dir.Left)
+            {
+                _sprite.Play("attack-left");
+                if (_sprite.CurrentFrameIndex == 36)
+                {
+                    attackRect = new Rectangle((int)position.X - 32, (int)position.Y, 64, 36);
+                    attacking = false;
+                }
+            }
+
+            if (direction == Dir.Right)
+            {
+                _sprite.Play("attack-right");
+                if (_sprite.CurrentFrameIndex == 30)
+                {
+                    attackRect = new Rectangle((int)position.X, (int)position.Y, 64, 36);
+                    attacking = false;
+                }
+            }
         }
     }
 }

@@ -25,6 +25,7 @@ namespace Adventure_Game_CSharp
         private float timer = 0;
 
         AsepriteDocument asepritefile;
+        AsepriteDocument asepritefile2;
         Texture2D _texture;
         Point resolution;
 
@@ -51,6 +52,7 @@ namespace Adventure_Game_CSharp
         {
             //  Load the aseprite file from the content pipeline.
             asepritefile = Content.Load<AsepriteDocument>("Enemy 15-1");
+            asepritefile2 = Content.Load<AsepriteDocument>("Enemy 15-2");
             resolution = _resolution;
             //add enemies to list
             for (int i = 0; i < 1; i++)
@@ -61,7 +63,7 @@ namespace Adventure_Game_CSharp
             _texture.SetData(new Color[] { Color.DarkSlateGray });
         }
 
-        public void Update(GameTime gameTime, Vector2 playerPosition)
+        public void Update(GameTime gameTime, Vector2 playerPosition) //TODO: Remove enemy hitbox as soon as its dead, not after cooldown.
         {
             float dt = (float)gameTime.ElapsedGameTime.TotalSeconds;
             for (int i = 0; i < enemies.Count; i++)
@@ -117,6 +119,12 @@ namespace Adventure_Game_CSharp
         {
             for (int i = 0; i < amount; i++)
                 enemies.Add(new Enemy(random.Next(xmin, xmax), random.Next(ymin, ymax), asepritefile, resolution));
+        }
+
+        public void AddEnemies2(int amount, int xmin, int xmax, int ymin, int ymax)
+        {
+            for (int i = 0; i < amount; i++)
+                enemies.Add(new Enemy(random.Next(xmin, xmax), random.Next(ymin, ymax), asepritefile2, resolution));
         }
     }
 }
