@@ -7,6 +7,8 @@ using System;
 using System.Diagnostics;
 using Microsoft.Xna.Framework.Content;
 using MonoGame.Aseprite.Documents;
+using Microsoft.Xna.Framework.Media;
+using System.Threading;
 
 namespace Adventure_Game_CSharp
 {
@@ -19,6 +21,10 @@ namespace Adventure_Game_CSharp
             Left,
             Right,
         }
+
+        //audio 
+        Song dungeon;
+        private bool playingAudio = true;
 
         private KeyboardState kStateOld;
         private Vector2 position = new Vector2(500, 600); //new Vector2(1792, 2042);
@@ -40,6 +46,7 @@ namespace Adventure_Game_CSharp
         public bool accessingInventory = false;
         private int level = 1;
         private bool isMoving;
+        
 
         private string npcText = "In order for me to allow you passage you must first \nslay all the ghosts in this area";
         private int textDraw;
@@ -52,8 +59,9 @@ namespace Adventure_Game_CSharp
         }
         public void LoadContent(ContentManager Content, Point _resolution, GraphicsDevice _graphics)
         {
-            //  Load the asprite file from the content pipeline.
+            //  Load the assets from the content pipeline.
             AsepriteDocument aseprite = Content.Load<AsepriteDocument>("Male 01");
+            dungeon = Content.Load<Song>("audio/dungeon");
 
             //  Create a new aniamted sprite instance using the aseprite doucment loaded.
             _sprite = new AnimatedSprite(aseprite);
@@ -62,6 +70,9 @@ namespace Adventure_Game_CSharp
 
             _texture = new Texture2D(_graphics, 1, 1);
             _texture.SetData(new Color[] { Color.White });
+
+            MediaPlayer.IsRepeating = true;
+            MediaPlayer.Volume = 0.5f;
         }
         public void PlayerUpdate(GameTime gameTime, int amountOfCollisions, string eventRectName, List<Enemy> enemies)
         {
@@ -109,6 +120,12 @@ namespace Adventure_Game_CSharp
 
                 if (level == 3)
                 {
+                    if (!playingAudio)
+                    {
+                        MediaPlayer.Play(dungeon);
+                        playingAudio = true;
+                    }
+
                     for (int i = 0; i < enemies.Count; i++)
                     {
                         if (attackRect.Intersects(enemies[i].hitbox)) //attacking enemies with sword
@@ -398,6 +415,7 @@ namespace Adventure_Game_CSharp
                 eventTrigger = "through hole";
                 timer = 0;
                 level = 3;
+                playingAudio = false;
             }
 
             if (eventRectName == "NPC1")

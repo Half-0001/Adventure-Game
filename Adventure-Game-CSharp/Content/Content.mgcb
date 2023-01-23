@@ -38,7 +38,7 @@
 /processorParam:BorderPadding=0
 /processorParam:Spacing=0
 /processorParam:InnerPadding=0
-/build:../../assets/PIPOYA FREE RPG Character Sprites 32x32/Enemy/anim/Enemy 15-1.aseprite;Enemy 15-1.aseprite
+/build:../../assets/PIPOYA FREE RPG Character Sprites 32x32/Enemy/anim/Enemy 15-1.aseprite;sprites/Enemy 15-1.aseprite
 
 #begin ../../assets/PIPOYA FREE RPG Character Sprites 32x32/Enemy/anim/Enemy 15-2.aseprite
 /importer:AsepriteDocumentImporter
@@ -50,7 +50,7 @@
 /processorParam:BorderPadding=0
 /processorParam:Spacing=0
 /processorParam:InnerPadding=0
-/build:../../assets/PIPOYA FREE RPG Character Sprites 32x32/Enemy/anim/Enemy 15-2.aseprite;Enemy 15-2.aseprite
+/build:../../assets/PIPOYA FREE RPG Character Sprites 32x32/Enemy/anim/Enemy 15-2.aseprite;sprites/Enemy 15-2.aseprite
 
 #begin ../../assets/PIPOYA FREE RPG Character Sprites 32x32/Male/anim/Male 01.aseprite
 /importer:AsepriteDocumentImporter
@@ -62,7 +62,19 @@
 /processorParam:BorderPadding=0
 /processorParam:Spacing=0
 /processorParam:InnerPadding=0
-/build:../../assets/PIPOYA FREE RPG Character Sprites 32x32/Male/anim/Male 01.aseprite;Male 01.aseprite
+/build:../../assets/PIPOYA FREE RPG Character Sprites 32x32/Male/anim/Male 01.aseprite;sprites/Male 01.aseprite
+
+#begin ../../assets/PIPOYA FREE RPG Character Sprites 32x32/Male/anim/Male 09-1.aseprite
+/importer:AsepriteDocumentImporter
+/processor:AsepriteDocumentProcessor
+/processorParam:SheetType=Packed
+/processorParam:MergeDuplicateFrames=True
+/processorParam:IgnoreEmptyFrames=True
+/processorParam:OnlyVisibleLayers=True
+/processorParam:BorderPadding=0
+/processorParam:Spacing=0
+/processorParam:InnerPadding=0
+/build:../../assets/PIPOYA FREE RPG Character Sprites 32x32/Male/anim/Male 09-1.aseprite;sprites/Male 09-1.aseprite
 
 #begin ../../assets/PIPOYA FREE RPG Character Sprites 32x32/Male/anim/Male 16-1.aseprite
 /importer:AsepriteDocumentImporter
@@ -74,7 +86,7 @@
 /processorParam:BorderPadding=0
 /processorParam:Spacing=0
 /processorParam:InnerPadding=0
-/build:../../assets/PIPOYA FREE RPG Character Sprites 32x32/Male/anim/Male 16-1.aseprite;Male 16-1.aseprite
+/build:../../assets/PIPOYA FREE RPG Character Sprites 32x32/Male/anim/Male 16-1.aseprite;sprites/Male 16-1.aseprite
 
 #begin ../../assets/play_white.png
 /importer:TextureImporter
@@ -87,6 +99,12 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:../../assets/play_white.png;play_white.png
+
+#begin audio/dungeon.ogg
+/importer:OggImporter
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:audio/dungeon.ogg
 
 #begin font.spritefont
 /importer:FontDescriptionImporter
@@ -118,16 +136,4 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:play_yellow.png
-
-#begin text box.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:text box.png
 
