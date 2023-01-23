@@ -44,8 +44,6 @@ namespace Adventure_Game_CSharp
                 teleportColliders.Add(new EventManager((int)eventLayer.objects[i].x, (int)eventLayer.objects[i].y, (int)eventLayer.objects[i].width, (int)eventLayer.objects[i].height, eventLayer.objects[i].name));
             }
 
-
-
         }
 
         public void DrawTeleportManager(SpriteBatch _spriteBatch, bool debugMode) //draw collision boxes for debug
