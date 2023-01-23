@@ -87,5 +87,11 @@ namespace Adventure_Game_CSharp
                 for (int i = 0; i < colliders.Count; i++)
                     _spriteBatch.Draw(_texture, colliders[i].rect, Color.Blue);
         }
+
+        public void Restart(GraphicsDevice _graphics)
+        {
+            colliders.Clear();
+            initCollisions(_graphics);
+        }
     }
 }

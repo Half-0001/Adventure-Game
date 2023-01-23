@@ -85,6 +85,12 @@ namespace Adventure_Game_CSharp
                     _spriteBatch.Draw(_texture, npcs[i].hitbox, Color.Blue); //draw hitbox
                 }
         }
+
+        public void Restart(ContentManager Content, Point _resolution, GraphicsDevice _graphics)
+        {
+            npcs.Clear();
+            LoadContent(Content, _resolution, _graphics);
+        }
     }
     
 }

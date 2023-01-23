@@ -22,7 +22,7 @@ namespace Adventure_Game_CSharp
         private int speed;
         public Rectangle hitbox = new Rectangle();
         public Rectangle attackHitbox = new Rectangle();
-        private float timer = 0;
+        //private float timer = 0;
 
         AsepriteDocument asepritefile;
         AsepriteDocument asepritefile2;
@@ -94,8 +94,7 @@ namespace Adventure_Game_CSharp
                 {
                     enemies[i].enemySprite.Play("death");
                     enemies[i].attackHitbox = new Rectangle(0, 0, 0, 0);
-                    enemies[i].timer += (float)gameTime.ElapsedGameTime.TotalSeconds;
-                    if (enemies[i].enemySprite.CurrentFrameIndex == 21) //TODO: Make enemy dying animation
+                    if (enemies[i].enemySprite.CurrentFrameIndex == 21)
                         enemies.RemoveAt(i);
                 }
             }
@@ -126,6 +125,12 @@ namespace Adventure_Game_CSharp
         {
             for (int i = 0; i < amount; i++)
                 enemies.Add(new Enemy(random.Next(xmin, xmax), random.Next(ymin, ymax), asepritefile2, resolution));
+        }
+
+        public void Restart(ContentManager Content, Point _resolution, GraphicsDevice _graphics)
+        {
+            enemies.Clear();
+            LoadContent(Content, _resolution, _graphics);
         }
     }
 }

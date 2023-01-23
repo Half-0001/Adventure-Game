@@ -2353,7 +2353,7 @@
 </chunk>
   </data>
  </layer>
- <objectgroup id="4" name="Collision Boxes" visible="0">
+ <objectgroup id="4" name="Collision Boxes">
   <object id="8" class="Level1" x="704.667" y="511" width="61.6667" height="55.3333"/>
   <object id="11" class="Level1" x="544" y="799" width="64" height="63.6667"/>
   <object id="20" class="Level1" x="320" y="766.667" width="64" height="64"/>
@@ -2390,10 +2390,10 @@
   <object id="102" class="Level3" x="1948" y="1948" width="198.667" height="176"/>
   <object id="103" class="Level3" x="1568" y="2021.33" width="84.667" height="73.333"/>
   <object id="104" class="Level3" x="1758" y="2558" width="209" height="137"/>
-  <object id="105" class="Level3" x="1334" y="2356" width="44" height="428"/>
-  <object id="106" class="Level3" x="1360" y="2690" width="57.5" height="94"/>
+  <object id="105" class="Level3" x="1334" y="2356" width="44" height="336.667"/>
+  <object id="106" class="Level3" x="1334" y="2690" width="83.5" height="94"/>
   <object id="107" class="Level3" x="1462.75" y="2687.25" width="67.75" height="96"/>
-  <object id="108" class="Level3" x="1498" y="2365" width="32" height="338"/>
+  <object id="108" class="Level3" x="1498" y="2365" width="32" height="327.333"/>
   <object id="109" class="Level3" x="1512" y="2363" width="139" height="91"/>
   <object id="110" class="Level3" x="1806" y="2368" width="529" height="92"/>
   <object id="111" class="Level3" x="2306" y="1441" width="25" height="479"/>
@@ -2441,7 +2441,7 @@
   <object id="188" class="Level3" x="3012.42" y="992.167" width="94.5" height="52.5"/>
   <object id="189" class="Level3" x="3007.92" y="856.667" width="40.5" height="155.5"/>
  </objectgroup>
- <objectgroup id="6" name="Event">
+ <objectgroup id="6" name="Event" visible="0">
   <object id="56" name="House inside" x="1720" y="1049.92" width="45.5" height="44"/>
   <object id="57" name="House outside" x="499.5" y="497.667" width="53" height="22.8333"/>
   <object id="66" name="inside door" x="1842" y="739" width="50.6667" height="25.5"/>

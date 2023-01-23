@@ -24,7 +24,7 @@ namespace Adventure_Game_CSharp
 
         //audio 
         Song dungeon;
-        private bool playingAudio = true;
+        private bool playingAudio = true;   
 
         private KeyboardState kStateOld;
         private Vector2 position = new Vector2(500, 600); //new Vector2(1792, 2042);
@@ -551,6 +551,25 @@ namespace Adventure_Game_CSharp
                     attacking = false;
                 }
             }
+        }
+
+        public void Restart()
+        {
+            position = new Vector2(500, 600);
+            level = 1;
+            if (inventory.Contains("Sword"))
+                inventory.Remove("Sword");
+
+            if (inventory.Contains("Key"))
+                inventory.Remove("Key");
+
+            health = 100;
+            collisionDir.Clear();
+            collisionDir.Add("");
+
+            MediaPlayer.Stop();
+            textDraw = 0;
+            textDrawTimer = 0;
         }
     }
 }

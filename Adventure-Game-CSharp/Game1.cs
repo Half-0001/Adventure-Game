@@ -39,6 +39,8 @@ namespace Adventure_Game_CSharp
 
         private bool modifiedCollisionBoxes = false;
         private bool inMenu = true;
+        public bool running = true;
+        public bool restart = false;
 
 
         public Game1()
@@ -83,6 +85,7 @@ namespace Adventure_Game_CSharp
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed) //Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
+            
             if (inMenu)
             {
                 this.camera.Position = new Vector2(450, 450);
@@ -95,6 +98,12 @@ namespace Adventure_Game_CSharp
             {
                 debugMode = !debugMode;
             }
+
+            if (kState.IsKeyDown(Keys.R) && !kStateOld.IsKeyDown(Keys.R))
+            {
+                Restart();
+            }
+
             kStateOld = kState;
 
             if (!inMenu)
@@ -181,6 +190,14 @@ namespace Adventure_Game_CSharp
 
             _spriteBatch.End();
             base.Draw(gameTime);
+        }
+
+        private void Restart()
+        {
+            player.Restart();
+            enemy.Restart(Content, _resolution, GraphicsDevice);
+            collisionManager.Restart(GraphicsDevice);
+            npc.Restart(Content, _resolution, GraphicsDevice);
         }
     }
 }
