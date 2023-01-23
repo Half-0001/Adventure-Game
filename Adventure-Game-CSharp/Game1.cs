@@ -8,13 +8,7 @@ using System;
 
 namespace Adventure_Game_CSharp
 {
-    enum Dir
-    {
-        Down,
-        Up,
-        Left,
-        Right,
-    }
+
     public class Game1 : Game
     {
         private GraphicsDeviceManager _graphics;
@@ -28,6 +22,7 @@ namespace Adventure_Game_CSharp
         EventManager eventManager = new EventManager(0, 0, 0, 0, "");
         Enemy enemy = new Enemy(0, 0, null, Point.Zero);
         NPC npc = new NPC(0, 0, null, Point.Zero);
+        Menu menu = new Menu();
 
         //textures
         Texture2D background;
@@ -43,6 +38,7 @@ namespace Adventure_Game_CSharp
         static KeyboardState kStateOld;
 
         private bool modifiedCollisionBoxes = false;
+        private bool inMenu = true;
 
 
         public Game1()
@@ -63,7 +59,7 @@ namespace Adventure_Game_CSharp
             eventManager.initTeleportManager(GraphicsDevice);
 
             this.camera = new Camera(_graphics.GraphicsDevice);
-            camera.Zoom = 2f;
+            camera.Zoom = 1f;
             base.Initialize();
 
             collisionManager.colliders.Add(new CollisionManager(npc.npcs[0].hitbox.X, npc.npcs[0].hitbox.Y, npc.npcs[0].hitbox.Size.X, npc.npcs[0].hitbox.Size.Y, "Level3"));
@@ -79,55 +75,19 @@ namespace Adventure_Game_CSharp
             player.LoadContent(Content, _resolution, GraphicsDevice);
             enemy.LoadContent(Content, _resolution, GraphicsDevice);
             npc.LoadContent(Content, _resolution, GraphicsDevice);
+            menu.LoadContent(Content, GraphicsDevice);
 
 
         }
 
         protected override void Update(GameTime gameTime)
         {
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-                Exit(); 
-            if (!player.accessingInventory)
+            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed) //Keyboard.GetState().IsKeyDown(Keys.Escape))
+                Exit();
+            if (inMenu)
             {
-                //manage collisions TODO: Move to player class
-                for (int i = 0; i < collisionManager.colliders.Count; i++)
-                {
-                    if (!collidingWith.Contains(i))
-                        if (player.playerRect.Intersects(collisionManager.colliders[i].rect)) //if player is colliding with a rect
-                        {
-                            collidingWith.Add(i); //stores all the objects that the player is colliding with in a list
-                        }
-                    if (player.playerRect.Intersects(collisionManager.colliders[i].rect) == false)
-                    {
-                        if (collidingWith.Contains(i))
-                            player.collisionDir.RemoveAt(collidingWith.IndexOf(i));
-                        collidingWith.Remove(i);
-                    }
-                }
-
-                //manage teleports TODO: Move to player class
-                for (int i = 0; i < eventManager.teleportColliders.Count; i++)
-                    if (player.playerRect.Intersects(eventManager.teleportColliders[i].teleportRect))
-                        eventRectName = eventManager.teleportColliders[i].rectName;
-
-
-                enemy.Update(gameTime, player.Position);
-                npc.Update(gameTime, counter, enemy.enemies.Count);
-
-                //add more enemies when player talks to npc
-                if (eventRectName == "NPC1" && counter == 0)
-                {
-                    enemy.AddEnemies(1, 284, 1139, 1554, 2324);
-                    counter++;
-                }
-                if (counter == 1 && enemy.enemies.Count == 0)
-                {
-                    collisionManager.colliders.RemoveAt(collisionManager.colliders.Count - 1);
-                    collisionManager.colliders.Add(new CollisionManager(npc.npcs[0].hitbox.X, npc.npcs[0].hitbox.Y, npc.npcs[0].hitbox.Size.X, npc.npcs[0].hitbox.Size.Y, "Level3"));
-                    enemy.AddEnemies2(1, 748, 1966, 3118, 3375);
-                    enemy.AddEnemies2(1, 2515, 3196, 1651, 3333);
-                }
-
+                this.camera.Position = new Vector2(450, 450);
+                inMenu = menu.Update();
             }
 
             //debug mode (press G to activate) - shows collision boxes
@@ -138,17 +98,65 @@ namespace Adventure_Game_CSharp
             }
             kStateOld = kState;
 
-            player.PlayerUpdate(gameTime, collidingWith.Count, eventRectName, enemy.enemies);
-            modifiedCollisionBoxes = collisionManager.OptimiseCollisions(eventRectName);
-            if (modifiedCollisionBoxes)
+            if (!inMenu)
             {
-                collidingWith.Clear();
-                modifiedCollisionBoxes = false;
-            }
-                
-            eventRectName = "";
+                camera.Zoom = 2f;
+                if (!player.accessingInventory)
+                {
+                    //manage collisions
+                    for (int i = 0; i < collisionManager.colliders.Count; i++)
+                    {
+                        if (!collidingWith.Contains(i))
+                            if (player.playerRect.Intersects(collisionManager.colliders[i].rect)) //if player is colliding with a rect
+                            {
+                                collidingWith.Add(i); //stores all the objects that the player is colliding with in a list
+                            }
+                        if (player.playerRect.Intersects(collisionManager.colliders[i].rect) == false)
+                        {
+                            if (collidingWith.Contains(i))
+                                player.collisionDir.RemoveAt(collidingWith.IndexOf(i));
+                            collidingWith.Remove(i);
+                        }
+                    }
 
-            this.camera.Position = player.Position;
+                    //manage teleports
+                    for (int i = 0; i < eventManager.teleportColliders.Count; i++)
+                        if (player.playerRect.Intersects(eventManager.teleportColliders[i].teleportRect))
+                            eventRectName = eventManager.teleportColliders[i].rectName;
+
+
+                    enemy.Update(gameTime, player.Position);
+                    npc.Update(gameTime, counter, enemy.enemies.Count);
+
+                    //add more enemies when player talks to npc
+                    if (eventRectName == "NPC1" && counter == 0)
+                    {
+                        enemy.AddEnemies(1, 284, 1139, 1554, 2324);
+                        counter++;
+                    }
+                    if (counter == 1 && enemy.enemies.Count == 0)
+                    {
+                        collisionManager.colliders.RemoveAt(collisionManager.colliders.Count - 1);
+                        collisionManager.colliders.Add(new CollisionManager(npc.npcs[0].hitbox.X, npc.npcs[0].hitbox.Y, npc.npcs[0].hitbox.Size.X, npc.npcs[0].hitbox.Size.Y, "Level3"));
+                        enemy.AddEnemies2(1, 748, 1966, 3118, 3375);
+                        enemy.AddEnemies2(1, 2515, 3196, 1651, 3333);
+                    }
+
+                }
+
+                player.PlayerUpdate(gameTime, collidingWith.Count, eventRectName, enemy.enemies);
+                modifiedCollisionBoxes = collisionManager.OptimiseCollisions(eventRectName);
+                if (modifiedCollisionBoxes)
+                {
+                    collidingWith.Clear();
+                    modifiedCollisionBoxes = false;
+                }
+
+                eventRectName = "";
+
+                this.camera.Position = player.Position;
+            }
+
             this.camera.Update(gameTime);
             base.Update(gameTime);
         }
@@ -158,14 +166,19 @@ namespace Adventure_Game_CSharp
             GraphicsDevice.Clear(Color.Black);
             _spriteBatch.Begin(this.camera);
 
-            _spriteBatch.Draw(background, new Vector2(0, 0), Color.White);
-            collisionManager.DrawCollisionBoxes(_spriteBatch, debugMode);
-            eventManager.DrawTeleportManager(_spriteBatch, debugMode);
+            if (!inMenu)
+            {
+                _spriteBatch.Draw(background, new Vector2(0, 0), Color.White);
+                collisionManager.DrawCollisionBoxes(_spriteBatch, debugMode);
+                eventManager.DrawTeleportManager(_spriteBatch, debugMode);
 
-            npc.Draw(_spriteBatch, debugMode);
-            enemy.Draw(_spriteBatch, debugMode);
-            player.PlayerDraw(_spriteBatch, debugMode, spriteFont);
+                npc.Draw(_spriteBatch, debugMode);
+                enemy.Draw(_spriteBatch, debugMode);
+                player.PlayerDraw(_spriteBatch, debugMode, spriteFont);
+            }
 
+            if (inMenu)
+                menu.Draw(_spriteBatch, debugMode);
 
             _spriteBatch.End();
             base.Draw(gameTime);

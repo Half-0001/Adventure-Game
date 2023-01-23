@@ -42,7 +42,6 @@ namespace Adventure_Game_CSharp
             for (int i = 0; i < eventLayer.objects.Length; i++)
             {
                 teleportColliders.Add(new EventManager((int)eventLayer.objects[i].x, (int)eventLayer.objects[i].y, (int)eventLayer.objects[i].width, (int)eventLayer.objects[i].height, eventLayer.objects[i].name));
-                Debug.WriteLine(eventLayer.objects[i].name);
             }
 
 

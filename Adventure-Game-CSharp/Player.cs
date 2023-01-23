@@ -12,6 +12,14 @@ namespace Adventure_Game_CSharp
 {
     internal class Player
     {
+        enum Dir
+        {
+            Down,
+            Up,
+            Left,
+            Right,
+        }
+
         private KeyboardState kStateOld;
         private Vector2 position = new Vector2(500, 600); //new Vector2(1792, 2042);
         private int speed = 100;

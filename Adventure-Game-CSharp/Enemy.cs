@@ -63,7 +63,7 @@ namespace Adventure_Game_CSharp
             _texture.SetData(new Color[] { Color.DarkSlateGray });
         }
 
-        public void Update(GameTime gameTime, Vector2 playerPosition) //TODO: Remove enemy hitbox as soon as its dead, not after cooldown.
+        public void Update(GameTime gameTime, Vector2 playerPosition)
         {
             float dt = (float)gameTime.ElapsedGameTime.TotalSeconds;
             for (int i = 0; i < enemies.Count; i++)
@@ -93,6 +93,7 @@ namespace Adventure_Game_CSharp
                 if (enemies[i].health <= 0)
                 {
                     enemies[i].enemySprite.Play("walk-down");
+                    enemies[i].attackHitbox = new Rectangle(0, 0, 0, 0);
                     enemies[i].timer += (float)gameTime.ElapsedGameTime.TotalSeconds;
                     if (enemies[i].timer > 1) //TODO: Make enemy dying animation
                         enemies.RemoveAt(i);
