@@ -62,7 +62,6 @@ namespace Adventure_Game_CSharp
             camera.Zoom = 1f;
             base.Initialize();
 
-            collisionManager.colliders.Add(new CollisionManager(npc.npcs[0].hitbox.X, npc.npcs[0].hitbox.Y, npc.npcs[0].hitbox.Size.X, npc.npcs[0].hitbox.Size.Y, "Level3"));
         }
 
         protected override void LoadContent()
@@ -145,7 +144,7 @@ namespace Adventure_Game_CSharp
                 }
 
                 player.PlayerUpdate(gameTime, collidingWith.Count, eventRectName, enemy.enemies);
-                modifiedCollisionBoxes = collisionManager.OptimiseCollisions(eventRectName);
+                modifiedCollisionBoxes = collisionManager.OptimiseCollisions(eventRectName, npc.npcs[0].hitbox);
                 if (modifiedCollisionBoxes)
                 {
                     collidingWith.Clear();

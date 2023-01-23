@@ -37,7 +37,10 @@ namespace Adventure_Game_CSharp
             mState = Mouse.GetState();
             mousePos.X = (int)mState.X;
             mousePos.Y = (int)mState.Y;
-            if (mousePos.Intersects(playButton))
+            if (Keyboard.GetState().IsKeyDown(Keys.Space))
+                return false;
+            
+            else if (mousePos.Intersects(playButton))
             {
                 selected = true;
                 if (mState.LeftButton == ButtonState.Pressed)

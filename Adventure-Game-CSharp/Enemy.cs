@@ -80,7 +80,7 @@ namespace Adventure_Game_CSharp
                     {
                         Vector2 dir = enemies[i].position - playerPosition;
                         dir.Normalize();
-                        enemies[i].attackHitbox = new Rectangle(enemies[i].hitbox.X + (int)(dir * 12).X, (int)enemies[i].hitbox.Y + (int)(dir * 12).Y, 10, 10);
+                        enemies[i].attackHitbox = new Rectangle(enemies[i].hitbox.X + (int)(dir * 6).X, (int)enemies[i].hitbox.Y + (int)(dir * 6).Y, 10, 10);
                         enemies[i].position -= dir * speed * dt;
                         if (dir.X > 0)
                             enemies[i].enemySprite.Play("walk-left");
@@ -92,10 +92,10 @@ namespace Adventure_Game_CSharp
 
                 if (enemies[i].health <= 0)
                 {
-                    enemies[i].enemySprite.Play("walk-down");
+                    enemies[i].enemySprite.Play("death");
                     enemies[i].attackHitbox = new Rectangle(0, 0, 0, 0);
                     enemies[i].timer += (float)gameTime.ElapsedGameTime.TotalSeconds;
-                    if (enemies[i].timer > 1) //TODO: Make enemy dying animation
+                    if (enemies[i].enemySprite.CurrentFrameIndex == 21) //TODO: Make enemy dying animation
                         enemies.RemoveAt(i);
                 }
             }

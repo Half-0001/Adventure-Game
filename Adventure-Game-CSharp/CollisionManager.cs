@@ -46,7 +46,7 @@ namespace Adventure_Game_CSharp
 
         }
 
-        public bool OptimiseCollisions(string teleportRectName) //loads and unloads collision boxes depending on where the player is on the map
+        public bool OptimiseCollisions(string teleportRectName, Rectangle npcHitbox) //loads and unloads collision boxes depending on where the player is on the map
         {
             
             if (teleportRectName != "") 
@@ -70,6 +70,7 @@ namespace Adventure_Game_CSharp
                         if (objectLayer.objects[i].@class == "Level3")
                             colliders.Add(new CollisionManager((int)objectLayer.objects[i].x, (int)objectLayer.objects[i].y, (int)objectLayer.objects[i].width, (int)objectLayer.objects[i].height, objectLayer.objects[i].@class));
                     }
+                    colliders.Add(new CollisionManager(npcHitbox.X, npcHitbox.Y, npcHitbox.Size.X, npcHitbox.Size.Y, "Level3"));
                     return true;
                 }
                 else

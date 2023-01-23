@@ -48,7 +48,7 @@ namespace Adventure_Game_CSharp
 
             //blank texture 
             _texture = new Texture2D(_graphics, 1, 1);
-            _texture.SetData(new Color[] { Color.DarkSlateGray });
+            _texture.SetData(new Color[] { Color.White });
         }
 
         public void Update(GameTime gameTime, int counter, int enemyCount) //TODO: Fix NPC hitbox before all enemies have been killed
@@ -65,9 +65,9 @@ namespace Adventure_Game_CSharp
             }
             if (counter == 1 && enemyCount == 0)
             {
-                npcs[0].position = new Vector2(1470, 2650);
+                npcs[0].position = new Vector2(1470, 2620);
                 npcs[0].hitbox = new Rectangle((int)npcs[0].position.X, (int)npcs[0].position.Y - 5, 30, 30);
-                npcs[0].npcSprite.Position = new Vector2(1470, 2660);
+                npcs[0].npcSprite.Position = new Vector2(1470, 2620);
                 npcs[0].npcSprite.Play("idle-left");
             }
         }
@@ -82,7 +82,7 @@ namespace Adventure_Game_CSharp
             if (debugMode)
                 for (int i = 0; i < npcs.Count; i++)
                 {
-                    _spriteBatch.Draw(_texture, npcs[i].hitbox, Color.White); //draw hitbox
+                    _spriteBatch.Draw(_texture, npcs[i].hitbox, Color.Blue); //draw hitbox
                 }
         }
     }
