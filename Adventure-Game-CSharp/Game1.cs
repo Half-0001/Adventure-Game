@@ -23,7 +23,7 @@ namespace Adventure_Game_CSharp
         Enemy enemy = new Enemy(0, 0, null, Point.Zero);
         NPC npc = new NPC(0, 0, null, Point.Zero);
         Menu menu = new Menu();
-        Boss boss = new Boss();
+        Boss boss = new Boss(0, 0);
 
         //textures
         Texture2D background;
@@ -39,7 +39,7 @@ namespace Adventure_Game_CSharp
         static KeyboardState kStateOld;
 
         private bool modifiedCollisionBoxes = false;
-        private bool inMenu = true;
+        private bool inMenu = false;
         //public bool running = true;
         //public bool restart = false;
 
@@ -78,7 +78,7 @@ namespace Adventure_Game_CSharp
             enemy.LoadContent(Content, _resolution, GraphicsDevice);
             npc.LoadContent(Content, _resolution, GraphicsDevice);
             menu.LoadContent(Content, GraphicsDevice);
-            boss.LoadContent(Content, _resolution);
+            boss.LoadContent(Content, _resolution, GraphicsDevice);
 
         }
 
@@ -170,7 +170,12 @@ namespace Adventure_Game_CSharp
             }
 
             if (player.level == 4)
-                boss.BossBattle();
+            {
+                camera.Zoom = 1f;
+                camera.Position = new Vector2(450, 450);
+                boss.BossBattle(gameTime);
+            }
+
 
             this.camera.Update(gameTime);
             base.Update(gameTime);
@@ -197,8 +202,11 @@ namespace Adventure_Game_CSharp
                 menu.Draw(_spriteBatch, debugMode);
 
             if (player.level == 4)
-                boss.DrawBossBattle(_spriteBatch);
-            
+            {
+                boss.DrawBossBattle(_spriteBatch, GraphicsDevice);
+            }
+
+                
 
             _spriteBatch.End();
             base.Draw(gameTime);
