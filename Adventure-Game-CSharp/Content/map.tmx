@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.9" tiledversion="1.9.2" orientation="orthogonal" renderorder="right-down" width="90" height="100" tilewidth="32" tileheight="32" infinite="1" nextlayerid="9" nextobjectid="195">
+<map version="1.9" tiledversion="1.9.2" orientation="orthogonal" renderorder="right-down" width="90" height="100" tilewidth="32" tileheight="32" infinite="1" nextlayerid="9" nextobjectid="197">
  <editorsettings>
   <export format="json"/>
  </editorsettings>
@@ -2353,7 +2353,7 @@
 </chunk>
   </data>
  </layer>
- <objectgroup id="4" name="Collision Boxes">
+ <objectgroup id="4" name="Collision Boxes" visible="0">
   <object id="8" class="Level1" x="704.667" y="511" width="61.6667" height="55.3333"/>
   <object id="11" class="Level1" x="544" y="799" width="64" height="63.6667"/>
   <object id="20" class="Level1" x="320" y="766.667" width="64" height="64"/>
@@ -2443,7 +2443,7 @@
   <object id="192" class="Level3" x="542" y="2420.67" width="194.667" height="224"/>
   <object id="193" class="Level3" x="2442.33" y="1019.67" width="110" height="40.5"/>
  </objectgroup>
- <objectgroup id="6" name="Event" visible="0">
+ <objectgroup id="6" name="Event">
   <object id="56" name="House inside" x="1720" y="1049.92" width="45.5" height="44"/>
   <object id="57" name="House outside" x="499.5" y="497.667" width="53" height="22.8333"/>
   <object id="66" name="inside door" x="1842" y="739" width="50.6667" height="25.5"/>
