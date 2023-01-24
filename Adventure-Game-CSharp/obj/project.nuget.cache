@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "QI7z2ecigHSMwfH8XJQpcg7EL1GXx0HHFF2glkreZwiMr7OdKBYwOalJ/Fb5/37mQF+PrmKzb6w5YQHzW8gxtg==",
+  "dgSpecHash": "YsD0qVsQVPHBozN5JOGdG6Y3ByuCh0S3BirEiVLXArxe36IRk1ycaUvjCtOU7AhuchDRUuoWzfLi8oTUYbyCag==",
   "success": true,
-  "projectFilePath": "C:\\Users\\nyleh\\OneDrive\\Documents\\GitHub\\Adventure-Game\\Adventure-Game-CSharp\\Adventure-Game-CSharp.csproj",
+  "projectFilePath": "C:\\Users\\nyleh\\Documents\\GitHub\\repos\\Adventure-Game\\Adventure-Game-CSharp\\Adventure-Game-CSharp.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\nyleh\\.nuget\\packages\\comora\\0.5.0\\comora.0.5.0.nupkg.sha512",
     "C:\\Users\\nyleh\\.nuget\\packages\\monogame.aseprite\\3.1.1\\monogame.aseprite.3.1.1.nupkg.sha512",

@@ -51,7 +51,7 @@ namespace Adventure_Game_CSharp
             _texture.SetData(new Color[] { Color.White });
         }
 
-        public void Update(GameTime gameTime, int counter, int enemyCount) //TODO: Fix NPC hitbox before all enemies have been killed
+        public void Update(GameTime gameTime, int counter, int enemyCount) 
         {
             float dt = (float)gameTime.ElapsedGameTime.TotalSeconds;
             if (counter != 1 && enemyCount != 0)

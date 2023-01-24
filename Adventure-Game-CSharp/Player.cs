@@ -46,6 +46,7 @@ namespace Adventure_Game_CSharp
         public bool accessingInventory = false;
         private int level = 1;
         private bool isMoving;
+        public bool restart = false;
         
 
         private string npcText = "In order for me to allow you passage you must first \nslay all the ghosts in this area";
@@ -90,7 +91,7 @@ namespace Adventure_Game_CSharp
                 accessingInventory = !accessingInventory;
             }
 
-            if (!accessingInventory)
+            if (!accessingInventory || !restart)
             {
                 if (!attacking)
                     isMoving = SetDirection(kState);
@@ -120,6 +121,9 @@ namespace Adventure_Game_CSharp
 
                 if (level == 3)
                 {
+                    if (health <= 0)
+                        restart = true;
+
                     if (!playingAudio)
                     {
                         MediaPlayer.Play(dungeon);
@@ -225,6 +229,7 @@ namespace Adventure_Game_CSharp
                 }
             }
 
+
             //text drawing logic
             if (eventTrigger == "display text 1")
             {
@@ -248,7 +253,7 @@ namespace Adventure_Game_CSharp
 
         public void PlayerDraw(SpriteBatch _spriteBatch, bool debugMode, SpriteFont spriteFont)
         {
-            if (!accessingInventory)
+            if (!accessingInventory || !restart)
             {
                 _sprite.Render(_spriteBatch);
 
@@ -299,6 +304,14 @@ namespace Adventure_Game_CSharp
             //    if (timer > 7.2 && timer < 10)
             //        _spriteBatch.DrawString(spriteFont, "(Press E to swing the sword)", new Vector2(position.X - (spriteFont.MeasureString("(Press E to swing the sword)").Length() * 0.35f) / 2, position.Y + 50), Color.White, 0f, new Vector2(0, 0), 0.35f, SpriteEffects.None, 0f);
             //}
+
+            if (restart)
+            {
+                _spriteBatch.Draw(_texture, coverScreen, Color.Black);
+                _spriteBatch.DrawString(spriteFont, "You Died!", new Vector2(position.X - (spriteFont.MeasureString("You Died!").Length() * 0.35f) / 2, position.Y - 50), Color.White, 0f, new Vector2(0, 0), 0.35f, SpriteEffects.None, 0f);
+                _spriteBatch.DrawString(spriteFont, "Press R to Restart!", new Vector2(position.X - (spriteFont.MeasureString("Press R to Restart!").Length() * 0.35f) / 2, position.Y), Color.White, 0f, new Vector2(0, 0), 0.35f, SpriteEffects.None, 0f);
+            }
+                
 
             if (debugMode)
             {
@@ -555,6 +568,8 @@ namespace Adventure_Game_CSharp
 
         public void Restart()
         {
+            eventTrigger = "";
+            restart = false;
             position = new Vector2(500, 600);
             level = 1;
             if (inventory.Contains("Sword"))
@@ -570,6 +585,7 @@ namespace Adventure_Game_CSharp
             MediaPlayer.Stop();
             textDraw = 0;
             textDrawTimer = 0;
+            timer = 0;
         }
     }
 }

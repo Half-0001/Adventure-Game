@@ -84,3 +84,10 @@ C:\Users\nyleh\OneDrive\Documents\GitHub\Adventure-Game\Adventure-Game-CSharp\bi
 C:\Users\nyleh\OneDrive\Documents\GitHub\Adventure-Game\Adventure-Game-CSharp\bin\Debug\net6.0\Content\play_white.xnb
 C:\Users\nyleh\OneDrive\Documents\GitHub\Adventure-Game\Adventure-Game-CSharp\bin\Debug\net6.0\Content\play_yellow.xnb
 C:\Users\nyleh\OneDrive\Documents\GitHub\Adventure-Game\Adventure-Game-CSharp\bin\Debug\net6.0\Content\sprites\Male 09-1.xnb
+C:\Users\nyleh\Documents\GitHub\repos\Adventure-Game\Adventure-Game-CSharp\bin\Debug\net6.0\Content\audio\dungeon.ogg
+C:\Users\nyleh\Documents\GitHub\repos\Adventure-Game\Adventure-Game-CSharp\bin\Debug\net6.0\Content\audio\dungeon.xnb
+C:\Users\nyleh\Documents\GitHub\repos\Adventure-Game\Adventure-Game-CSharp\bin\Debug\net6.0\Content\sprites\Enemy 15-1.xnb
+C:\Users\nyleh\Documents\GitHub\repos\Adventure-Game\Adventure-Game-CSharp\bin\Debug\net6.0\Content\sprites\Enemy 15-2.xnb
+C:\Users\nyleh\Documents\GitHub\repos\Adventure-Game\Adventure-Game-CSharp\bin\Debug\net6.0\Content\sprites\Male 01.xnb
+C:\Users\nyleh\Documents\GitHub\repos\Adventure-Game\Adventure-Game-CSharp\bin\Debug\net6.0\Content\sprites\Male 09-1.xnb
+C:\Users\nyleh\Documents\GitHub\repos\Adventure-Game\Adventure-Game-CSharp\bin\Debug\net6.0\Content\sprites\Male 16-1.xnb

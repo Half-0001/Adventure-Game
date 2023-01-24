@@ -39,8 +39,8 @@ namespace Adventure_Game_CSharp
 
         private bool modifiedCollisionBoxes = false;
         private bool inMenu = true;
-        public bool running = true;
-        public bool restart = false;
+        //public bool running = true;
+        //public bool restart = false;
 
 
         public Game1()
@@ -92,6 +92,14 @@ namespace Adventure_Game_CSharp
                 inMenu = menu.Update();
             }
 
+            if (player.restart || debugMode)
+            {
+                if (kState.IsKeyDown(Keys.R))
+                { 
+                    Restart();
+                }
+            }
+
             //debug mode (press G to activate) - shows collision boxes
             kState = Keyboard.GetState();
             if (kState.IsKeyDown(Keys.G) && !kStateOld.IsKeyDown(Keys.G))
@@ -99,17 +107,17 @@ namespace Adventure_Game_CSharp
                 debugMode = !debugMode;
             }
 
-            if (kState.IsKeyDown(Keys.R) && !kStateOld.IsKeyDown(Keys.R))
-            {
-                Restart();
-            }
+            //if (kState.IsKeyDown(Keys.R) && !kStateOld.IsKeyDown(Keys.R))
+            //{
+            //    Restart();
+            //}
 
             kStateOld = kState;
 
             if (!inMenu)
             {
                 camera.Zoom = 2f;
-                if (!player.accessingInventory)
+                if (!player.accessingInventory || !player.restart)
                 {
                     //manage collisions
                     for (int i = 0; i < collisionManager.colliders.Count; i++)
@@ -195,6 +203,7 @@ namespace Adventure_Game_CSharp
         private void Restart()
         {
             player.Restart();
+            counter = 0;
             enemy.Restart(Content, _resolution, GraphicsDevice);
             collisionManager.Restart(GraphicsDevice);
             npc.Restart(Content, _resolution, GraphicsDevice);
