@@ -108,14 +108,9 @@ namespace Adventure_Game_CSharp
                 debugMode = !debugMode;
             }
 
-            //if (kState.IsKeyDown(Keys.R) && !kStateOld.IsKeyDown(Keys.R))
-            //{
-            //    Restart();
-            //}
-
             kStateOld = kState;
 
-            if (!inMenu)
+            if (!inMenu && player.level != 4)
             {
                 camera.Zoom = 2f;
                 if (!player.accessingInventory || !player.restart)
@@ -156,12 +151,12 @@ namespace Adventure_Game_CSharp
                         collisionManager.colliders.RemoveAt(collisionManager.colliders.Count - 1);
                         collisionManager.colliders.Add(new CollisionManager(npc.npcs[0].hitbox.X, npc.npcs[0].hitbox.Y, npc.npcs[0].hitbox.Size.X, npc.npcs[0].hitbox.Size.Y, "Level3"));
                         enemy.AddEnemies2(1, 748, 1966, 3118, 3375);
-                        enemy.AddEnemies2(1, 2515, 3196, 1651, 3333);
+                        enemy.AddEnemies2(1, 2470, 3196, 1651, 3333);
                     }
 
                 }
 
-                player.PlayerUpdate(gameTime, collidingWith.Count, eventRectName, enemy.enemies);
+                player.PlayerUpdate(gameTime, collidingWith.Count, eventRectName, enemy.enemies, debugMode);
                 modifiedCollisionBoxes = collisionManager.OptimiseCollisions(eventRectName, npc.npcs[0].hitbox);
                 if (modifiedCollisionBoxes)
                 {
@@ -174,6 +169,9 @@ namespace Adventure_Game_CSharp
                 this.camera.Position = player.Position;
             }
 
+            if (player.level == 4)
+                boss.BossBattle();
+
             this.camera.Update(gameTime);
             base.Update(gameTime);
         }
@@ -183,7 +181,7 @@ namespace Adventure_Game_CSharp
             GraphicsDevice.Clear(Color.Black);
             _spriteBatch.Begin(this.camera);
 
-            if (!inMenu)
+            if (!inMenu && player.level != 4)
             {
                 _spriteBatch.Draw(background, new Vector2(0, 0), Color.White);
                 collisionManager.DrawCollisionBoxes(_spriteBatch, debugMode);
@@ -192,12 +190,15 @@ namespace Adventure_Game_CSharp
                 npc.Draw(_spriteBatch, debugMode);
                 enemy.Draw(_spriteBatch, debugMode);
                 player.PlayerDraw(_spriteBatch, debugMode, spriteFont);
+                boss.Draw(_spriteBatch);
             }
 
             if (inMenu)
                 menu.Draw(_spriteBatch, debugMode);
 
-            boss.Draw(_spriteBatch);
+            if (player.level == 4)
+                boss.DrawBossBattle(_spriteBatch);
+            
 
             _spriteBatch.End();
             base.Draw(gameTime);

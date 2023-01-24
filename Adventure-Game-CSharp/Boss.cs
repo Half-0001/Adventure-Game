@@ -10,15 +10,20 @@ namespace Adventure_Game_CSharp
 {
     internal class Boss
     {
+
+        //pre battle
         AsepriteDocument asepritefile;
         AnimatedSprite bossSprite;
+
+        //battle
+        
         public void LoadContent(ContentManager Content, Point _resolution)
         {
             asepritefile = Content.Load<AsepriteDocument>("sprites/Male 09-1");
             bossSprite = new AnimatedSprite(asepritefile);
             bossSprite.Scale = new Vector2(1.0f, 1.0f);
             bossSprite.Y = _resolution.Y - (bossSprite.Height * bossSprite.Scale.Y) - 16;
-            bossSprite.Position = new Vector2(2477, 770);
+            bossSprite.Position = new Vector2(2477, 760);
         }
 
         public void Update(string eventTrigger, GameTime gameTime)
@@ -48,12 +53,21 @@ namespace Adventure_Game_CSharp
                 bossSprite.Play("idle-up");
 
             bossSprite.Update(gameTime);
-                
+        }
+
+        public void BossBattle()
+        {
+
         }
 
         public void Draw(SpriteBatch _spriteBatch)
         {
             bossSprite.Render(_spriteBatch);
+        }
+
+        public void DrawBossBattle(SpriteBatch _spriteBatch)
+        {
+
         }
 
     }

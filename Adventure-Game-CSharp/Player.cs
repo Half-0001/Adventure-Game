@@ -44,7 +44,7 @@ namespace Adventure_Game_CSharp
         private bool attacking = false;
         private List<string> inventory = new List<string> { "Bottle 'O Pop ", "Bones" };
         public bool accessingInventory = false;
-        private int level = 1;
+        public int level = 1;
         private bool isMoving;
         public bool restart = false;
         
@@ -77,7 +77,7 @@ namespace Adventure_Game_CSharp
             MediaPlayer.IsRepeating = true;
             MediaPlayer.Volume = 0.5f;
         }
-        public void PlayerUpdate(GameTime gameTime, int amountOfCollisions, string eventRectName, List<Enemy> enemies)
+        public void PlayerUpdate(GameTime gameTime, int amountOfCollisions, string eventRectName, List<Enemy> enemies, bool debugMode)
         {
             KeyboardState kState = Keyboard.GetState();
             float dt = (float)gameTime.ElapsedGameTime.TotalSeconds;
@@ -87,6 +87,11 @@ namespace Adventure_Game_CSharp
             coverScreen.X = (int)position.X - 250;
             coverScreen.Y = (int)position.Y - 250;
 
+            if (debugMode)
+                speed = 300;
+            if (!debugMode)
+                speed = 100;
+
             //check if player is accessing inventory 
             if (kState.IsKeyDown(Keys.Tab) && !kStateOld.IsKeyDown(Keys.Tab))
             {
@@ -95,7 +100,7 @@ namespace Adventure_Game_CSharp
 
             if (!accessingInventory || !restart)
             {
-                if (!attacking)
+                if (!attacking  && eventTrigger != "Boss" && eventTrigger != "Boss text 2")
                     isMoving = SetDirection(kState);
                 
                 if (isMoving && !attacking  && eventTrigger != "Boss" && eventTrigger != "Boss text 2") //move player and play animations
@@ -252,6 +257,7 @@ namespace Adventure_Game_CSharp
 
             if (eventTrigger == "Boss")
             {
+                _sprite.Play("idle-up");
                 if (textDraw < bossText.Length)
                 {
                     textDrawTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
@@ -270,12 +276,12 @@ namespace Adventure_Game_CSharp
                     textDrawTimer = 0;
                     eventTrigger = "Boss text 2";
                     textDraw = 0;
-                    Debug.WriteLine("text variables reset");
                 }
             }
 
             if (eventTrigger == "Boss text 2")
             {
+                _sprite.Play("idle-up");
                 if (textDraw < bossText2.Length)
                 {
                     textDrawTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
@@ -288,6 +294,10 @@ namespace Adventure_Game_CSharp
                 if (textDraw == bossText2.Length && textDrawTimer < 4)
                 {
                     textDrawTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
+                }
+                if (textDraw == bossText2.Length && textDrawTimer > 4)
+                {
+                    level = 4;
                 }
             }
             _sprite.Update(dt);
@@ -532,7 +542,7 @@ namespace Adventure_Game_CSharp
                     inventory.Remove("Key");
                     eventTrigger = "house 4 text 2";
                     timer = 0;
-                    position = new Vector2(2488, 994);
+                    position = new Vector2(2488, 944);
                     textDraw = 0;
                     textDrawTimer = 0;
                 }
