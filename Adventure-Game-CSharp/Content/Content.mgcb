@@ -64,6 +64,18 @@
 /processorParam:InnerPadding=0
 /build:../../assets/PIPOYA FREE RPG Character Sprites 32x32/Male/anim/Male 01.aseprite;sprites/Male 01.aseprite
 
+#begin ../../assets/PIPOYA FREE RPG Character Sprites 32x32/Male/anim/Male 09-1-Upscaled.aseprite
+/importer:AsepriteDocumentImporter
+/processor:AsepriteDocumentProcessor
+/processorParam:SheetType=Packed
+/processorParam:MergeDuplicateFrames=True
+/processorParam:IgnoreEmptyFrames=True
+/processorParam:OnlyVisibleLayers=True
+/processorParam:BorderPadding=0
+/processorParam:Spacing=0
+/processorParam:InnerPadding=0
+/build:../../assets/PIPOYA FREE RPG Character Sprites 32x32/Male/anim/Male 09-1-Upscaled.aseprite;sprites/Male 09-1-Upscaled.aseprite
+
 #begin ../../assets/PIPOYA FREE RPG Character Sprites 32x32/Male/anim/Male 09-1.aseprite
 /importer:AsepriteDocumentImporter
 /processor:AsepriteDocumentProcessor

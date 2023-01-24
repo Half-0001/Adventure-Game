@@ -23,7 +23,7 @@ namespace Adventure_Game_CSharp
         Enemy enemy = new Enemy(0, 0, null, Point.Zero);
         NPC npc = new NPC(0, 0, null, Point.Zero);
         Menu menu = new Menu();
-        Boss boss = new Boss(0, 0);
+        Boss boss = new Boss(0, 0, new Vector2(0, 0));
 
         //textures
         Texture2D background;

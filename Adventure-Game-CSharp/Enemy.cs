@@ -27,6 +27,7 @@ namespace Adventure_Game_CSharp
         AsepriteDocument asepritefile;
         AsepriteDocument asepritefile2;
         Texture2D _texture;
+
         Point resolution;
 
         public Enemy(int positionX, int positionY, AsepriteDocument asepritefile, Point _resolution)
