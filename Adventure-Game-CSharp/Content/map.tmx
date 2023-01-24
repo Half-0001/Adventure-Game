@@ -2440,10 +2440,10 @@
   <object id="187" class="Level3" x="3164.92" y="990.167" width="87.1667" height="66"/>
   <object id="188" class="Level3" x="3012.42" y="992.167" width="94.5" height="52.5"/>
   <object id="189" class="Level3" x="3007.92" y="856.667" width="40.5" height="155.5"/>
-  <object id="192" x="542" y="2420.67" width="194.667" height="224"/>
-  <object id="193" x="2442.33" y="1019.67" width="110" height="40.5"/>
+  <object id="192" class="Level3" x="542" y="2420.67" width="194.667" height="224"/>
+  <object id="193" class="Level3" x="2442.33" y="1019.67" width="110" height="40.5"/>
  </objectgroup>
- <objectgroup id="6" name="Event">
+ <objectgroup id="6" name="Event" visible="0">
   <object id="56" name="House inside" x="1720" y="1049.92" width="45.5" height="44"/>
   <object id="57" name="House outside" x="499.5" y="497.667" width="53" height="22.8333"/>
   <object id="66" name="inside door" x="1842" y="739" width="50.6667" height="25.5"/>
@@ -2456,7 +2456,7 @@
   <object id="152" name="Dungeon house 1 inside" x="2458" y="355.5" width="74" height="30"/>
   <object id="153" name="Dungeon house 2 inside" x="3095.5" y="359" width="83" height="31"/>
   <object id="154" name="Dungeon house 3 inside" x="3090" y="1032.5" width="91.5" height="32"/>
-  <object id="155" name="Dungeon house 4 inside" x="2449" y="1120" width="79" height="32"/>
+  <object id="155" name="Dungeon house 4 inside" x="2393.5" y="876" width="201.5" height="15"/>
   <object id="190" name="Chest" x="2421.5" y="190.5" width="48" height="68"/>
  </objectgroup>
 </map>

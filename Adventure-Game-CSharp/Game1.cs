@@ -23,13 +23,14 @@ namespace Adventure_Game_CSharp
         Enemy enemy = new Enemy(0, 0, null, Point.Zero);
         NPC npc = new NPC(0, 0, null, Point.Zero);
         Menu menu = new Menu();
+        Boss boss = new Boss();
 
         //textures
         Texture2D background;
         SpriteFont spriteFont;
 
         //variables
-        private List<int> collidingWith = new List<int>();
+        private  List<int> collidingWith = new List<int>();
         private string eventRectName;
         private int counter = 0;
 
@@ -77,7 +78,7 @@ namespace Adventure_Game_CSharp
             enemy.LoadContent(Content, _resolution, GraphicsDevice);
             npc.LoadContent(Content, _resolution, GraphicsDevice);
             menu.LoadContent(Content, GraphicsDevice);
-
+            boss.LoadContent(Content, _resolution);
 
         }
 
@@ -140,7 +141,7 @@ namespace Adventure_Game_CSharp
                         if (player.playerRect.Intersects(eventManager.teleportColliders[i].teleportRect))
                             eventRectName = eventManager.teleportColliders[i].rectName;
 
-
+                    boss.Update(player.eventTrigger);
                     enemy.Update(gameTime, player.Position);
                     npc.Update(gameTime, counter, enemy.enemies.Count);
 
@@ -195,6 +196,8 @@ namespace Adventure_Game_CSharp
 
             if (inMenu)
                 menu.Draw(_spriteBatch, debugMode);
+
+            boss.Draw(_spriteBatch);
 
             _spriteBatch.End();
             base.Draw(gameTime);

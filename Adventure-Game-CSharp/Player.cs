@@ -36,7 +36,7 @@ namespace Adventure_Game_CSharp
         private Texture2D _texture;
         public List<string> collisionDir = new List<string> { "" };
         private int amountOfCollisionsOld = 0;
-        private string eventTrigger = "";
+        public string eventTrigger = "";
         private float timer = 0;
         private AnimatedSprite _sprite;
         private int health = 100;
@@ -49,7 +49,9 @@ namespace Adventure_Game_CSharp
         public bool restart = false;
         
 
-        private string npcText = "In order for me to allow you passage you must first \nslay all the ghosts in this area";
+        private string npcText = "Phillip: \nIn order for me to allow you passage you must first \nslay all the ghosts in this area";
+        private string bossText = "Nathaniel: \n Well done traveller, You have defeated my ghosts. \n Everyone will know that your foolishness is what \nlead you to your death";
+        private string bossText2 = "Nathaniel: \n Prepare to die  .   .   .";
         private int textDraw;
         private float textDrawTimer;
 
@@ -96,7 +98,7 @@ namespace Adventure_Game_CSharp
                 if (!attacking)
                     isMoving = SetDirection(kState);
                 
-                if (isMoving && !attacking) //move player and play animations
+                if (isMoving && !attacking  && eventTrigger != "Boss" && eventTrigger != "Boss text 2") //move player and play animations
                 {
                     MovePlayer(dt);
                 }
@@ -247,6 +249,47 @@ namespace Adventure_Game_CSharp
                     textDrawTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
                 }
             }
+
+            if (eventTrigger == "Boss")
+            {
+                if (textDraw < bossText.Length)
+                {
+                    textDrawTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
+                    if (textDrawTimer > 0.05)
+                    {
+                        textDraw++;
+                        textDrawTimer = 0;
+                    }
+                }
+                if (textDraw == bossText.Length && textDrawTimer < 4)
+                {
+                    textDrawTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
+                }
+                if (textDraw == bossText.Length && textDrawTimer > 4)
+                {
+                    textDrawTimer = 0;
+                    eventTrigger = "Boss text 2";
+                    textDraw = 0;
+                    Debug.WriteLine("text variables reset");
+                }
+            }
+
+            if (eventTrigger == "Boss text 2")
+            {
+                if (textDraw < bossText2.Length)
+                {
+                    textDrawTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
+                    if (textDrawTimer > 0.05)
+                    {
+                        textDraw++;
+                        textDrawTimer = 0;
+                    }
+                }
+                if (textDraw == bossText2.Length && textDrawTimer < 4)
+                {
+                    textDrawTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
+                }
+            }
             _sprite.Update(dt);
             kStateOld = kState;
         }
@@ -262,9 +305,9 @@ namespace Adventure_Game_CSharp
                     if (timer <= 5)
                         _spriteBatch.DrawString(spriteFont, "The door locks behind you, the only way through is down the hole", new Vector2(position.X - 200, position.Y - 200), Color.White, 0f, new Vector2(0, 0), 0.35f, SpriteEffects.None, 0f);
 
-                if (eventTrigger == "house 4 text 2")
+                if (eventTrigger == "house 4 text 2" && eventTrigger != "Boss")
                     if (timer <= 5)
-                        _spriteBatch.DrawString(spriteFont, "You use the key to enter the house, The rust on the lock prevents you from retrieving the key", new Vector2(position.X - 200, position.Y - 200), Color.White, 0f, new Vector2(0, 0), 0.35f, SpriteEffects.None, 0f);
+                        _spriteBatch.DrawString(spriteFont, "You use the key to enter the house, The rust on the lock prevents you from retrieving it", new Vector2(position.X - 200, position.Y - 200), Color.White, 0f, new Vector2(0, 0), 0.35f, SpriteEffects.None, 0f);
 
                 if (eventTrigger == "house 4 text 1")
                     if (timer <= 2)
@@ -279,12 +322,23 @@ namespace Adventure_Game_CSharp
                 _spriteBatch.DrawString(spriteFont, "Health: " + health.ToString(), new Vector2(position.X - (spriteFont.MeasureString("Health: " + health.ToString()).Length() * 0.5f) / 2, position.Y + 200), Color.Red, 0f, new Vector2(0, 0), 0.5f, SpriteEffects.None, 0f);
 
 
-                //draw text box
+                //draw text and textbox
                 if (eventTrigger == "display text 1" && textDrawTimer < 4)
                 {
-                    _spriteBatch.Draw(_texture, new Rectangle((int)position.X - 120, (int)position.Y + 140, 280, 80), Color.White);
-                    _spriteBatch.Draw(_texture, new Rectangle((int)position.X - 115, (int)position.Y + 145, 270, 70), Color.Black);
+                    DrawTextBox(_spriteBatch);
                     _spriteBatch.DrawString(spriteFont, npcText.Remove(textDraw, npcText.Length - textDraw), new Vector2(position.X - 110, position.Y + 145), Color.White, 0f, new Vector2(0, 0), 0.35f, SpriteEffects.None, 0f);
+                }
+
+                if (eventTrigger == "Boss" && textDrawTimer < 4)
+                {
+                    DrawTextBox(_spriteBatch);
+                    _spriteBatch.DrawString(spriteFont, bossText.Remove(textDraw, bossText.Length - textDraw), new Vector2(position.X - 110, position.Y + 145), Color.White, 0f, new Vector2(0, 0), 0.35f, SpriteEffects.None, 0f);
+                }
+
+                if (eventTrigger == "Boss text 2" && textDrawTimer < 4)
+                {
+                    DrawTextBox(_spriteBatch);
+                    _spriteBatch.DrawString(spriteFont, bossText2.Remove(textDraw, bossText2.Length - textDraw), new Vector2(position.X - 110, position.Y + 145), Color.White, 0f, new Vector2(0, 0), 0.35f, SpriteEffects.None, 0f);
                 }
             }
 
@@ -475,9 +529,12 @@ namespace Adventure_Game_CSharp
                 }
                 else
                 {
+                    inventory.Remove("Key");
                     eventTrigger = "house 4 text 2";
                     timer = 0;
                     position = new Vector2(2488, 994);
+                    textDraw = 0;
+                    textDrawTimer = 0;
                 }
                     
             }
@@ -488,10 +545,15 @@ namespace Adventure_Game_CSharp
                 eventTrigger = "Chest";
             }
 
-            if (eventRectName == "Dungeon house 4 inside")
+            if (eventTrigger != "Boss text 2")
             {
-                position = new Vector2(1648, 1935);
+                if (eventRectName == "Dungeon house 4 inside")
+                {
+                    //position = new Vector2(1648, 1935);
+                    eventTrigger = "Boss";
+                }
             }
+
             
             if (eventRectName == "Chest")
             {
@@ -586,6 +648,12 @@ namespace Adventure_Game_CSharp
             textDraw = 0;
             textDrawTimer = 0;
             timer = 0;
+        }
+
+        private void DrawTextBox(SpriteBatch _spriteBatch)
+        {
+            _spriteBatch.Draw(_texture, new Rectangle((int)position.X - 120, (int)position.Y + 140, 280, 80), Color.White);
+            _spriteBatch.Draw(_texture, new Rectangle((int)position.X - 115, (int)position.Y + 145, 270, 70), Color.Black);
         }
     }
 }
