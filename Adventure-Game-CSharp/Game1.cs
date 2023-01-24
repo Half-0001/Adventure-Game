@@ -141,7 +141,7 @@ namespace Adventure_Game_CSharp
                         if (player.playerRect.Intersects(eventManager.teleportColliders[i].teleportRect))
                             eventRectName = eventManager.teleportColliders[i].rectName;
 
-                    boss.Update(player.eventTrigger);
+                    boss.Update(player.eventTrigger, gameTime);
                     enemy.Update(gameTime, player.Position);
                     npc.Update(gameTime, counter, enemy.enemies.Count);
 

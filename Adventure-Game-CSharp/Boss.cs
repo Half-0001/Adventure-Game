@@ -21,7 +21,7 @@ namespace Adventure_Game_CSharp
             bossSprite.Position = new Vector2(2477, 770);
         }
 
-        public void Update(string eventTrigger)
+        public void Update(string eventTrigger, GameTime gameTime)
         {
             if (eventTrigger == "Boss" || eventTrigger == "Boss text 2")
             {
@@ -46,6 +46,8 @@ namespace Adventure_Game_CSharp
             }
             else
                 bossSprite.Play("idle-up");
+
+            bossSprite.Update(gameTime);
                 
         }
 
