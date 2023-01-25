@@ -399,7 +399,7 @@ namespace Adventure_Game_CSharp
                 while (bullets.Count < 40)
                     bullets.Add(new Boss(rand.Next(-400, 0), rand.Next(-400, 400), new Vector2(630, 600)));
 
-            if (timer > 20)
+            if (timer > 18)
             {
                 stage++;
                 bullets.Clear();
