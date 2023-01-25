@@ -44,7 +44,7 @@ namespace Adventure_Game_CSharp
         private bool attacking = false;
         private List<string> inventory = new List<string> { "Bottle 'O Pop ", "Bones" };
         public bool accessingInventory = false;
-        public int level = 4; //0 for game start, 4 for boss fight
+        public int level = 0; //0 for game start, 4 for boss fight
         private bool isMoving;
         public bool restart = false;
         
@@ -298,6 +298,7 @@ namespace Adventure_Game_CSharp
                 if (textDraw == bossText2.Length && textDrawTimer > 4)
                 {
                     level = 4;
+                    MediaPlayer.Stop();
                 }
             }
             _sprite.Update(dt);
