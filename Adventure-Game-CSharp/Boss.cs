@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using MonoGame.Aseprite.Documents;
 using System;
 using System.Diagnostics;
+using System.Runtime.CompilerServices;
 
 namespace Adventure_Game_CSharp
 {
@@ -30,7 +31,12 @@ namespace Adventure_Game_CSharp
         Rectangle playerRect = new Rectangle(0, 0, 20, 20);
         KeyboardState kState = new KeyboardState();
         int speed = 70;
-        
+        int playerHealth = 100;
+        bool canBeAttacked = true;
+        float cooldownTimer; //timer for invincibility cooldown before the player can be attacked again
+        bool playerCanAttack = false;
+        int selectedButton = 1;
+
 
         //list to store bullets in
         private List<Boss> bullets = new List<Boss>();
@@ -38,10 +44,11 @@ namespace Adventure_Game_CSharp
         private Vector2 bulletPosition;
         private Rectangle bulletRect = new Rectangle(0, 0, 10, 10);
         private Vector2 dir;
+        private int bulletSpeed = 100;
 
         //timing variables
         private float timer = 0;
-        private int stage = 0;
+        private int stage = 3;
 
         //constructor
         public Boss(int randomX, int randomY, Vector2 position)
@@ -115,54 +122,72 @@ namespace Adventure_Game_CSharp
 
             //set the elapsed game time since last frame 
             float dt = (float)gameTime.ElapsedGameTime.TotalSeconds;
+            kState = Keyboard.GetState(); //set keyboard state
 
-            kState = Keyboard.GetState();
-            //set speed to be half if player is moving diagonally, so the player speed is not doubled
-            if ((kState.IsKeyDown(Keys.W) && (kState.IsKeyDown(Keys.A) || kState.IsKeyDown(Keys.D))) || (kState.IsKeyDown(Keys.S) && (kState.IsKeyDown(Keys.A) || kState.IsKeyDown(Keys.D))))
-                speed = 55;
-            else
-                speed = 70;
-
-
-            if (kState.IsKeyDown(Keys.W)) //player movement and boundries
-                if (playerPosition.Y > 460) 
-                    playerPosition.Y -= speed * dt;
-
-            if (kState.IsKeyDown(Keys.S))
-                if (playerPosition.Y < 740)
-                    playerPosition.Y += speed * dt;
-
-            if (kState.IsKeyDown(Keys.A))
-                if (playerPosition.X > 310)
-                    playerPosition.X -= speed * dt;
-
-            if (kState.IsKeyDown(Keys.D))
-                if (playerPosition.X < 590)
-                    playerPosition.X += speed * dt;
-
-            //set player rect to its positions
-            playerRect.X = (int)playerPosition.X - 10;
-            playerRect.Y = (int)playerPosition.Y - 10;
-
-            Debug.WriteLine(bullets.Count);
-
-            //bullet movement and rect
-            if (bullets.Count != 0)
+            if (playerCanAttack)
+                PlayerAttack();
+                
+            if (playerCanAttack == false)
             {
+                MovePlayer(dt);
+
+                //bullet movement and rect
+                if (bullets.Count != 0)
+                {
+                    for (int i = 0; i < bullets.Count; i++)
+                    {
+                        bullets[i].bulletPosition += bullets[i].dir * bulletSpeed * dt;
+
+                        bullets[i].bulletRect.X = (int)bullets[i].bulletPosition.X;
+                        bullets[i].bulletRect.Y = (int)bullets[i].bulletPosition.Y;
+                    }
+                }
+
+                //getting hit by bullets
                 for (int i = 0; i < bullets.Count; i++)
                 {
-                    bullets[i].bulletPosition += bullets[i].dir * 2;
-
-                    bullets[i].bulletRect.X = (int)bullets[i].bulletPosition.X;
-                    bullets[i].bulletRect.Y = (int)bullets[i].bulletPosition.Y;
+                    if (playerRect.Intersects(bullets[i].bulletRect)) //getting hit by enemies
+                    {
+                        if (canBeAttacked)
+                        {
+                            playerHealth -= 15;
+                            cooldownTimer = 0;
+                            canBeAttacked = false;
+                            break;
+                        }
+                    }
                 }
+
+                if (canBeAttacked == false)
+                {
+                    cooldownTimer += (float)gameTime.ElapsedGameTime.TotalSeconds; //cooldown before the player can be attacked again
+                    if (cooldownTimer > 2)
+                        canBeAttacked = true;
+                }
+
+                if (stage == 1)
+                    Level1(gameTime);
+
+                if (stage == 2)
+                {
+                    bulletSpeed = 150;
+                    Level1(gameTime);
+                }
+
+                if (stage == 3)
+                {
+                    bulletSpeed = 100;
+                    Level2(gameTime);
+                }
+
+                if (stage == 4)
+                {
+                    bulletSpeed = 150;
+                    Level2(gameTime);
+                }
+
             }
-
-            if (stage == 1)
-                Level1(gameTime);
-
-            if (stage == 2)
-                Level1(gameTime);
+            
 
 
         }
@@ -183,21 +208,63 @@ namespace Adventure_Game_CSharp
             _spriteBatch.Draw(_texture, new Rectangle(300, 150, 300, 30), Color.Black);
             _spriteBatch.Draw(_texture, new Rectangle(300, 150, bossHealth * 3, 30), Color.DarkRed);
 
-            //draw bounding box 
-            _spriteBatch.Draw(_texture, new Rectangle(295, 445, 310, 310), Color.White);
-            _spriteBatch.Draw(_texture, new Rectangle(300, 450, 300, 300), Color.Black);
-
-            //draw player rect
-            _spriteBatch.Draw(_texture, playerRect, Color.Red);
-
-            //draw bullets 
-            for (int i = 0; i < bullets.Count; i++)
+            if (playerCanAttack == false)
             {
-                _spriteBatch.Draw(_texture, bullets[i].bulletRect, Color.White);
+                //draw bounding box 
+                _spriteBatch.Draw(_texture, new Rectangle(295, 445, 310, 310), Color.White);
+                _spriteBatch.Draw(_texture, new Rectangle(300, 450, 300, 300), Color.Black);
+
+                //draw player rect and health
+                _spriteBatch.Draw(_texture, playerRect, Color.Red);
+
+                _spriteBatch.DrawString(spriteFont, "Health:", new Vector2(295, 760), Color.White, 0f, new Vector2(0, 0), 1f, SpriteEffects.None, 0f);
+                _spriteBatch.Draw(_texture, new Rectangle(295, 805, 310, 40), Color.White);
+                _spriteBatch.Draw(_texture, new Rectangle(300, 810, 300, 30), Color.Black);
+                _spriteBatch.Draw(_texture, new Rectangle(300, 810, playerHealth * 3, 30), Color.DarkGreen);
+
+                //draw bullets 
+                for (int i = 0; i < bullets.Count; i++)
+                {
+                    _spriteBatch.Draw(_texture, bullets[i].bulletRect, Color.White);
+                }
+            }
+
+            if (playerCanAttack)
+            {
+                DrawPlayerAttack(_spriteBatch);
             }
         }
+        private void MovePlayer(float dt)
+        {
+            //set speed to be half if player is moving diagonally, so the player speed is not doubled
+            if ((kState.IsKeyDown(Keys.W) && (kState.IsKeyDown(Keys.A) || kState.IsKeyDown(Keys.D))) || (kState.IsKeyDown(Keys.S) && (kState.IsKeyDown(Keys.A) || kState.IsKeyDown(Keys.D))))
+                speed = 55;
+            else
+                speed = 70;
 
-        public void Level1(GameTime gameTime)
+
+            if (kState.IsKeyDown(Keys.W)) //player movement and boundries
+                if (playerPosition.Y > 460)
+                    playerPosition.Y -= speed * dt;
+
+            if (kState.IsKeyDown(Keys.S))
+                if (playerPosition.Y < 740)
+                    playerPosition.Y += speed * dt;
+
+            if (kState.IsKeyDown(Keys.A))
+                if (playerPosition.X > 310)
+                    playerPosition.X -= speed * dt;
+
+            if (kState.IsKeyDown(Keys.D))
+                if (playerPosition.X < 590)
+                    playerPosition.X += speed * dt;
+
+            //set player rect to its positions
+            playerRect.X = (int)playerPosition.X - 10;
+            playerRect.Y = (int)playerPosition.Y - 10;
+        }
+
+        private void Level1(GameTime gameTime)
         {
             timer += (float)gameTime.ElapsedGameTime.TotalSeconds;
             //if (timer > 2)
@@ -222,10 +289,83 @@ namespace Adventure_Game_CSharp
 
             if (timer > 20)
             {
-                stage = 2;
+                stage++;
                 bullets.Clear();
+                playerCanAttack = true;
                 timer = 0;
             }
+        }
+
+        private void Level2(GameTime gameTime)
+        {
+            timer += (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+            if (timer > 5)
+                while (bullets.Count < 10)
+                    bullets.Add(new Boss(rand.Next(0, 100), rand.Next(-100, 100), new Vector2(270, 600)));
+
+            if (timer > 8)
+                while (bullets.Count < 20)
+                    bullets.Add(new Boss(rand.Next(-100, 0), rand.Next(-100, 100), new Vector2(630, 600)));
+
+            if (timer > 11)
+                while (bullets.Count < 30)
+                    bullets.Add(new Boss(rand.Next(0, 100), rand.Next(-100, 100), new Vector2(270, 600)));
+
+            if (timer > 14)
+                while (bullets.Count < 40)
+                    bullets.Add(new Boss(rand.Next(-100, 0), rand.Next(-100, 100), new Vector2(630, 600)));
+
+            if (timer > 20)
+            {
+                stage++;
+                bullets.Clear();
+                playerCanAttack = true;
+                timer = 0;
+            }
+        }
+
+        private void PlayerAttack()
+        {
+            if (selectedButton == 1)
+            {
+                if (kState.IsKeyDown(Keys.D))
+                    selectedButton = 2;
+
+                if (kState.IsKeyDown(Keys.Space))
+                {
+                    bossHealth -= 20;
+                    playerCanAttack = false;
+                    return;
+                }
+            }
+
+            if (selectedButton == 2)
+            {
+                if (kState.IsKeyDown(Keys.A))
+                    selectedButton = 1;
+            }
+        }
+
+        private void DrawPlayerAttack(SpriteBatch _spriteBatch)
+        {
+
+            if (selectedButton == 1)
+            {
+                _spriteBatch.Draw(_texture, new Rectangle(230, 550, 140, 40), Color.Yellow);
+                _spriteBatch.Draw(_texture, new Rectangle(530, 550, 150, 40), Color.White);
+
+            }
+            if (selectedButton == 2)
+            {
+                _spriteBatch.Draw(_texture, new Rectangle(230, 550, 140, 40), Color.White);
+                _spriteBatch.Draw(_texture, new Rectangle(530, 550, 150, 40), Color.Yellow);
+            }
+
+            _spriteBatch.Draw(_texture, new Rectangle(235, 555, 130, 30), Color.SlateGray);
+            _spriteBatch.Draw(_texture, new Rectangle(535, 555, 140, 30), Color.SlateGray);
+            _spriteBatch.DrawString(spriteFont, "Attack", new Vector2(260, 550), Color.White, 0f, new Vector2(0, 0), 0.8f, SpriteEffects.None, 0f);
+            _spriteBatch.DrawString(spriteFont, "Give Up", new Vector2(560, 550), Color.White, 0f, new Vector2(0, 0), 0.8f, SpriteEffects.None, 0f);
         }
     }
 }
