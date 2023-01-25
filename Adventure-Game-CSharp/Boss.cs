@@ -45,10 +45,11 @@ namespace Adventure_Game_CSharp
         private Rectangle bulletRect = new Rectangle(0, 0, 10, 10);
         private Vector2 dir;
         private int bulletSpeed = 100;
+        private int bulletSpread = -100;
 
         //timing variables
         private float timer = 0;
-        private int stage = 3;
+        private int stage = 0;
 
         //constructor
         public Boss(int randomX, int randomY, Vector2 position)
@@ -186,9 +187,25 @@ namespace Adventure_Game_CSharp
                     Level2(gameTime);
                 }
 
-            }
-            
+                if (stage == 5)
+                {
+                    bulletSpeed = 100;
+                    Level3(gameTime);
+                }
 
+                if (stage == 6)
+                {
+                    bulletSpeed = 150;
+                    Level3(gameTime);
+                }
+
+                if (stage == 7)
+                {
+                    bulletSpeed = 80;
+                    Level4(gameTime);
+                }
+
+            }
 
         }
 
@@ -317,6 +334,75 @@ namespace Adventure_Game_CSharp
                     bullets.Add(new Boss(rand.Next(-100, 0), rand.Next(-100, 100), new Vector2(630, 600)));
 
             if (timer > 20)
+            {
+                stage++;
+                bullets.Clear();
+                playerCanAttack = true;
+                timer = 0;
+            }
+        }
+
+        private void Level3(GameTime gameTime)
+        {
+            timer += (float)gameTime.ElapsedGameTime.TotalSeconds;
+            if (timer > 2)
+                if (bulletSpread + 1 != 101)
+                    bulletSpread += 30;
+
+            if (bullets.Count % 20 == 0)
+                bulletSpread = -100;
+
+            if (timer > 2)
+                if (bullets.Count < 20)
+                    bullets.Add(new Boss(100, bulletSpread, new Vector2(270, 600)));
+
+            if (timer > 4)
+                if (bullets.Count < 40)
+                    bullets.Add(new Boss(-100, bulletSpread, new Vector2(630, 600)));
+
+
+            if (timer > 6)
+                if (bullets.Count < 60)
+                    bullets.Add(new Boss(100, bulletSpread, new Vector2(270, 600)));
+
+            if (timer > 8)
+                if (bullets.Count < 80)
+                    bullets.Add(new Boss(-100, bulletSpread, new Vector2(630, 600)));
+
+            if (timer > 10)
+            {
+                stage++;
+                bullets.Clear();
+                playerCanAttack = true;
+                timer = 0;
+            }
+        }
+
+        private void Level4(GameTime gameTime)
+        {
+            timer += (float)gameTime.ElapsedGameTime.TotalSeconds;
+            if (timer > 2)
+                if (bulletSpread + 1 != 101)
+                    bulletSpread += 30;
+
+            if (bullets.Count % 40 == 0)
+                bulletSpread = -100;
+
+            if (timer > 2)
+                if (bullets.Count < 40)
+                {
+                    bullets.Add(new Boss(100, bulletSpread, new Vector2(270, 600)));
+                    bullets.Add(new Boss(-100, bulletSpread, new Vector2(630, 600)));
+                }
+
+            if (timer > 4)
+                if (bullets.Count < 80)
+                {
+                    bullets.Add(new Boss(100, bulletSpread, new Vector2(270, 600)));
+                    bullets.Add(new Boss(-100, bulletSpread, new Vector2(630, 600)));
+                }
+
+            if (timer > 9)
             {
                 stage++;
                 bullets.Clear();
