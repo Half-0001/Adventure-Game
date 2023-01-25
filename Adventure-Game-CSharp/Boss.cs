@@ -19,6 +19,7 @@ namespace Adventure_Game_CSharp
         AnimatedSprite bossSprite;
         AsepriteDocument bossSpriteUpscaled;
         Texture2D _texture;
+        Texture2D heart;
         SpriteFont spriteFont;
 
 
@@ -36,7 +37,13 @@ namespace Adventure_Game_CSharp
         float cooldownTimer; //timer for invincibility cooldown before the player can be attacked again
         bool playerCanAttack = false;
         int selectedButton = 1;
+        bool playerAttackDelay = false;
 
+        //arena 
+        //Rectangle arenaRectWhite = new Rectangle(295, 445, 300, 300);
+        //Rectangle arenaRectBlack = new Rectangle(300, 450, 290, 290);
+        Rectangle arenaRectWhite = new Rectangle(295, 445, 0, 0);
+        Rectangle arenaRectBlack = new Rectangle(300, 450, 0, 0);
 
         //list to store bullets in
         private List<Boss> bullets = new List<Boss>();
@@ -50,6 +57,8 @@ namespace Adventure_Game_CSharp
         //timing variables
         private float timer = 0;
         private int stage = 0;
+        private bool animateArenaExpand = true;
+        private bool animateArenaRetract = false;
 
         //constructor
         public Boss(int randomX, int randomY, Vector2 position)
@@ -70,6 +79,8 @@ namespace Adventure_Game_CSharp
             bossSprite.Scale = new Vector2(1.0f, 1.0f);
             bossSprite.Y = _resolution.Y - (bossSprite.Height * bossSprite.Scale.Y) - 16;
             bossSprite.Position = new Vector2(2477, 760);
+
+            heart = Content.Load<Texture2D>("sprites/heart");
 
             //blank texture 
             _texture = new Texture2D(_graphics, 1, 1);
@@ -126,7 +137,7 @@ namespace Adventure_Game_CSharp
             kState = Keyboard.GetState(); //set keyboard state
 
             if (playerCanAttack)
-                PlayerAttack();
+                PlayerAttack(gameTime);
                 
             if (playerCanAttack == false)
             {
@@ -166,43 +177,41 @@ namespace Adventure_Game_CSharp
                         canBeAttacked = true;
                 }
 
-                if (stage == 1)
-                    Level1(gameTime);
-
-                if (stage == 2)
+                if (animateArenaExpand)
                 {
-                    bulletSpeed = 150;
-                    Level1(gameTime);
+                    AnimateArenaExpand(gameTime);
                 }
 
-                if (stage == 3)
+                if (animateArenaRetract)
                 {
-                    bulletSpeed = 100;
-                    Level2(gameTime);
+                    AnimateArenaRetract(gameTime);
                 }
-
-                if (stage == 4)
+                
+                if (animateArenaExpand == false && animateArenaRetract == false)
                 {
-                    bulletSpeed = 150;
-                    Level2(gameTime);
-                }
+                    if (stage == 1)
+                    {
+                        bulletSpeed = 150;
+                        Level1(gameTime);
+                    }
 
-                if (stage == 5)
-                {
-                    bulletSpeed = 100;
-                    Level3(gameTime);
-                }
+                    if (stage == 2)
+                    {
+                        bulletSpeed = 100;
+                        Level2(gameTime);
+                    }
 
-                if (stage == 6)
-                {
-                    bulletSpeed = 150;
-                    Level3(gameTime);
-                }
+                    if (stage == 3)
+                    {
+                        bulletSpeed = 150;
+                        Level3(gameTime);
+                    }
 
-                if (stage == 7)
-                {
-                    bulletSpeed = 80;
-                    Level4(gameTime);
+                    if (stage == 4)
+                    {
+                        bulletSpeed = 80;
+                        Level4(gameTime);
+                    }
                 }
 
             }
@@ -220,24 +229,30 @@ namespace Adventure_Game_CSharp
 
             //draw boss and health rect
             bossSprite.Render(_spriteBatch);
-            _spriteBatch.DrawString(spriteFont, "Boss Health:", new Vector2(295, 100), Color.White, 0f, new Vector2(0, 0), 1f, SpriteEffects.None, 0f);
-            _spriteBatch.Draw(_texture, new Rectangle(295, 145, 310, 40), Color.White);
-            _spriteBatch.Draw(_texture, new Rectangle(300, 150, 300, 30), Color.Black);
-            _spriteBatch.Draw(_texture, new Rectangle(300, 150, bossHealth * 3, 30), Color.DarkRed);
+            if (playerCanAttack)
+            {
+                _spriteBatch.DrawString(spriteFont, "Boss Health:", new Vector2(295, 100), Color.White, 0f, new Vector2(0, 0), 1f, SpriteEffects.None, 0f);
+                _spriteBatch.Draw(_texture, new Rectangle(295, 145, 310, 40), Color.White);
+                _spriteBatch.Draw(_texture, new Rectangle(300, 150, 300, 30), Color.Black);
+                _spriteBatch.Draw(_texture, new Rectangle(300, 150, bossHealth * 3, 30), Color.DarkRed);
+            }
+
+            //draw bounding box 
+            _spriteBatch.Draw(_texture, arenaRectWhite, Color.White);
+            _spriteBatch.Draw(_texture, arenaRectBlack, Color.Black);
 
             if (playerCanAttack == false)
             {
-                //draw bounding box 
-                _spriteBatch.Draw(_texture, new Rectangle(295, 445, 310, 310), Color.White);
-                _spriteBatch.Draw(_texture, new Rectangle(300, 450, 300, 300), Color.Black);
-
                 //draw player rect and health
-                _spriteBatch.Draw(_texture, playerRect, Color.Red);
+                if (animateArenaExpand == false && animateArenaRetract == false)
+                {
+                    _spriteBatch.Draw(heart, playerRect, Color.Red);
+                    _spriteBatch.DrawString(spriteFont, "Health:", new Vector2(295, 760), Color.White, 0f, new Vector2(0, 0), 1f, SpriteEffects.None, 0f);
+                    _spriteBatch.Draw(_texture, new Rectangle(295, 805, 310, 40), Color.White);
+                    _spriteBatch.Draw(_texture, new Rectangle(300, 810, 300, 30), Color.Black);
+                    _spriteBatch.Draw(_texture, new Rectangle(300, 810, playerHealth * 3, 30), Color.DarkGreen);
+                }
 
-                _spriteBatch.DrawString(spriteFont, "Health:", new Vector2(295, 760), Color.White, 0f, new Vector2(0, 0), 1f, SpriteEffects.None, 0f);
-                _spriteBatch.Draw(_texture, new Rectangle(295, 805, 310, 40), Color.White);
-                _spriteBatch.Draw(_texture, new Rectangle(300, 810, 300, 30), Color.Black);
-                _spriteBatch.Draw(_texture, new Rectangle(300, 810, playerHealth * 3, 30), Color.DarkGreen);
 
                 //draw bullets 
                 for (int i = 0; i < bullets.Count; i++)
@@ -261,19 +276,19 @@ namespace Adventure_Game_CSharp
 
 
             if (kState.IsKeyDown(Keys.W)) //player movement and boundries
-                if (playerPosition.Y > 460)
+                if (playerPosition.Y > 460) //top
                     playerPosition.Y -= speed * dt;
 
             if (kState.IsKeyDown(Keys.S))
-                if (playerPosition.Y < 740)
+                if (playerPosition.Y < 730) //down
                     playerPosition.Y += speed * dt;
 
             if (kState.IsKeyDown(Keys.A))
-                if (playerPosition.X > 310)
+                if (playerPosition.X > 310) //left
                     playerPosition.X -= speed * dt;
 
             if (kState.IsKeyDown(Keys.D))
-                if (playerPosition.X < 590)
+                if (playerPosition.X < 580) //right
                     playerPosition.X += speed * dt;
 
             //set player rect to its positions
@@ -289,27 +304,29 @@ namespace Adventure_Game_CSharp
             //        bullets.Add(new Boss(rand.Next(-100, 50), rand.Next(-100, 50), new Vector2(270, 350)));
 
             if (timer > 5)
-                while (bullets.Count < 10)
-                    bullets.Add(new Boss(rand.Next(0, 360), rand.Next(0, 360), new Vector2(270, 350)));
+                while (bullets.Count < 15)
+                    bullets.Add(new Boss(rand.Next(0, 400), rand.Next(0, 400), new Vector2(200, 350)));
 
-            if (timer > 8)
-                while (bullets.Count < 20)
-                    bullets.Add(new Boss(rand.Next(-360, 0), rand.Next(0, 360), new Vector2(630, 350)));
+            if (timer > 7)
+                while (bullets.Count < 30)
+                    bullets.Add(new Boss(rand.Next(-400, 0), rand.Next(0, 400), new Vector2(700, 350)));
+
+            if (timer > 9)
+                while (bullets.Count < 45)
+                    bullets.Add(new Boss(rand.Next(0, 400), rand.Next(0, 400), new Vector2(200, 350)));
 
             if (timer > 11)
-                while (bullets.Count < 30)
-                    bullets.Add(new Boss(rand.Next(0, 360), rand.Next(0, 360), new Vector2(270, 350)));
+                while (bullets.Count < 60)
+                    bullets.Add(new Boss(rand.Next(-400, 0), rand.Next(0, 400), new Vector2(700, 350)));
 
-            if (timer > 14)
-                while (bullets.Count < 40)
-                    bullets.Add(new Boss(rand.Next(-360, 0), rand.Next(0, 360), new Vector2(630, 350)));
-
-            if (timer > 20)
+            if (timer > 17)
             {
                 stage++;
                 bullets.Clear();
-                playerCanAttack = true;
+                //playerCanAttack = true;
+                animateArenaRetract = true;
                 timer = 0;
+                
             }
         }
 
@@ -319,25 +336,26 @@ namespace Adventure_Game_CSharp
 
             if (timer > 5)
                 while (bullets.Count < 10)
-                    bullets.Add(new Boss(rand.Next(0, 100), rand.Next(-100, 100), new Vector2(270, 600)));
+                    bullets.Add(new Boss(rand.Next(0, 400), rand.Next(-400, 400), new Vector2(270, 600)));
 
             if (timer > 8)
                 while (bullets.Count < 20)
-                    bullets.Add(new Boss(rand.Next(-100, 0), rand.Next(-100, 100), new Vector2(630, 600)));
+                    bullets.Add(new Boss(rand.Next(-400, 0), rand.Next(-400, 400), new Vector2(630, 600)));
 
             if (timer > 11)
                 while (bullets.Count < 30)
-                    bullets.Add(new Boss(rand.Next(0, 100), rand.Next(-100, 100), new Vector2(270, 600)));
+                    bullets.Add(new Boss(rand.Next(0, 400), rand.Next(-400, 400), new Vector2(270, 600)));
 
             if (timer > 14)
                 while (bullets.Count < 40)
-                    bullets.Add(new Boss(rand.Next(-100, 0), rand.Next(-100, 100), new Vector2(630, 600)));
+                    bullets.Add(new Boss(rand.Next(-400, 0), rand.Next(-400, 400), new Vector2(630, 600)));
 
             if (timer > 20)
             {
                 stage++;
                 bullets.Clear();
-                playerCanAttack = true;
+                //playerCanAttack = true;
+                animateArenaRetract = true;
                 timer = 0;
             }
         }
@@ -373,7 +391,8 @@ namespace Adventure_Game_CSharp
             {
                 stage++;
                 bullets.Clear();
-                playerCanAttack = true;
+                //playerCanAttack = true;
+                animateArenaRetract = true;
                 timer = 0;
             }
         }
@@ -406,31 +425,49 @@ namespace Adventure_Game_CSharp
             {
                 stage++;
                 bullets.Clear();
-                playerCanAttack = true;
+                //playerCanAttack = true;
+                animateArenaRetract = true;
                 timer = 0;
             }
         }
 
-        private void PlayerAttack()
+        private void PlayerAttack(GameTime gameTime)
         {
-            if (selectedButton == 1)
-            {
-                if (kState.IsKeyDown(Keys.D))
-                    selectedButton = 2;
+            timer += (float)gameTime.ElapsedGameTime.TotalSeconds;
 
-                if (kState.IsKeyDown(Keys.Space))
+            if (playerAttackDelay != true)
+            {
+                if (selectedButton == 1)
                 {
-                    bossHealth -= 20;
-                    playerCanAttack = false;
-                    return;
+                    if (kState.IsKeyDown(Keys.D))
+                        selectedButton = 2;
+
+                    if (kState.IsKeyDown(Keys.Space))
+                    {
+                        bossHealth -= 20;
+                        timer = 0;
+                        //playerCanAttack = false;
+                        playerAttackDelay = true;
+                    }
+                }
+
+                else if (selectedButton == 2)
+                {
+                    if (kState.IsKeyDown(Keys.A))
+                        selectedButton = 1;
                 }
             }
 
-            if (selectedButton == 2)
+
+            if (playerAttackDelay)
             {
-                if (kState.IsKeyDown(Keys.A))
-                    selectedButton = 1;
+                if (timer > 3)
+                {
+                    animateArenaExpand = true;
+                    playerCanAttack = false;
+                }
             }
+
         }
 
         private void DrawPlayerAttack(SpriteBatch _spriteBatch)
@@ -452,6 +489,86 @@ namespace Adventure_Game_CSharp
             _spriteBatch.Draw(_texture, new Rectangle(535, 555, 140, 30), Color.SlateGray);
             _spriteBatch.DrawString(spriteFont, "Attack", new Vector2(260, 550), Color.White, 0f, new Vector2(0, 0), 0.8f, SpriteEffects.None, 0f);
             _spriteBatch.DrawString(spriteFont, "Give Up", new Vector2(560, 550), Color.White, 0f, new Vector2(0, 0), 0.8f, SpriteEffects.None, 0f);
+        }
+
+        private void AnimateArenaRetract(GameTime gameTime)
+        {
+            timer += (float)gameTime.ElapsedGameTime.TotalSeconds;
+            if (arenaRectWhite.Width > 10)
+            {
+                if (timer > 0.01)
+                {
+                    arenaRectWhite.Width -= 6;
+                    arenaRectBlack.Width -= 6;
+                    
+                    timer = 0;
+
+                }
+            }
+
+            if (arenaRectWhite.Width <= 10)
+            {
+                arenaRectWhite.Width = 10;
+                arenaRectBlack.Width = 0;
+
+                if (arenaRectWhite.Height > 0)
+                {
+                    if (timer > 0.01)
+                    {
+                        arenaRectWhite.Height -= 6;
+                        //arenaRectBlack.Height -= 6;
+                        timer = 0;
+                    }
+                }
+
+                else
+                {
+                    timer = 0;
+                    arenaRectWhite.Width = 0;
+                    arenaRectWhite.Height = 0;
+                    playerCanAttack = true;
+                    animateArenaRetract = false;
+                }
+            }
+
+
+        }
+
+        private void AnimateArenaExpand(GameTime gameTime)
+        {
+            timer += (float)gameTime.ElapsedGameTime.TotalSeconds;
+            if (arenaRectWhite.Height != 300)
+            {
+                arenaRectWhite.Width = 10;
+                if (timer > 0.01)
+                {
+                    arenaRectWhite.Height += 6;
+                    //arenaRectBlack.Height += 6;
+                    timer = 0;
+                }
+            }
+
+            if (arenaRectWhite.Height == 300)
+            {
+                arenaRectBlack.Height = 290;
+
+                if (arenaRectWhite.Width < 300)
+                {
+                    if (timer > 0.01)
+                    {
+                        arenaRectWhite.Width += 6;
+                        arenaRectBlack.Width += 6;
+                        timer = 0;
+                    }
+                }
+                else
+                {
+                    timer = 0;
+                    arenaRectBlack.Width = 290;
+                    arenaRectWhite.Width = 300;
+                    animateArenaExpand = false;
+                }
+            }
         }
     }
 }
