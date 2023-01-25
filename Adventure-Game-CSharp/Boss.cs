@@ -8,6 +8,7 @@ using MonoGame.Aseprite.Documents;
 using System;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
+using System.Linq.Expressions;
 
 namespace Adventure_Game_CSharp
 {
@@ -61,7 +62,7 @@ namespace Adventure_Game_CSharp
         private bool animateArenaRetract = false;
 
         //constructor
-        public Boss(int randomX, int randomY, Vector2 position)
+        public Boss(float randomX, float randomY, Vector2 position)
         {
             if (randomX != 0 && randomY != 0)
             {
@@ -125,12 +126,13 @@ namespace Adventure_Game_CSharp
             if (stage == 0)
             {
                 bossSprite = new AnimatedSprite(bossSpriteUpscaled);
-                bossSprite.Position = new Vector2(340, 250);
+                bossSprite.Position = new Vector2(340, 242);
                 bossSprite.Scale = new Vector2(0.8f, 0.8f);
                 stage = 1;
             }
-            bossSprite.Play("idle-down");
-            bossSprite.Update(gameTime);
+            if (playerCanAttack == false)
+                bossSprite.Play("idle-down");
+
 
             //set the elapsed game time since last frame 
             float dt = (float)gameTime.ElapsedGameTime.TotalSeconds;
@@ -138,7 +140,9 @@ namespace Adventure_Game_CSharp
 
             if (playerCanAttack)
                 PlayerAttack(gameTime);
-                
+
+            bossSprite.Update(gameTime);
+
             if (playerCanAttack == false)
             {
                 MovePlayer(dt);
@@ -191,13 +195,13 @@ namespace Adventure_Game_CSharp
                 {
                     if (stage == 1)
                     {
-                        bulletSpeed = 150;
+                        bulletSpeed = 200;
                         Level1(gameTime);
                     }
 
                     if (stage == 2)
                     {
-                        bulletSpeed = 100;
+                        bulletSpeed = 150;
                         Level2(gameTime);
                     }
 
@@ -212,10 +216,20 @@ namespace Adventure_Game_CSharp
                         bulletSpeed = 80;
                         Level4(gameTime);
                     }
+
+                    if (stage == 5)
+                    {
+                        bulletSpeed = 100;
+                        Level5(gameTime);
+                    }
+
+                    if (stage == 6)
+                    {
+                        bulletSpeed = 150;
+                        Level6(gameTime);
+                    }
                 }
-
             }
-
         }
 
         public void Draw(SpriteBatch _spriteBatch)
@@ -296,7 +310,7 @@ namespace Adventure_Game_CSharp
             playerRect.Y = (int)playerPosition.Y - 10;
         }
 
-        private void Level1(GameTime gameTime)
+        private void Level2(GameTime gameTime)
         {
             timer += (float)gameTime.ElapsedGameTime.TotalSeconds;
             //if (timer > 2)
@@ -330,7 +344,7 @@ namespace Adventure_Game_CSharp
             }
         }
 
-        private void Level2(GameTime gameTime)
+        private void Level1(GameTime gameTime)
         {
             timer += (float)gameTime.ElapsedGameTime.TotalSeconds;
 
@@ -411,14 +425,14 @@ namespace Adventure_Game_CSharp
                 if (bullets.Count < 40)
                 {
                     bullets.Add(new Boss(100, bulletSpread, new Vector2(270, 600)));
-                    bullets.Add(new Boss(-100, bulletSpread, new Vector2(630, 600)));
+                    bullets.Add(new Boss(-100, bulletSpread + 15, new Vector2(630, 600)));
                 }
 
             if (timer > 4)
                 if (bullets.Count < 80)
                 {
                     bullets.Add(new Boss(100, bulletSpread, new Vector2(270, 600)));
-                    bullets.Add(new Boss(-100, bulletSpread, new Vector2(630, 600)));
+                    bullets.Add(new Boss(-100, bulletSpread + 15, new Vector2(630, 600)));
                 }
 
             if (timer > 9)
@@ -433,10 +447,12 @@ namespace Adventure_Game_CSharp
 
         private void PlayerAttack(GameTime gameTime)
         {
+            if (selectedButton == 3)
             timer += (float)gameTime.ElapsedGameTime.TotalSeconds;
 
             if (playerAttackDelay != true)
             {
+                bossSprite.Play("idle-down");
                 if (selectedButton == 1)
                 {
                     if (kState.IsKeyDown(Keys.D))
@@ -444,10 +460,10 @@ namespace Adventure_Game_CSharp
 
                     if (kState.IsKeyDown(Keys.Space))
                     {
-                        bossHealth -= 20;
-                        timer = 0;
+
                         //playerCanAttack = false;
                         playerAttackDelay = true;
+                        selectedButton = 3;
                     }
                 }
 
@@ -461,12 +477,21 @@ namespace Adventure_Game_CSharp
 
             if (playerAttackDelay)
             {
-                if (timer > 3)
+                bossSprite.Play("attacked");
+                if (bossSprite.CurrentFrameIndex == 27)
                 {
-                    animateArenaExpand = true;
-                    playerCanAttack = false;
+                    bossHealth -= 19;
+                    timer = 0;
+                    playerAttackDelay = false;
                 }
             }
+            if (timer > 2)
+            {
+                animateArenaExpand = true;
+                playerCanAttack = false;
+                playerAttackDelay = false;
+            }
+            
 
         }
 
@@ -477,7 +502,6 @@ namespace Adventure_Game_CSharp
             {
                 _spriteBatch.Draw(_texture, new Rectangle(230, 550, 140, 40), Color.Yellow);
                 _spriteBatch.Draw(_texture, new Rectangle(530, 550, 150, 40), Color.White);
-
             }
             if (selectedButton == 2)
             {
@@ -526,6 +550,7 @@ namespace Adventure_Game_CSharp
                     timer = 0;
                     arenaRectWhite.Width = 0;
                     arenaRectWhite.Height = 0;
+                    selectedButton = 1;
                     playerCanAttack = true;
                     animateArenaRetract = false;
                 }
@@ -568,6 +593,218 @@ namespace Adventure_Game_CSharp
                     arenaRectWhite.Width = 300;
                     animateArenaExpand = false;
                 }
+            }
+        }
+
+        private void Level5 (GameTime gameTime)
+        {
+            timer += (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+            if (timer > 2)
+                if (bullets.Count < 40)
+                {
+                    bullets.Add(new Boss(rand.Next(-400, 400), rand.Next(-400, 400), new Vector2(270, 600)));
+                    bullets.Add(new Boss(rand.Next(-400, 400), rand.Next(-400, 400), new Vector2(630, 600)));
+                }
+
+            if (timer > 4)
+                if (bullets.Count < 80)
+                {
+                    bullets.Add(new Boss(rand.Next(-400, 400), rand.Next(-400, 400), new Vector2(270, 600)));
+                    bullets.Add(new Boss(rand.Next(-400, 400), rand.Next(-400, 400), new Vector2(630, 600)));
+                }
+
+            if (timer > 6)
+                if (bullets.Count < 120)
+                {
+                    bullets.Add(new Boss(rand.Next(-400, 400), rand.Next(-400, 400), new Vector2(270, 600)));
+                    bullets.Add(new Boss(rand.Next(-400, 400), rand.Next(-400, 400), new Vector2(630, 600)));
+                }
+
+            if (timer > 8)
+                if (bullets.Count < 160)
+                {
+                    bullets.Add(new Boss(rand.Next(-400, 400), rand.Next(-400, 400), new Vector2(270, 600)));
+                    bullets.Add(new Boss(rand.Next(-400, 400), rand.Next(-400, 400), new Vector2(630, 600)));
+                }
+
+            if (timer > 12)
+            {
+                stage++;
+                bullets.Clear();
+                //playerCanAttack = true;
+                animateArenaRetract = true;
+                timer = 0;
+            }
+        }
+
+        private void Level6(GameTime gameTime)
+        {
+            timer += (float)gameTime.ElapsedGameTime.TotalSeconds;
+            if (timer > 2)
+            //    if (bulletSpread + 1 != 101)
+            //        bulletSpread += 30;
+
+            //if (bullets.Count % 40 == 0)
+            //    bulletSpread = -100;
+
+
+            while (bullets.Count < 30)
+                bullets.Add(new Boss(rand.Next(-400, 400), rand.Next(0, 400), new Vector2(450, 350)));
+
+
+            if (timer > 3 && timer < 4)
+            {
+                int random = rand.Next(1, 3);
+
+                while (bullets.Count < 38)
+                {
+                    if (random == 1)
+                        bullets.Add(new Boss(100, 0.01f, new Vector2(270, rand.Next(460, 600))));
+
+                    if (random == 2)
+                        bullets.Add(new Boss(100, 0.01f, new Vector2(270, rand.Next(600, 730))));
+                }
+            }
+
+
+            if (timer > 4)
+                while (bullets.Count < 68)
+                    bullets.Add(new Boss(rand.Next(-400, 400), rand.Next(0, 400), new Vector2(450, 350)));
+
+            if (timer > 5 && timer < 6)
+            {
+                int random = rand.Next(1, 3);
+                while (bullets.Count < 76)
+                {
+                    if (random == 1)
+                        bullets.Add(new Boss(100, 0.01f, new Vector2(270, rand.Next(460, 600))));
+
+                    if (random == 2)
+                        bullets.Add(new Boss(100, 0.01f, new Vector2(270, rand.Next(600, 730))));
+                }
+            }
+
+            if (timer > 6)
+                while (bullets.Count < 106)
+                    bullets.Add(new Boss(rand.Next(-400, 400), rand.Next(0, 400), new Vector2(450, 350)));
+
+            if (timer > 7 && timer < 8)
+            {
+                int random = rand.Next(1, 3);
+
+                while (bullets.Count < 121)
+                {
+                    if (random == 1)
+                        bullets.Add(new Boss(100, 0.01f, new Vector2(270, rand.Next(460, 600))));
+
+                    if (random == 2)
+                        bullets.Add(new Boss(100, 0.01f, new Vector2(270, rand.Next(600, 730))));
+                }
+            }
+
+
+            if (timer > 8)
+                while (bullets.Count < 151)
+                    bullets.Add(new Boss(rand.Next(-400, 400), rand.Next(0, 400), new Vector2(450, 350)));
+
+            if (timer > 9 && timer < 10)
+            {
+                int random = rand.Next(1, 3);
+                while (bullets.Count < 166)
+                {
+                    if (random == 1)
+                        bullets.Add(new Boss(100, 0.01f, new Vector2(270, rand.Next(460, 600))));
+
+                    if (random == 2)
+                        bullets.Add(new Boss(100, 0.01f, new Vector2(270, rand.Next(600, 730))));
+                }
+            }
+
+            if (timer > 10)
+                while (bullets.Count < 196)
+                    bullets.Add(new Boss(rand.Next(-400, 400), rand.Next(0, 400), new Vector2(450, 350)));
+
+            if (timer > 11 && timer < 12)
+            {
+                int random = rand.Next(1, 3);
+
+                while (bullets.Count < 204)
+                {
+                    if (random == 1)
+                        bullets.Add(new Boss(100, 0.01f, new Vector2(270, rand.Next(460, 600))));
+
+                    if (random == 2)
+                        bullets.Add(new Boss(100, 0.01f, new Vector2(270, rand.Next(600, 730))));
+                }
+            }
+
+
+            if (timer > 12)
+                while (bullets.Count < 234)
+                    bullets.Add(new Boss(rand.Next(-400, 400), rand.Next(0, 400), new Vector2(450, 350)));
+
+            if (timer > 13 && timer < 14)
+            {
+                int random = rand.Next(1, 3);
+                while (bullets.Count < 242)
+                {
+                    if (random == 1)
+                        bullets.Add(new Boss(100, 0.01f, new Vector2(270, rand.Next(460, 600))));
+
+                    if (random == 2)
+                        bullets.Add(new Boss(100, 0.01f, new Vector2(270, rand.Next(600, 730))));
+                }
+            }
+
+            if (timer > 14)
+                while (bullets.Count < 272)
+                    bullets.Add(new Boss(rand.Next(-400, 400), rand.Next(0, 400), new Vector2(450, 350)));
+
+            if (timer > 15 && timer < 16)
+            {
+                int random = rand.Next(1, 3);
+
+                while (bullets.Count < 280)
+                {
+                    if (random == 1)
+                        bullets.Add(new Boss(100, 0.01f, new Vector2(270, rand.Next(460, 600))));
+
+                    if (random == 2)
+                        bullets.Add(new Boss(100, 0.01f, new Vector2(270, rand.Next(600, 730))));
+                }
+            }
+
+
+            if (timer > 16)
+                while (bullets.Count < 310)
+                    bullets.Add(new Boss(rand.Next(-400, 400), rand.Next(0, 400), new Vector2(450, 350)));
+
+            if (timer > 17 && timer < 18)
+            {
+                int random = rand.Next(1, 3);
+                while (bullets.Count < 318)
+                {
+                    if (random == 1)
+                        bullets.Add(new Boss(100, 0.01f, new Vector2(270, rand.Next(460, 600))));
+
+                    if (random == 2)
+                        bullets.Add(new Boss(100, 0.01f, new Vector2(270, rand.Next(600, 730))));
+                }
+            }
+
+            if (timer > 18)
+                while (bullets.Count < 348)
+                    bullets.Add(new Boss(rand.Next(-400, 400), rand.Next(0, 400), new Vector2(450, 350)));
+
+
+            if (timer > 21)
+            {
+                stage++;
+                bullets.Clear();
+                //playerCanAttack = true;
+                animateArenaRetract = true;
+                timer = 0;
             }
         }
     }

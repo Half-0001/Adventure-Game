@@ -44,7 +44,7 @@ namespace Adventure_Game_CSharp
         private bool attacking = false;
         private List<string> inventory = new List<string> { "Bottle 'O Pop ", "Bones" };
         public bool accessingInventory = false;
-        public int level = 4;
+        public int level = 4; //0 for game start, 4 for boss fight
         private bool isMoving;
         public bool restart = false;
         
