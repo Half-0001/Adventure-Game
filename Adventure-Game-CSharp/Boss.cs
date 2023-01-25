@@ -18,10 +18,12 @@ namespace Adventure_Game_CSharp
         AnimatedSprite bossSprite;
         AsepriteDocument bossSpriteUpscaled;
         Texture2D _texture;
+        SpriteFont spriteFont;
 
 
         //boss fight stuff//
         Random rand = new Random();
+        int bossHealth = 100;
 
         //player 
         Vector2 playerPosition = new Vector2(450, 600);
@@ -64,6 +66,9 @@ namespace Adventure_Game_CSharp
             //blank texture 
             _texture = new Texture2D(_graphics, 1, 1);
             _texture.SetData(new Color[] { Color.White });
+
+            //font
+            spriteFont = Content.Load<SpriteFont>("font");
         }
 
         public void Update(string eventTrigger, GameTime gameTime)
@@ -156,6 +161,9 @@ namespace Adventure_Game_CSharp
             if (stage == 1)
                 Level1(gameTime);
 
+            if (stage == 2)
+                Level1(gameTime);
+
 
         }
 
@@ -168,7 +176,12 @@ namespace Adventure_Game_CSharp
         {
             graphics.Clear(Color.Black);
 
+            //draw boss and health rect
             bossSprite.Render(_spriteBatch);
+            _spriteBatch.DrawString(spriteFont, "Boss Health:", new Vector2(295, 100), Color.White, 0f, new Vector2(0, 0), 1f, SpriteEffects.None, 0f);
+            _spriteBatch.Draw(_texture, new Rectangle(295, 145, 310, 40), Color.White);
+            _spriteBatch.Draw(_texture, new Rectangle(300, 150, 300, 30), Color.Black);
+            _spriteBatch.Draw(_texture, new Rectangle(300, 150, bossHealth * 3, 30), Color.DarkRed);
 
             //draw bounding box 
             _spriteBatch.Draw(_texture, new Rectangle(295, 445, 310, 310), Color.White);
@@ -187,26 +200,32 @@ namespace Adventure_Game_CSharp
         public void Level1(GameTime gameTime)
         {
             timer += (float)gameTime.ElapsedGameTime.TotalSeconds;
-            if (timer > 2)
-                while (bullets.Count < 100)
-                    bullets.Add(new Boss(rand.Next(0, 100), rand.Next(-100, 0), new Vector2(270, 350)));
-                    //bullets.Add(new Boss(rand.Next(-100, 50), rand.Next(-100, 50), new Vector2(270, 350)));
+            //if (timer > 2)
+            //    while (bullets.Count < 100)
+            //        bullets.Add(new Boss(rand.Next(-100, 50), rand.Next(-100, 50), new Vector2(270, 350)));
 
-            //if (timer > 5) 
-            //    while (bullets.Count < 10)
-            //        bullets.Add(new Boss(rand.Next(0, 360), rand.Next(0, 360), new Vector2(270, 350)));
+            if (timer > 5)
+                while (bullets.Count < 10)
+                    bullets.Add(new Boss(rand.Next(0, 360), rand.Next(0, 360), new Vector2(270, 350)));
 
-            //if (timer > 8)
-            //    while (bullets.Count < 20)
-            //        bullets.Add(new Boss(rand.Next(-360, 0), rand.Next(0, 360), new Vector2(630, 350)));
+            if (timer > 8)
+                while (bullets.Count < 20)
+                    bullets.Add(new Boss(rand.Next(-360, 0), rand.Next(0, 360), new Vector2(630, 350)));
 
-            //if (timer > 11)
-            //    while (bullets.Count < 30)
-            //        bullets.Add(new Boss(rand.Next(0, 360), rand.Next(0, 360), new Vector2(270, 350)));
+            if (timer > 11)
+                while (bullets.Count < 30)
+                    bullets.Add(new Boss(rand.Next(0, 360), rand.Next(0, 360), new Vector2(270, 350)));
 
-            //if (timer > 14)
-            //    while (bullets.Count < 40)
-            //        bullets.Add(new Boss(rand.Next(-360, 0), rand.Next(0, 360), new Vector2(630, 350)));
+            if (timer > 14)
+                while (bullets.Count < 40)
+                    bullets.Add(new Boss(rand.Next(-360, 0), rand.Next(0, 360), new Vector2(630, 350)));
+
+            if (timer > 20)
+            {
+                stage = 2;
+                bullets.Clear();
+                timer = 0;
+            }
         }
     }
 }
