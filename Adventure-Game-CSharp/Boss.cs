@@ -28,7 +28,7 @@ namespace Adventure_Game_CSharp
 
         //boss fight stuff//
         Random rand = new Random();
-        int bossHealth = 18;
+        int bossHealth = 100;
         bool bossDisplayingText = true;
         string bossText1 = "You have made a \nterrible mistake \ncoming here today.";
         string bossText2 = "You will not win, \n My power grows \nevery second";
@@ -145,7 +145,7 @@ namespace Adventure_Game_CSharp
                 bossSprite = new AnimatedSprite(bossSpriteUpscaled);
                 bossSprite.Position = new Vector2(340, 242);
                 bossSprite.Scale = new Vector2(0.8f, 0.8f);
-                stage = 6;
+                stage = 1;
                 MediaPlayer.Play(battleSong);
             }
 
@@ -201,7 +201,7 @@ namespace Adventure_Game_CSharp
                         {
                             if (canBeAttacked)
                             {
-                                playerHealth -= 101;
+                                playerHealth -= 15;
                                 cooldownTimer = 0;
                                 canBeAttacked = false;
                                 break;
@@ -1000,13 +1000,25 @@ namespace Adventure_Game_CSharp
         private void PlayerDeath(GameTime gameTime)
         {
             timer += (float)gameTime.ElapsedGameTime.TotalSeconds;
+            MediaPlayer.Stop();
 
-            if (timer > 5)
+            if (timer > 4)
             {
+                Debug.WriteLine("true");
+                bullets.Clear();
+                bossDisplayingText = true;
+                animateArenaExpand = true;
+                arenaRectBlack = new Rectangle(300, 450, 0, 0);
+                arenaRectWhite = new Rectangle(295, 445, 0, 0);
+                textDraw = 0;
+                textDrawTimer = 0;
                 stage = 0;
                 playerHealth = 100;
                 bossHealth = 100;
+                //MediaPlayer.Stop();
+                MediaPlayer.Play(battleSong);
                 playerIsDead = false;
+
             }
         }
 
@@ -1018,7 +1030,7 @@ namespace Adventure_Game_CSharp
             }
             if (timer > 2)
             {
-                _spriteBatch.Draw(heartDead, playerRect, Color.Red);
+                _spriteBatch.Draw(heartDead, new Rectangle(playerRect.X - 4, playerRect.Y - 4, playerRect.Width + 8, playerRect.Height + 8), Color.Red);
             }
         }
     }

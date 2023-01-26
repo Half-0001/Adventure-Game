@@ -38,7 +38,7 @@ namespace Adventure_Game_CSharp
         static KeyboardState kStateOld;
 
         private bool modifiedCollisionBoxes = false;
-        private bool inMenu = false;
+        private bool inMenu = true;
         //public bool running = true;
         //public bool restart = false;
 

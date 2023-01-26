@@ -43,14 +43,14 @@ namespace Adventure_Game_CSharp
         private bool attacking = false;
         private List<string> inventory = new List<string> { "Bottle 'O Pop ", "Bones" };
         public bool accessingInventory = false;
-        public int level = 4; //0 for game start, 4 for boss fight
+        public int level = 0; //0 for game start, 4 for boss fight
         private bool isMoving;
         public bool restart = false;
         
 
         private string npcText = "Phillip: \nIn order for me to allow you passage you must first \nslay all the ghosts in this area";
-        private string bossText = "Nathaniel: \n Well done traveller, You have defeated my ghosts. \n Everyone will know that your foolishness is what \nlead you to your death";
-        private string bossText2 = "Nathaniel: \n Prepare to die  .   .   .";
+        private string bossText = "Nathaniel (Lord of Evil): \n Well done traveller, You have defeated my ghosts. \n Everyone will know that your foolishness is what \nlead you to your death";
+        private string bossText2 = "Nathaniel (Lord of Evil): \n Prepare to meet your demise .  .  .";
         private int textDraw;
         private float textDrawTimer;
 
@@ -317,7 +317,7 @@ namespace Adventure_Game_CSharp
 
                 if (eventTrigger == "house 4 text 2" && eventTrigger != "Boss")
                     if (timer <= 5)
-                        _spriteBatch.DrawString(spriteFont, "You use the key to enter the house, The rust on the lock prevents you from retrieving it", new Vector2(position.X - 200, position.Y - 200), Color.White, 0f, new Vector2(0, 0), 0.35f, SpriteEffects.None, 0f);
+                        _spriteBatch.DrawString(spriteFont, "You use the key to enter the house, A man stands with his back towards you", new Vector2(position.X - 200, position.Y - 200), Color.White, 0f, new Vector2(0, 0), 0.35f, SpriteEffects.None, 0f);
 
                 if (eventTrigger == "house 4 text 1")
                     if (timer <= 2)
@@ -539,7 +539,7 @@ namespace Adventure_Game_CSharp
                 }
                 else
                 {
-                    inventory.Remove("Key");
+                    //inventory.Remove("Key");
                     eventTrigger = "house 4 text 2";
                     timer = 0;
                     position = new Vector2(2488, 944);
