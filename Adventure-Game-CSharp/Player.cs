@@ -206,6 +206,7 @@ namespace Adventure_Game_CSharp
 
                 if (eventTrigger == "inside door")
                 {
+                    MediaPlayer.Stop();
                     if (timer <= 5)
                         timer += (float)gameTime.ElapsedGameTime.TotalSeconds;
                 }

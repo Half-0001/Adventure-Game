@@ -7,6 +7,7 @@ using System;
 using System.Diagnostics;
 using Microsoft.Xna.Framework.Content;
 using System.Threading;
+using Microsoft.Xna.Framework.Media;
 
 namespace Adventure_Game_CSharp
 {
@@ -25,6 +26,9 @@ namespace Adventure_Game_CSharp
         bool selected = false;
         bool selected2 = false;
 
+        Song menuSong;
+        Song birds;
+
         public void LoadContent(ContentManager Content, GraphicsDevice _graphics)
         {
             menuBackground = Content.Load<Texture2D>("menu");
@@ -36,6 +40,12 @@ namespace Adventure_Game_CSharp
             //blank texture 
             _texture = new Texture2D(_graphics, 1, 1);
             _texture.SetData(new Color[] { Color.White });
+
+            menuSong = Content.Load<Song>("audio/menu");
+            birds = Content.Load<Song>("audio/birds");
+            MediaPlayer.IsRepeating = true;
+            MediaPlayer.Volume = 0.3f;
+            MediaPlayer.Play(menuSong);
         }
 
         public string Update()
@@ -50,7 +60,10 @@ namespace Adventure_Game_CSharp
             {
                 selected = true;
                 if (mState.LeftButton == ButtonState.Pressed)
+                {
+                    MediaPlayer.Play(birds);
                     return "false";
+                }
                 else
                     return "true";
             }

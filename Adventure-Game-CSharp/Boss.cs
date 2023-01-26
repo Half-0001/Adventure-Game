@@ -25,6 +25,9 @@ namespace Adventure_Game_CSharp
         Texture2D bossTextBox;
         Song battleSong;
         Song deathSFX;
+        Song credits;
+        Song bossDeath;
+        Song bossHit;
 
         Random rand = new Random();
 
@@ -35,7 +38,7 @@ namespace Adventure_Game_CSharp
         string bossText2 = "You will not win, \n My power grows \nevery second";
         string bossText3 = "You . . . \n Will . . . \nDIE!";
         string bossText4 = "You may have won \nthe battle, but the \nwar is yet to come";
-        bool gameOver;
+        bool gameOver = false;
 
         //variables for displaying text letter by letter whilst it appears
         int textDraw; 
@@ -80,6 +83,9 @@ namespace Adventure_Game_CSharp
         private int stage = 0;
         private bool animateArenaExpand = true;
         private bool animateArenaRetract = false;
+
+        //end credits
+        Vector2 creditsPosition = new Vector2(0, 1000);
 
         //constructors for bullets and spears
         public Boss(float randomX, float randomY, Vector2 position)
@@ -137,6 +143,9 @@ namespace Adventure_Game_CSharp
             //audio
             battleSong = Content.Load<Song>("audio/finalboss");
             deathSFX = Content.Load<Song>("audio/Deathsfx");
+            credits = Content.Load<Song>("audio/credits");
+            bossDeath = Content.Load<Song>("audio/bossDeath");
+            bossHit = Content.Load<Song>("audio/BossHit");
 
             MediaPlayer.IsRepeating = true;
             MediaPlayer.Volume = 0.3f;
@@ -180,15 +189,18 @@ namespace Adventure_Game_CSharp
                 bossSprite.Position = new Vector2(340, 242);
                 bossSprite.Scale = new Vector2(0.8f, 0.8f);
                 stage = 1;
+                MediaPlayer.IsRepeating = true;
                 MediaPlayer.Play(battleSong);
             }
 
-            if (playerIsDead)
-            {
-                PlayerDeath(gameTime);
-            }
+            if (gameOver)
+                EndCredits(gameTime);
 
-            if (playerIsDead == false)
+            if (playerIsDead)
+                PlayerDeath(gameTime);
+
+
+            if (playerIsDead == false && gameOver == false)
             {
                 if (playerHealth <= 0) //check if player health is 0
                     {
@@ -341,6 +353,8 @@ namespace Adventure_Game_CSharp
             if (playerIsDead)
                 DrawPlayerDeath(_spriteBatch);
 
+            if (gameOver)
+                DrawEndCredits(_spriteBatch);
 
             if (!gameOver && playerIsDead == false)
             {
@@ -761,7 +775,12 @@ namespace Adventure_Game_CSharp
                 timer += (float)gameTime.ElapsedGameTime.TotalSeconds;
             if (bossHealth <= 0)
             {
-                MediaPlayer.Stop();
+                if (timer > 1 && timer < 2)
+                {
+                    MediaPlayer.Stop();
+                    MediaPlayer.IsRepeating = true;
+                }
+
                 if (timer > 2)
                 {
                     bossDisplayingText = true;
@@ -809,6 +828,13 @@ namespace Adventure_Game_CSharp
                 bossSprite.Play("attacked");
                 if (bossSprite.CurrentFrameIndex == 27)
                 {
+                    if (bossHealth - 19 <= 0)
+                        if (MediaPlayer.IsRepeating == true)
+                        {
+                            MediaPlayer.Play(bossHit);
+                            MediaPlayer.IsRepeating = false;
+                        }
+
                     bossHealth -= 19;
                     timer = 0;
                     playerAttackDelay = false;
@@ -1272,13 +1298,18 @@ namespace Adventure_Game_CSharp
         private void BossDeath(GameTime gameTime)
         {
             //timer += (float)gameTime.ElapsedGameTime.TotalSeconds;
-
+            if (MediaPlayer.IsRepeating == true)
+                MediaPlayer.Play(bossDeath);
+            MediaPlayer.IsRepeating = false;
             bossSprite.Play("death");
             bossDisplayingText = false;
             if (bossSprite.CurrentFrameIndex == 37)
             {
+                MediaPlayer.IsRepeating = true;
+                timer = 0;
                 //bossSprite.Position = new Vector2(1000, 1000);
                 gameOver = true;
+                MediaPlayer.Play(credits);
             }
         }
 
@@ -1326,6 +1357,57 @@ namespace Adventure_Game_CSharp
             {
                 _spriteBatch.Draw(heartDead, new Rectangle(playerRect.X - 4, playerRect.Y - 4, playerRect.Width + 8, playerRect.Height + 8), Color.Red);
             }
+        }
+
+        private void EndCredits(GameTime gameTime)
+        {
+            timer += (float)gameTime.ElapsedGameTime.TotalSeconds;
+            if (timer > 0.05)
+            {
+                creditsPosition.Y -= 2;
+                timer = 0;
+            }
+        }
+
+        private void DrawEndCredits(SpriteBatch _spriteBatch)
+        {
+            _spriteBatch.DrawString(spriteFont, "GAME OVER!", new Vector2(450 - (spriteFont.MeasureString("GAME OVER!").Length()), creditsPosition.Y), Color.White, 0f, new Vector2(0, 0), 2f, SpriteEffects.None, 0f);
+            _spriteBatch.DrawString(spriteFont, "Thanks for playing!", new Vector2(450 - (spriteFont.MeasureString("Thanks for playing!").Length() * 0.75f), creditsPosition.Y + 400), Color.White, 0f, new Vector2(0, 0), 1.5f, SpriteEffects.None, 0f);
+            _spriteBatch.DrawString(spriteFont, "Credits:", new Vector2(450 - (spriteFont.MeasureString("Credits:").Length() * 0.75f), creditsPosition.Y + 800), Color.White, 0f, new Vector2(0, 0), 1.5f, SpriteEffects.None, 0f);
+            _spriteBatch.DrawString(spriteFont, "Mr Bailey's fun and fanstasic adventure", new Vector2(450 - (spriteFont.MeasureString("Mr Bailey's fun and fanstasic adventure").Length() / 2), creditsPosition.Y + 900), Color.White, 0f, new Vector2(0, 0), 1f, SpriteEffects.None, 0f);
+            _spriteBatch.DrawString(spriteFont, "By Nyle Holdsworth", new Vector2(450 - (spriteFont.MeasureString("By Nyle Holdsworth").Length() / 2), creditsPosition.Y + 950), Color.White, 0f, new Vector2(0, 0), 1f, SpriteEffects.None, 0f);
+            
+            _spriteBatch.DrawString(spriteFont, "Lead Design: Nyle Holdsworth", new Vector2(150, creditsPosition.Y + 1150), Color.White, 0f, new Vector2(0, 0), 1f, SpriteEffects.None, 0f);
+            _spriteBatch.DrawString(spriteFont, "Lead Programming: Nyle Holdsworth", new Vector2(150, creditsPosition.Y + 1250), Color.White, 0f, new Vector2(0, 0), 1f, SpriteEffects.None, 0f);
+            _spriteBatch.DrawString(spriteFont, "Lead Music: Sam Goff", new Vector2(150, creditsPosition.Y + 1350), Color.White, 0f, new Vector2(0, 0), 1f, SpriteEffects.None, 0f);
+            _spriteBatch.DrawString(spriteFont, "Lead Animator: Nyle Holdsworth", new Vector2(150, creditsPosition.Y + 1450), Color.White, 0f, new Vector2(0, 0), 1f, SpriteEffects.None, 0f);
+            _spriteBatch.DrawString(spriteFont, "Lead Tester: Nyle Holdsworth", new Vector2(150, creditsPosition.Y + 1550), Color.White, 0f, new Vector2(0, 0), 1f, SpriteEffects.None, 0f);
+
+            _spriteBatch.DrawString(spriteFont, "Special Thanks:", new Vector2(450 - (spriteFont.MeasureString("Special Thanks:").Length() * 0.75f), creditsPosition.Y + 1700), Color.White, 0f, new Vector2(0, 0), 1.5f, SpriteEffects.None, 0f);
+            _spriteBatch.DrawString(spriteFont, "Mr Bailey", new Vector2(450 - (spriteFont.MeasureString("Mr Bailey").Length() / 2), creditsPosition.Y + 1800), Color.White, 0f, new Vector2(0, 0), 1f, SpriteEffects.None, 0f);
+
+            _spriteBatch.DrawString(spriteFont, "Software Used:", new Vector2(450 - (spriteFont.MeasureString("Software Used:").Length() * 0.75f), creditsPosition.Y + 2000), Color.White, 0f, new Vector2(0, 0), 1.5f, SpriteEffects.None, 0f);
+            _spriteBatch.DrawString(spriteFont, "Microsoft Visual Studio", new Vector2(150, creditsPosition.Y + 2100), Color.White, 0f, new Vector2(0, 0), 1f, SpriteEffects.None, 0f);
+            _spriteBatch.DrawString(spriteFont, "Tiled", new Vector2(150, creditsPosition.Y + 2150), Color.White, 0f, new Vector2(0, 0), 1f, SpriteEffects.None, 0f);
+            _spriteBatch.DrawString(spriteFont, "Gnu Image Manipulation Program", new Vector2(150, creditsPosition.Y + 2200), Color.White, 0f, new Vector2(0, 0), 1f, SpriteEffects.None, 0f);
+            _spriteBatch.DrawString(spriteFont, "Ableton Live 10", new Vector2(150, creditsPosition.Y + 2250), Color.White, 0f, new Vector2(0, 0), 1f, SpriteEffects.None, 0f);
+            _spriteBatch.DrawString(spriteFont, "Github", new Vector2(150, creditsPosition.Y + 2300), Color.White, 0f, new Vector2(0, 0), 1f, SpriteEffects.None, 0f);
+
+
+            _spriteBatch.DrawString(spriteFont, "Made In C#", new Vector2(450 - (spriteFont.MeasureString("Made In C#").Length() * 0.75f), creditsPosition.Y + 2500), Color.White, 0f, new Vector2(0, 0), 1.5f, SpriteEffects.None, 0f);
+            _spriteBatch.DrawString(spriteFont, "using MicrosoftXNA/Monogame Framework", new Vector2(450 - (spriteFont.MeasureString("using MicrosoftXNA/Monogame Framework").Length() /2), creditsPosition.Y + 2550), Color.White, 0f, new Vector2(0, 0), 1f, SpriteEffects.None, 0f);
+
+            _spriteBatch.DrawString(spriteFont, "3rd Party Assets Used", new Vector2(450 - (spriteFont.MeasureString("3rd Party Assets Used").Length() * 0.75f), creditsPosition.Y + 2800), Color.White, 0f, new Vector2(0, 0), 1.5f, SpriteEffects.None, 0f);
+            _spriteBatch.DrawString(spriteFont, "PIPOYA FREE RPG Character Sprites", new Vector2(150, creditsPosition.Y + 2900), Color.White, 0f, new Vector2(0, 0), 1f, SpriteEffects.None, 0f);
+            _spriteBatch.DrawString(spriteFont, "EPIC RPG World Pack - Old prison", new Vector2(150, creditsPosition.Y + 2950), Color.White, 0f, new Vector2(0, 0), 1f, SpriteEffects.None, 0f);
+            _spriteBatch.DrawString(spriteFont, "Free Interior Tileset", new Vector2(150, creditsPosition.Y + 3000), Color.White, 0f, new Vector2(0, 0), 1f, SpriteEffects.None, 0f);
+            _spriteBatch.DrawString(spriteFont, "Free Outdoor Tileset", new Vector2(150, creditsPosition.Y + 3050), Color.White, 0f, new Vector2(0, 0), 1f, SpriteEffects.None, 0f);
+            _spriteBatch.DrawString(spriteFont, "Undertale Death Sound", new Vector2(150, creditsPosition.Y + 3100), Color.White, 0f, new Vector2(0, 0), 1f, SpriteEffects.None, 0f);
+            _spriteBatch.DrawString(spriteFont, "Undertale Boss Attack Sound", new Vector2(150, creditsPosition.Y + 3150), Color.White, 0f, new Vector2(0, 0), 1f, SpriteEffects.None, 0f);
+            _spriteBatch.DrawString(spriteFont, "Undertale Boss Death Sound", new Vector2(150, creditsPosition.Y + 3200), Color.White, 0f, new Vector2(0, 0), 1f, SpriteEffects.None, 0f);
+            _spriteBatch.DrawString(spriteFont, "Undertale Heart sprite", new Vector2(150, creditsPosition.Y + 3250), Color.White, 0f, new Vector2(0, 0), 1f, SpriteEffects.None, 0f);
+
+            _spriteBatch.DrawString(spriteFont, "Copyright 2023 Nyle Holdsworth", new Vector2(450 - (spriteFont.MeasureString("Copyright 2023 Nyle Holdsworth").Length() / 2), creditsPosition.Y + 3550), Color.White, 0f, new Vector2(0, 0), 1f, SpriteEffects.None, 0f);
         }
     }
 }
