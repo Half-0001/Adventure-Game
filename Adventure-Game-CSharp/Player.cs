@@ -23,6 +23,7 @@ namespace Adventure_Game_CSharp
 
         //audio 
         Song dungeon;
+        Song birds;
         private bool playingAudio = true;   
 
         private KeyboardState kStateOld;
@@ -64,6 +65,7 @@ namespace Adventure_Game_CSharp
             //  Load the assets from the content pipeline.
             AsepriteDocument aseprite = Content.Load<AsepriteDocument>("Male 01");
             dungeon = Content.Load<Song>("audio/dungeon");
+            birds = Content.Load<Song>("audio/birds");
 
             //  Create a new aniamted sprite instance using the aseprite doucment loaded.
             _sprite = new AnimatedSprite(aseprite);
@@ -666,6 +668,7 @@ namespace Adventure_Game_CSharp
             textDraw = 0;
             textDrawTimer = 0;
             timer = 0;
+            MediaPlayer.Play(birds);
         }
 
         private void DrawTextBox(SpriteBatch _spriteBatch)

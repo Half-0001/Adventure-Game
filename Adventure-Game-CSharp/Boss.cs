@@ -52,7 +52,7 @@ namespace Adventure_Game_CSharp
         int playerHealth = 100;
         bool canBeAttacked = true;
         float cooldownTimer; //timer for invincibility cooldown before the player can be attacked again
-        bool playerCanAttack = false;
+        bool playerCanAttack = true;
         int selectedButton = 1;
         bool playerAttackDelay = false;
         bool playerIsDead = false;
@@ -358,15 +358,8 @@ namespace Adventure_Game_CSharp
 
             if (!gameOver && playerIsDead == false)
             {
-                //draw boss and health rect
+                //draw boss
                 bossSprite.Render(_spriteBatch);
-                if (playerCanAttack)
-                {
-                    _spriteBatch.DrawString(spriteFont, "Boss Health:", new Vector2(295, 100), Color.White, 0f, new Vector2(0, 0), 1f, SpriteEffects.None, 0f);
-                    _spriteBatch.Draw(_texture, new Rectangle(295, 145, 310, 40), Color.White);
-                    _spriteBatch.Draw(_texture, new Rectangle(300, 150, 300, 30), Color.Black);
-                    _spriteBatch.Draw(_texture, new Rectangle(300, 150, bossHealth * 3, 30), Color.DarkRed);
-                }
 
                 if (bossDisplayingText)
                 {
@@ -415,8 +408,13 @@ namespace Adventure_Game_CSharp
                     }
                 }
 
-                if (playerCanAttack)
+                if (playerCanAttack && bossHealth > 0) //draw player attacking menu and boss health
                 {
+                    _spriteBatch.DrawString(spriteFont, "Boss Health:", new Vector2(295, 100), Color.White, 0f, new Vector2(0, 0), 1f, SpriteEffects.None, 0f);
+                    _spriteBatch.Draw(_texture, new Rectangle(295, 145, 310, 40), Color.White);
+                    _spriteBatch.Draw(_texture, new Rectangle(300, 150, 300, 30), Color.Black);
+                    _spriteBatch.Draw(_texture, new Rectangle(300, 150, bossHealth * 3, 30), Color.DarkRed);
+
                     DrawPlayerAttack(_spriteBatch);
                 }
             }
