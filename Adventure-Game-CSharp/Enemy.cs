@@ -55,7 +55,7 @@ namespace Adventure_Game_CSharp
             asepritefile2 = Content.Load<AsepriteDocument>("Enemy 15-2");
             resolution = _resolution;
             //add enemies to list
-            for (int i = 0; i < 1; i++)
+            for (int i = 0; i < 10; i++)
                 enemies.Add(new Enemy(random.Next(800, 1305), random.Next(1566, 2340), asepritefile, _resolution));
 
             //blank texture 

@@ -227,6 +227,10 @@ namespace Adventure_Game_CSharp
                 if (eventTrigger == "house 4 text 1")
                 {
                     timer += (float)gameTime.ElapsedGameTime.TotalSeconds;
+                    if (timer > 2)
+                    {
+                        eventTrigger = "im nearly done with this game";
+                    }
                 }
 
                 if (eventTrigger == "Chest")
@@ -358,19 +362,19 @@ namespace Adventure_Game_CSharp
             if (accessingInventory)
                 InventoryDraw(inventory, _spriteBatch, spriteFont);
 
-            //if (eventTrigger == "through hole")
-            //{
-            //    if (timer < 10)
-            //    {
-            //        _spriteBatch.Draw(_texture, coverScreen, Color.Black);
-            //    }
-            //    if (timer > 2 && timer < 4.6)
-            //        _spriteBatch.DrawString(spriteFont, "After what feels like forver, you finally reach the bottom", new Vector2(position.X - (spriteFont.MeasureString("After what feels like forver, you finally reach the bottom").Length() * 0.35f) / 2, position.Y - 50), Color.White, 0f, new Vector2(0, 0), 0.35f, SpriteEffects.None, 0f);
-            //    if (timer > 4.6 && timer < 7.2)
-            //        _spriteBatch.DrawString(spriteFont, "A sword lies on the ground beside you. You pick it up", new Vector2(position.X - (spriteFont.MeasureString("A sword lies on the ground beside you. You pick it up").Length() * 0.35f) / 2, position.Y), Color.White, 0f, new Vector2(0, 0), 0.35f, SpriteEffects.None, 0f);
-            //    if (timer > 7.2 && timer < 10)
-            //        _spriteBatch.DrawString(spriteFont, "(Press E to swing the sword)", new Vector2(position.X - (spriteFont.MeasureString("(Press E to swing the sword)").Length() * 0.35f) / 2, position.Y + 50), Color.White, 0f, new Vector2(0, 0), 0.35f, SpriteEffects.None, 0f);
-            //}
+            if (eventTrigger == "through hole")
+            {
+                if (timer < 10)
+                {
+                    _spriteBatch.Draw(_texture, coverScreen, Color.Black);
+                }
+                if (timer > 2 && timer < 4.6)
+                    _spriteBatch.DrawString(spriteFont, "After what feels like forver, you finally reach the bottom", new Vector2(position.X - (spriteFont.MeasureString("After what feels like forver, you finally reach the bottom").Length() * 0.35f) / 2, position.Y - 50), Color.White, 0f, new Vector2(0, 0), 0.35f, SpriteEffects.None, 0f);
+                if (timer > 4.6 && timer < 7.2)
+                    _spriteBatch.DrawString(spriteFont, "A sword lies on the ground beside you. You pick it up", new Vector2(position.X - (spriteFont.MeasureString("A sword lies on the ground beside you. You pick it up").Length() * 0.35f) / 2, position.Y), Color.White, 0f, new Vector2(0, 0), 0.35f, SpriteEffects.None, 0f);
+                if (timer > 7.2 && timer < 10)
+                    _spriteBatch.DrawString(spriteFont, "(Press E to swing the sword)", new Vector2(position.X - (spriteFont.MeasureString("(Press E to swing the sword)").Length() * 0.35f) / 2, position.Y + 50), Color.White, 0f, new Vector2(0, 0), 0.35f, SpriteEffects.None, 0f);
+            }
 
             if (restart)
             {

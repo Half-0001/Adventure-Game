@@ -147,15 +147,15 @@ namespace Adventure_Game_CSharp
                     //add more enemies when player talks to npc
                     if (eventRectName == "NPC1" && counter == 0)
                     {
-                        enemy.AddEnemies(1, 284, 1139, 1554, 2324);
+                        enemy.AddEnemies(10, 284, 1139, 1554, 2324);
                         counter++;
                     }
                     if (counter == 1 && enemy.enemies.Count == 0)
                     {
                         collisionManager.colliders.RemoveAt(collisionManager.colliders.Count - 1);
                         collisionManager.colliders.Add(new CollisionManager(npc.npcs[0].hitbox.X, npc.npcs[0].hitbox.Y, npc.npcs[0].hitbox.Size.X, npc.npcs[0].hitbox.Size.Y, "Level3"));
-                        enemy.AddEnemies2(1, 748, 1966, 3118, 3375);
-                        enemy.AddEnemies2(1, 2470, 3196, 1651, 3333);
+                        enemy.AddEnemies2(10, 748, 1966, 3118, 3375);
+                        enemy.AddEnemies2(10, 2470, 3196, 1651, 3333);
                     }
 
                 }
