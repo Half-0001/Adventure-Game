@@ -106,3 +106,5 @@ C:\Users\nyleh\OneDrive\Documents\GitHub\Adventure-Game\Adventure-Game-CSharp\bi
 C:\Users\nyleh\OneDrive\Documents\GitHub\Adventure-Game\Adventure-Game-CSharp\bin\Debug\net6.0\Content\spear.xnb
 C:\Users\nyleh\OneDrive\Documents\GitHub\Adventure-Game\Adventure-Game-CSharp\bin\Debug\net6.0\Content\skip_button_white.xnb
 C:\Users\nyleh\OneDrive\Documents\GitHub\Adventure-Game\Adventure-Game-CSharp\bin\Debug\net6.0\Content\skip_button_yellow.xnb
+C:\Users\nyleh\OneDrive\Documents\GitHub\Adventure-Game\Adventure-Game-CSharp\bin\Debug\net6.0\Content\audio\Deathsfx.xnb
+C:\Users\nyleh\OneDrive\Documents\GitHub\Adventure-Game\Adventure-Game-CSharp\bin\Debug\net6.0\Content\audio\Deathsfx.ogg

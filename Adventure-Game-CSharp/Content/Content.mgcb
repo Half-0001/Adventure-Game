@@ -160,6 +160,12 @@
 /processorParam:TextureFormat=Color
 /build:../../assets/spear.png;spear.png
 
+#begin audio/Deathsfx.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:audio/Deathsfx.mp3
+
 #begin audio/dungeon.ogg
 /importer:OggImporter
 /processor:SongProcessor

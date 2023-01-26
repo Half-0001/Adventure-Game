@@ -11,7 +11,7 @@ using Microsoft.Xna.Framework.Media;
 
 namespace Adventure_Game_CSharp
 {
-    internal class Boss
+    internal class Boss //boss battle started 2 days before the project was due. turned out to be more work than i was expecting
     {
 
         //textures and sprites
@@ -23,12 +23,12 @@ namespace Adventure_Game_CSharp
         Texture2D heartDead;
         SpriteFont spriteFont;
         Texture2D bossTextBox;
-        //Texture2D spear;
         Song battleSong;
+        Song deathSFX;
 
-
-        //boss fight stuff//
         Random rand = new Random();
+
+        //boss variables//
         int bossHealth = 100;
         bool bossDisplayingText = true;
         string bossText1 = "You have made a \nterrible mistake \ncoming here today.";
@@ -36,8 +36,9 @@ namespace Adventure_Game_CSharp
         string bossText3 = "You . . . \n Will . . . \nDIE!";
         string bossText4 = "You may have won \nthe battle, but the \nwar is yet to come";
         bool gameOver;
-        
-        int textDraw; //variables for displaying text letter by letter whilst it appears
+
+        //variables for displaying text letter by letter whilst it appears
+        int textDraw; 
         float textDrawTimer;
 
         //player 
@@ -73,7 +74,6 @@ namespace Adventure_Game_CSharp
         private Rectangle spearRect = new Rectangle(0, 0, 31, 5);
         private Vector2 spearDir;
         private int spearSpeed = 300;
-        //private int spearSpread = -100;
 
         //timing variables
         private float timer = 0;
@@ -81,7 +81,7 @@ namespace Adventure_Game_CSharp
         private bool animateArenaExpand = true;
         private bool animateArenaRetract = false;
 
-        //constructor
+        //constructors for bullets and spears
         public Boss(float randomX, float randomY, Vector2 position)
         {
             if (randomX != 0 && randomY != 0)
@@ -134,13 +134,15 @@ namespace Adventure_Game_CSharp
             //font
             spriteFont = Content.Load<SpriteFont>("font");
 
-            //boss music
+            //audio
             battleSong = Content.Load<Song>("audio/finalboss");
+            deathSFX = Content.Load<Song>("audio/Deathsfx");
+
             MediaPlayer.IsRepeating = true;
             MediaPlayer.Volume = 0.3f;
         }
 
-        public void Update(string eventTrigger, GameTime gameTime)
+        public void Update(string eventTrigger, GameTime gameTime) //this section is for the boss in the dungeon. 
         {
             if (eventTrigger == "Boss" || eventTrigger == "Boss text 2")
             {
@@ -169,9 +171,9 @@ namespace Adventure_Game_CSharp
             bossSprite.Update(gameTime);
         }
 
-        public void BossBattle(GameTime gameTime)
+        public void BossBattle(GameTime gameTime) //main boss battle loop
         {
-            //boss sprite
+            //boss sprite initialize 
             if (stage == 0)
             {
                 bossSprite = new AnimatedSprite(bossSpriteUpscaled);
@@ -188,27 +190,25 @@ namespace Adventure_Game_CSharp
 
             if (playerIsDead == false)
             {
-                if (playerHealth <= 0)
+                if (playerHealth <= 0) //check if player health is 0
                     {
                         timer = 0;
                         playerIsDead = true;
-                        
                     }
 
-                if (playerCanAttack == false && bossHealth > 0)
+                if (playerCanAttack == false && bossHealth > 0) //play boss idle animation
                     bossSprite.Play("idle-down");
 
-
-                //set the elapsed game time since last frame 
                 float dt = (float)gameTime.ElapsedGameTime.TotalSeconds;
                 kState = Keyboard.GetState(); //set keyboard state
 
                 if (playerCanAttack)
                     PlayerAttack(gameTime);
 
-                bossSprite.Update(gameTime);
+                bossSprite.Update(gameTime);    
 
-                BossTextManager(gameTime);
+                if (bossDisplayingText)
+                    BossTextManager(gameTime);
 
                 if (playerCanAttack == false && bossHealth > 0)
                 {
@@ -623,8 +623,6 @@ namespace Adventure_Game_CSharp
 
                 
             }
-
-
             if (timer > 7)
             {
                 if (bullets.Count < 40)
@@ -636,8 +634,6 @@ namespace Adventure_Game_CSharp
                 }
 
             }
-
-
 
             if (timer > 9)
             {
@@ -661,7 +657,6 @@ namespace Adventure_Game_CSharp
                     spears.Add(new Boss(-0.01f, 100, new Vector2(playerPosition.X, playerPosition.Y - 500), "vertical")); //down
                 }
             }
-
 
             if (timer > 15)
             {
@@ -952,7 +947,7 @@ namespace Adventure_Game_CSharp
                     bullets.Add(new Boss(rand.Next(-400, 400), rand.Next(-400, 400), new Vector2(270, 600)));
                     bullets.Add(new Boss(rand.Next(-400, 400), rand.Next(-400, 400), new Vector2(630, 600)));
                 }
-                while (spears.Count < 2)
+                while (spears.Count < 4)
                 {
                     spears.Add(new Boss(100, 0.01f, new Vector2(-130, 480), "horisontal")); //left
                     spears.Add(new Boss(-100, -0.01f, new Vector2(1000, 480), "horisontal")); //right
@@ -969,7 +964,7 @@ namespace Adventure_Game_CSharp
                     bullets.Add(new Boss(rand.Next(-400, 400), rand.Next(-400, 400), new Vector2(270, 600)));
                     bullets.Add(new Boss(rand.Next(-400, 400), rand.Next(-400, 400), new Vector2(630, 600)));
                 }
-                while (spears.Count < 4)
+                while (spears.Count < 8)
                 {
                     spears.Add(new Boss(100, 0.01f, new Vector2(-130, 480), "horisontal")); //left
                     spears.Add(new Boss(-100, -0.01f, new Vector2(1000, 480), "horisontal")); //right
@@ -986,7 +981,7 @@ namespace Adventure_Game_CSharp
                     bullets.Add(new Boss(rand.Next(-400, 400), rand.Next(-400, 400), new Vector2(270, 600)));
                     bullets.Add(new Boss(rand.Next(-400, 400), rand.Next(-400, 400), new Vector2(630, 600)));
                 }
-                while (spears.Count < 6)
+                while (spears.Count < 12)
                 {
                     spears.Add(new Boss(100, 0.01f, new Vector2(-130, 480), "horisontal")); //left
                     spears.Add(new Boss(-100, -0.01f, new Vector2(1000, 480), "horisontal")); //right
@@ -1003,7 +998,7 @@ namespace Adventure_Game_CSharp
                     bullets.Add(new Boss(rand.Next(-400, 400), rand.Next(-400, 400), new Vector2(270, 600)));
                     bullets.Add(new Boss(rand.Next(-400, 400), rand.Next(-400, 400), new Vector2(630, 600)));
                 }
-                while (spears.Count < 8)
+                while (spears.Count < 16)
                 {
                     spears.Add(new Boss(100, 0.01f, new Vector2(-130, 480), "horisontal")); //left
                     spears.Add(new Boss(-100, -0.01f, new Vector2(1000, 480), "horisontal")); //right
@@ -1290,12 +1285,20 @@ namespace Adventure_Game_CSharp
         private void PlayerDeath(GameTime gameTime)
         {
             timer += (float)gameTime.ElapsedGameTime.TotalSeconds;
-            MediaPlayer.Stop();
+
+            if (MediaPlayer.IsRepeating == true)
+            {
+                MediaPlayer.Stop();
+                MediaPlayer.Play(deathSFX);
+            }
+            MediaPlayer.IsRepeating = false;
+
 
             if (timer > 4)
             {
-                Debug.WriteLine("true");
+                //Debug.WriteLine("true");
                 bullets.Clear();
+                spears.Clear();
                 bossDisplayingText = true;
                 animateArenaExpand = true;
                 arenaRectBlack = new Rectangle(300, 450, 0, 0);
@@ -1306,6 +1309,7 @@ namespace Adventure_Game_CSharp
                 playerHealth = 100;
                 bossHealth = 100;
                 //MediaPlayer.Stop();
+                MediaPlayer.IsRepeating = true;
                 MediaPlayer.Play(battleSong);
                 playerIsDead = false;
 
@@ -1314,11 +1318,11 @@ namespace Adventure_Game_CSharp
 
         private void DrawPlayerDeath(SpriteBatch _spriteBatch)
         {
-            if (timer < 2)
+            if (timer < 1.3)
             {
                 _spriteBatch.Draw(heart, playerRect, Color.Red);
             }
-            if (timer > 2)
+            if (timer > 1.3)
             {
                 _spriteBatch.Draw(heartDead, new Rectangle(playerRect.X - 4, playerRect.Y - 4, playerRect.Width + 8, playerRect.Height + 8), Color.Red);
             }

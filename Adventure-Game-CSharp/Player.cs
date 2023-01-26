@@ -308,7 +308,7 @@ namespace Adventure_Game_CSharp
             kStateOld = kState;
         }
 
-        public void PlayerDraw(SpriteBatch _spriteBatch, bool debugMode, SpriteFont spriteFont)
+        public void PlayerDraw(SpriteBatch _spriteBatch, bool debugMode, SpriteFont spriteFont) //main player draw function
         {
             if (!accessingInventory || !restart)
             {

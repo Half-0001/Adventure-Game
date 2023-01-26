@@ -150,7 +150,7 @@ namespace Adventure_Game_CSharp
                         enemy.AddEnemies(10, 284, 1139, 1554, 2324);
                         counter++;
                     }
-                    if (counter == 1 && enemy.enemies.Count == 0)
+                    if (counter == 1 && enemy.enemies.Count == 0) //when player has killed the extra enemies, remove the npc collision box
                     {
                         collisionManager.colliders.RemoveAt(collisionManager.colliders.Count - 1);
                         collisionManager.colliders.Add(new CollisionManager(npc.npcs[0].hitbox.X, npc.npcs[0].hitbox.Y, npc.npcs[0].hitbox.Size.X, npc.npcs[0].hitbox.Size.Y, "Level3"));
@@ -209,8 +209,6 @@ namespace Adventure_Game_CSharp
             {
                 boss.DrawBossBattle(_spriteBatch, GraphicsDevice);
             }
-
-                
 
             _spriteBatch.End();
             base.Draw(gameTime);
