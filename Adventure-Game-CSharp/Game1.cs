@@ -38,7 +38,7 @@ namespace Adventure_Game_CSharp
         static KeyboardState kStateOld;
 
         private bool modifiedCollisionBoxes = false;
-        private bool inMenu = true;
+        private string inMenu = "true";
         //public bool running = true;
         //public bool restart = false;
 
@@ -86,10 +86,15 @@ namespace Adventure_Game_CSharp
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed) //Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
             
-            if (inMenu)
+            if (inMenu == "true")
             {
                 this.camera.Position = new Vector2(450, 450);
                 inMenu = menu.Update();
+                if (inMenu == "false but also skip boss fight")
+                {
+                    player.level = 4;
+                    inMenu = "false";
+                }
             }
 
             if (player.restart || debugMode)
@@ -109,7 +114,7 @@ namespace Adventure_Game_CSharp
 
             kStateOld = kState;
 
-            if (!inMenu && player.level != 4)
+            if (inMenu == "false" && player.level != 4)
             {
                 camera.Zoom = 2f;
                 if (!player.accessingInventory || !player.restart)
@@ -185,7 +190,7 @@ namespace Adventure_Game_CSharp
             GraphicsDevice.Clear(Color.Black);
             _spriteBatch.Begin(this.camera);
 
-            if (!inMenu && player.level != 4)
+            if (inMenu == "false" && player.level != 4)
             {
                 _spriteBatch.Draw(background, new Vector2(0, 0), Color.White);
                 collisionManager.DrawCollisionBoxes(_spriteBatch, debugMode);
@@ -197,7 +202,7 @@ namespace Adventure_Game_CSharp
                 boss.Draw(_spriteBatch);
             }
 
-            if (inMenu)
+            if (inMenu == "true")
                 menu.Draw(_spriteBatch, debugMode);
 
             if (player.level == 4)

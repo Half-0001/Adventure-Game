@@ -329,7 +329,10 @@ namespace Adventure_Game_CSharp
 
 
                 //draw health
-                _spriteBatch.DrawString(spriteFont, "Health: " + health.ToString(), new Vector2(position.X - (spriteFont.MeasureString("Health: " + health.ToString()).Length() * 0.5f) / 2, position.Y + 200), Color.Red, 0f, new Vector2(0, 0), 0.5f, SpriteEffects.None, 0f);
+                _spriteBatch.DrawString(spriteFont, "Health:", new Vector2(position.X, position.Y + 180), Color.DarkGreen, 0f, new Vector2(0, 0), 0.35f, SpriteEffects.None, 0f);
+                _spriteBatch.Draw(_texture, new Rectangle((int)position.X - 59, (int)position.Y + 200, 160, 20), Color.White);
+                _spriteBatch.Draw(_texture, new Rectangle((int)position.X - 57, (int)position.Y + 202, 156, 16), Color.Black);
+                _spriteBatch.Draw(_texture, new Rectangle((int)position.X - 57, (int)position.Y + 202, (int)(health * 1.56), 16), Color.DarkGreen);
 
 
                 //draw text and textbox

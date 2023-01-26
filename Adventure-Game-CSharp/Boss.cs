@@ -23,6 +23,7 @@ namespace Adventure_Game_CSharp
         Texture2D heartDead;
         SpriteFont spriteFont;
         Texture2D bossTextBox;
+        //Texture2D spear;
         Song battleSong;
 
 
@@ -65,6 +66,15 @@ namespace Adventure_Game_CSharp
         private int bulletSpeed = 100;
         private int bulletSpread = -100;
 
+        //spear stuff
+        private List<Boss> spears = new List<Boss>();
+
+        private Vector2 spearPosition;
+        private Rectangle spearRect = new Rectangle(0, 0, 31, 5);
+        private Vector2 spearDir;
+        private int spearSpeed = 300;
+        //private int spearSpread = -100;
+
         //timing variables
         private float timer = 0;
         private int stage = 0;
@@ -82,6 +92,26 @@ namespace Adventure_Game_CSharp
             }
         }
 
+        public Boss(float X, float Y, Vector2 position, string type)
+        {
+
+            if (type == "vertical")
+            {
+                spearRect = new Rectangle((int)X, (int)Y, 5, 30);
+            }
+            if (type == "horisontal")
+            {
+                spearRect = new Rectangle((int)X, (int)Y, 30, 5);
+            }
+
+            if (X != 0 && Y != 0)
+            {
+                spearPosition = position;
+                spearDir = new Vector2(X, Y);
+                spearDir.Normalize();
+            }
+        }
+
         public void LoadContent(ContentManager Content, Point _resolution, GraphicsDevice _graphics)
         {
             asepritefile = Content.Load<AsepriteDocument>("sprites/Male 09-1");
@@ -95,6 +125,8 @@ namespace Adventure_Game_CSharp
             heart = Content.Load<Texture2D>("sprites/heart");
             heartDead = Content.Load<Texture2D>("sprites/heart-dead");
 
+            //spear = Content.Load<Texture2D>("spear");
+
             //blank texture 
             _texture = new Texture2D(_graphics, 1, 1);
             _texture.SetData(new Color[] { Color.White });
@@ -105,7 +137,7 @@ namespace Adventure_Game_CSharp
             //boss music
             battleSong = Content.Load<Song>("audio/finalboss");
             MediaPlayer.IsRepeating = true;
-            MediaPlayer.Volume = 0.5f;
+            MediaPlayer.Volume = 0.3f;
         }
 
         public void Update(string eventTrigger, GameTime gameTime)
@@ -198,6 +230,33 @@ namespace Adventure_Game_CSharp
                     for (int i = 0; i < bullets.Count; i++)
                     {
                         if (playerRect.Intersects(bullets[i].bulletRect)) //getting hit by enemies
+                        {
+                            if (canBeAttacked)
+                            {
+                                playerHealth -= 15;
+                                cooldownTimer = 0;
+                                canBeAttacked = false;
+                                break;
+                            }
+                        }
+                    }
+
+                    //spear movement and rect
+                    if (spears.Count != 0)
+                    {
+                        for (int i = 0; i < spears.Count; i++)
+                        {
+                            spears[i].spearPosition += spears[i].spearDir * spearSpeed * dt;
+
+                            spears[i].spearRect.X = (int)spears[i].spearPosition.X;
+                            spears[i].spearRect.Y = (int)spears[i].spearPosition.Y;
+                        }
+                    }
+
+                    //getting hit by spears
+                    for (int i = 0; i < spears.Count; i++)
+                    {
+                        if (playerRect.Intersects(spears[i].spearRect)) //getting hit by enemies
                         {
                             if (canBeAttacked)
                             {
@@ -334,6 +393,12 @@ namespace Adventure_Game_CSharp
                     {
                         _spriteBatch.Draw(_texture, bullets[i].bulletRect, Color.White);
                     }
+
+                    //draw spears
+                    for (int i = 0; i < spears.Count; i++)
+                    {
+                        _spriteBatch.Draw(_texture, spears[i].spearRect, Color.White);
+                    }
                 }
 
                 if (playerCanAttack)
@@ -381,25 +446,66 @@ namespace Adventure_Game_CSharp
             //        bullets.Add(new Boss(rand.Next(-100, 50), rand.Next(-100, 50), new Vector2(270, 350)));
 
             if (timer > 2)
+            {
                 while (bullets.Count < 15)
                     bullets.Add(new Boss(rand.Next(0, 400), rand.Next(0, 400), new Vector2(200, 350)));
 
+                while (spears.Count < 2)
+                {
+                    spears.Add(new Boss(100, 0.01f, new Vector2(-130, 600), "horisontal")); //left
+                    spears.Add(new Boss(-100, -0.01f, new Vector2(1000, 600), "horisontal")); //right
+                    //spears.Add(new Boss(-0.01f, 100, new Vector2(450, 0), "vertical")); //down
+                    //spears.Add(new Boss(0.01f, -100, new Vector2(450, 1200), "vertical")); //up
+                }
+            }
+
             if (timer > 4)
+            {
                 while (bullets.Count < 30)
                     bullets.Add(new Boss(rand.Next(-400, 0), rand.Next(0, 400), new Vector2(700, 350)));
 
+                while (spears.Count < 4)
+                {
+                    //spears.Add(new Boss(100, 0.01f, new Vector2(-130, 600), "horisontal")); //left
+                    //spears.Add(new Boss(-100, -0.01f, new Vector2(1000, 600), "horisontal")); //right
+                    spears.Add(new Boss(-0.01f, 100, new Vector2(450, 0), "vertical")); //down
+                    spears.Add(new Boss(0.01f, -100, new Vector2(450, 1200), "vertical")); //up
+                }
+            }
+
             if (timer > 6)
+            {
                 while (bullets.Count < 45)
                     bullets.Add(new Boss(rand.Next(0, 400), rand.Next(0, 400), new Vector2(200, 350)));
 
+                while (spears.Count < 6)
+                {
+                    spears.Add(new Boss(100, 0.01f, new Vector2(-130, 600), "horisontal")); //left
+                    spears.Add(new Boss(-100, -0.01f, new Vector2(1000, 600), "horisontal")); //right
+                    //spears.Add(new Boss(-0.01f, 100, new Vector2(450, 0), "vertical")); //down
+                    //spears.Add(new Boss(0.01f, -100, new Vector2(450, 1200), "vertical")); //up
+                }
+            }
+
             if (timer > 8)
+            {
                 while (bullets.Count < 60)
                     bullets.Add(new Boss(rand.Next(-400, 0), rand.Next(0, 400), new Vector2(700, 350)));
+
+                while (spears.Count < 8)
+                {
+                    //spears.Add(new Boss(100, 0.01f, new Vector2(-130, 600), "horisontal")); //left
+                    //spears.Add(new Boss(-100, -0.01f, new Vector2(1000, 600), "horisontal")); //right
+                    spears.Add(new Boss(-0.01f, 100, new Vector2(450, 0), "vertical")); //down
+                    spears.Add(new Boss(0.01f, -100, new Vector2(450, 1200), "vertical")); //up
+                }
+            }
 
             if (timer > 12)
             {
                 stage++;
                 bullets.Clear();
+                spears.Clear();
                 //playerCanAttack = true;
                 animateArenaRetract = true;
                 timer = 0;
@@ -413,27 +519,79 @@ namespace Adventure_Game_CSharp
 
             if (timer > 5)
             {
-                bossDisplayingText = false;
+                    while (spears.Count < 4)
+                    {
+                        bossDisplayingText = false;
+                        spears.Add(new Boss(100, 0.01f, new Vector2(playerPosition.X - 500, playerPosition.Y), "horisontal")); //left
+                        spears.Add(new Boss(-100, -0.01f, new Vector2(playerPosition.X + 500, playerPosition.Y), "horisontal")); //right
+                        spears.Add(new Boss(-0.01f, 100, new Vector2(playerPosition.X, playerPosition.Y - 500), "vertical")); //down
+                        spears.Add(new Boss(0.01f, -100, new Vector2(playerPosition.X, playerPosition.Y + 500), "vertical")); //up
+                    }
+            }
+            if (timer > 6)
+            {
+                while (spears.Count < 8)
+                {
+                    spears.Add(new Boss(100, 0.01f, new Vector2(playerPosition.X - 500, playerPosition.Y), "horisontal")); //left
+                    spears.Add(new Boss(-100, -0.01f, new Vector2(playerPosition.X + 500, playerPosition.Y), "horisontal")); //right
+                    spears.Add(new Boss(-0.01f, 100, new Vector2(playerPosition.X, playerPosition.Y - 500), "vertical")); //down
+                    spears.Add(new Boss(0.01f, -100, new Vector2(playerPosition.X, playerPosition.Y + 500), "vertical")); //up
+                }
+            }
+            if (timer > 7)
+            {
+                while (spears.Count < 12)
+                {
+                    spears.Add(new Boss(100, 0.01f, new Vector2(playerPosition.X - 500, playerPosition.Y), "horisontal")); //left
+                    spears.Add(new Boss(-100, -0.01f, new Vector2(playerPosition.X + 500, playerPosition.Y), "horisontal")); //right
+                    spears.Add(new Boss(-0.01f, 100, new Vector2(playerPosition.X, playerPosition.Y - 500), "vertical")); //down
+                    spears.Add(new Boss(0.01f, -100, new Vector2(playerPosition.X, playerPosition.Y + 500), "vertical")); //up
+                }
+            }
+            if (timer > 8)
+            {
+                while (spears.Count < 16)
+                {
+                    spears.Add(new Boss(100, 0.01f, new Vector2(playerPosition.X - 500, playerPosition.Y), "horisontal")); //left
+                    spears.Add(new Boss(-100, -0.01f, new Vector2(playerPosition.X + 500, playerPosition.Y), "horisontal")); //right
+                    spears.Add(new Boss(-0.01f, 100, new Vector2(playerPosition.X, playerPosition.Y - 500), "vertical")); //down
+                    spears.Add(new Boss(0.01f, -100, new Vector2(playerPosition.X, playerPosition.Y + 500), "vertical")); //up
+                }
+            }
+            if (timer > 9)
+            {
+                while (spears.Count < 20)
+                {
+                    spears.Add(new Boss(100, 0.01f, new Vector2(playerPosition.X - 500, playerPosition.Y), "horisontal")); //left
+                    spears.Add(new Boss(-100, -0.01f, new Vector2(playerPosition.X + 500, playerPosition.Y), "horisontal")); //right
+                    spears.Add(new Boss(-0.01f, 100, new Vector2(playerPosition.X, playerPosition.Y - 500), "vertical")); //down
+                    spears.Add(new Boss(0.01f, -100, new Vector2(playerPosition.X, playerPosition.Y + 500), "vertical")); //up
+                }
+            }
+
+            if (timer > 12)
+            {
                 while (bullets.Count < 10)
                     bullets.Add(new Boss(rand.Next(0, 400), rand.Next(-400, 400), new Vector2(270, 600)));
             }
 
-            if (timer > 8)
+            if (timer > 14)
                 while (bullets.Count < 20)
                     bullets.Add(new Boss(rand.Next(-400, 0), rand.Next(-400, 400), new Vector2(630, 600)));
 
-            if (timer > 11)
+            if (timer > 16)
                 while (bullets.Count < 30)
                     bullets.Add(new Boss(rand.Next(0, 400), rand.Next(-400, 400), new Vector2(270, 600)));
 
-            if (timer > 14)
+            if (timer > 18)
                 while (bullets.Count < 40)
                     bullets.Add(new Boss(rand.Next(-400, 0), rand.Next(-400, 400), new Vector2(630, 600)));
 
-            if (timer > 18)
+            if (timer > 22)
             {
                 stage++;
                 bullets.Clear();
+                spears.Clear();
                 //playerCanAttack = true;
                 animateArenaRetract = true;
                 timer = 0;
@@ -454,26 +612,62 @@ namespace Adventure_Game_CSharp
                 bulletSpread = -100;
 
             if (timer > 5)
+            {
                 if (bullets.Count < 20)
                     bullets.Add(new Boss(100, bulletSpread, new Vector2(270, 600)));
+                if (spears.Count < 2)
+                {
+                    spears.Add(new Boss(100, 0.01f, new Vector2(playerPosition.X - 500, playerPosition.Y), "horisontal")); //left
+                    spears.Add(new Boss(0.01f, -100, new Vector2(playerPosition.X, playerPosition.Y + 500), "vertical")); //up
+                }
+
+                
+            }
+
 
             if (timer > 7)
+            {
                 if (bullets.Count < 40)
                     bullets.Add(new Boss(-100, bulletSpread, new Vector2(630, 600)));
+                if (spears.Count < 4)
+                {
+                    spears.Add(new Boss(-100, -0.01f, new Vector2(playerPosition.X + 500, playerPosition.Y), "horisontal")); //right
+                    spears.Add(new Boss(-0.01f, 100, new Vector2(playerPosition.X, playerPosition.Y - 500), "vertical")); //down
+                }
+
+            }
+
 
 
             if (timer > 9)
+            {
                 if (bullets.Count < 60)
                     bullets.Add(new Boss(100, bulletSpread, new Vector2(270, 600)));
+                if (spears.Count < 6)
+                {
+                    spears.Add(new Boss(100, 0.01f, new Vector2(playerPosition.X - 500, playerPosition.Y), "horisontal")); //left
+                    spears.Add(new Boss(0.01f, -100, new Vector2(playerPosition.X, playerPosition.Y + 500), "vertical")); //up
+                }
+            }
+
 
             if (timer > 11)
+            {
                 if (bullets.Count < 80)
                     bullets.Add(new Boss(-100, bulletSpread, new Vector2(630, 600)));
+                if (spears.Count < 8)
+                {
+                    spears.Add(new Boss(-100, -0.01f, new Vector2(playerPosition.X + 500, playerPosition.Y), "horisontal")); //right
+                    spears.Add(new Boss(-0.01f, 100, new Vector2(playerPosition.X, playerPosition.Y - 500), "vertical")); //down
+                }
+            }
+
 
             if (timer > 15)
             {
                 stage++;
                 bullets.Clear();
+                spears.Clear();
                 //playerCanAttack = true;
                 animateArenaRetract = true;
                 timer = 0;
@@ -490,24 +684,76 @@ namespace Adventure_Game_CSharp
             if (bullets.Count % 40 == 0)
                 bulletSpread = -100;
 
+
             if (timer > 2)
+            {
                 if (bullets.Count < 40)
                 {
                     bullets.Add(new Boss(100, bulletSpread, new Vector2(270, 600)));
                     bullets.Add(new Boss(-100, bulletSpread + 15, new Vector2(630, 600)));
                 }
+                while (spears.Count < 4)
+                {
+                    spears.Add(new Boss(-0.01f, 100, new Vector2(355, 0), "vertical")); //down
+                    spears.Add(new Boss(0.01f, -100, new Vector2(355, 1200), "vertical")); //up
+                    spears.Add(new Boss(-0.01f, 100, new Vector2(545, 0), "vertical")); //down
+                    spears.Add(new Boss(0.01f, -100, new Vector2(545, 1200), "vertical")); //up
+                }
+            }
 
             if (timer > 4)
+            {
                 if (bullets.Count < 80)
                 {
                     bullets.Add(new Boss(100, bulletSpread, new Vector2(270, 600)));
                     bullets.Add(new Boss(-100, bulletSpread + 15, new Vector2(630, 600)));
                 }
+                while (spears.Count < 8)
+                {
+                    spears.Add(new Boss(-0.01f, 100, new Vector2(355, 0), "vertical")); //down
+                    spears.Add(new Boss(0.01f, -100, new Vector2(355, 1200), "vertical")); //up
+                    spears.Add(new Boss(-0.01f, 100, new Vector2(545, 0), "vertical")); //down
+                    spears.Add(new Boss(0.01f, -100, new Vector2(545, 1200), "vertical")); //up
+                }
+            }
 
-            if (timer > 9)
+            if (timer > 6)
+            {
+                if (bullets.Count < 120)
+                {
+                    bullets.Add(new Boss(100, bulletSpread, new Vector2(270, 600)));
+                    bullets.Add(new Boss(-100, bulletSpread + 15, new Vector2(630, 600)));
+                }
+                while (spears.Count < 12)
+                {
+                    spears.Add(new Boss(-0.01f, 100, new Vector2(355, 0), "vertical")); //down
+                    spears.Add(new Boss(0.01f, -100, new Vector2(355, 1200), "vertical")); //up
+                    spears.Add(new Boss(-0.01f, 100, new Vector2(545, 0), "vertical")); //down
+                    spears.Add(new Boss(0.01f, -100, new Vector2(545, 1200), "vertical")); //up
+                }
+            }
+
+            if (timer > 8)
+            {
+                if (bullets.Count < 160)
+                {
+                    bullets.Add(new Boss(100, bulletSpread, new Vector2(270, 600)));
+                    bullets.Add(new Boss(-100, bulletSpread + 15, new Vector2(630, 600)));
+                }
+                while (spears.Count < 16)
+                {
+                    spears.Add(new Boss(-0.01f, 100, new Vector2(355, 0), "vertical")); //down
+                    spears.Add(new Boss(0.01f, -100, new Vector2(355, 1200), "vertical")); //up
+                    spears.Add(new Boss(-0.01f, 100, new Vector2(545, 0), "vertical")); //down
+                    spears.Add(new Boss(0.01f, -100, new Vector2(545, 1200), "vertical")); //up
+                }
+            }
+
+            if (timer > 13)
             {
                 stage++;
                 bullets.Clear();
+                spears.Clear();
                 //playerCanAttack = true;
                 animateArenaRetract = true;
                 timer = 0;
@@ -520,6 +766,7 @@ namespace Adventure_Game_CSharp
                 timer += (float)gameTime.ElapsedGameTime.TotalSeconds;
             if (bossHealth <= 0)
             {
+                MediaPlayer.Stop();
                 if (timer > 2)
                 {
                     bossDisplayingText = true;
@@ -553,6 +800,11 @@ namespace Adventure_Game_CSharp
                 {
                     if (kState.IsKeyDown(Keys.A))
                         selectedButton = 1;
+
+                    if (kState.IsKeyDown(Keys.Space))
+                    {
+                        playerIsDead = true;
+                    }
                 }
             }
 
@@ -619,7 +871,6 @@ namespace Adventure_Game_CSharp
                     arenaRectBlack.Width -= 6;
                     
                     timer = 0;
-
                 }
             }
 
@@ -633,7 +884,6 @@ namespace Adventure_Game_CSharp
                     if (timer > 0.01)
                     {
                         arenaRectWhite.Height -= 6;
-                        //arenaRectBlack.Height -= 6;
                         timer = 0;
                     }
                 }
@@ -696,38 +946,78 @@ namespace Adventure_Game_CSharp
             timer += (float)gameTime.ElapsedGameTime.TotalSeconds;
 
             if (timer > 2)
+            {
                 if (bullets.Count < 40)
                 {
                     bullets.Add(new Boss(rand.Next(-400, 400), rand.Next(-400, 400), new Vector2(270, 600)));
                     bullets.Add(new Boss(rand.Next(-400, 400), rand.Next(-400, 400), new Vector2(630, 600)));
                 }
+                while (spears.Count < 2)
+                {
+                    spears.Add(new Boss(100, 0.01f, new Vector2(-130, 480), "horisontal")); //left
+                    spears.Add(new Boss(-100, -0.01f, new Vector2(1000, 480), "horisontal")); //right
+                    spears.Add(new Boss(100, 0.01f, new Vector2(-130, 720), "horisontal")); //left
+                    spears.Add(new Boss(-100, -0.01f, new Vector2(1000, 720), "horisontal")); //right
+                }
+            }
+
 
             if (timer > 4)
+            {
                 if (bullets.Count < 80)
                 {
                     bullets.Add(new Boss(rand.Next(-400, 400), rand.Next(-400, 400), new Vector2(270, 600)));
                     bullets.Add(new Boss(rand.Next(-400, 400), rand.Next(-400, 400), new Vector2(630, 600)));
                 }
+                while (spears.Count < 4)
+                {
+                    spears.Add(new Boss(100, 0.01f, new Vector2(-130, 480), "horisontal")); //left
+                    spears.Add(new Boss(-100, -0.01f, new Vector2(1000, 480), "horisontal")); //right
+                    spears.Add(new Boss(100, 0.01f, new Vector2(-130, 720), "horisontal")); //left
+                    spears.Add(new Boss(-100, -0.01f, new Vector2(1000, 720), "horisontal")); //right
+                }
+            }
+
 
             if (timer > 6)
+            {
                 if (bullets.Count < 120)
                 {
                     bullets.Add(new Boss(rand.Next(-400, 400), rand.Next(-400, 400), new Vector2(270, 600)));
                     bullets.Add(new Boss(rand.Next(-400, 400), rand.Next(-400, 400), new Vector2(630, 600)));
                 }
+                while (spears.Count < 6)
+                {
+                    spears.Add(new Boss(100, 0.01f, new Vector2(-130, 480), "horisontal")); //left
+                    spears.Add(new Boss(-100, -0.01f, new Vector2(1000, 480), "horisontal")); //right
+                    spears.Add(new Boss(100, 0.01f, new Vector2(-130, 720), "horisontal")); //left
+                    spears.Add(new Boss(-100, -0.01f, new Vector2(1000, 720), "horisontal")); //right
+                }
+            }
+
 
             if (timer > 8)
+            {
                 if (bullets.Count < 160)
                 {
                     bullets.Add(new Boss(rand.Next(-400, 400), rand.Next(-400, 400), new Vector2(270, 600)));
                     bullets.Add(new Boss(rand.Next(-400, 400), rand.Next(-400, 400), new Vector2(630, 600)));
                 }
+                while (spears.Count < 8)
+                {
+                    spears.Add(new Boss(100, 0.01f, new Vector2(-130, 480), "horisontal")); //left
+                    spears.Add(new Boss(-100, -0.01f, new Vector2(1000, 480), "horisontal")); //right
+                    spears.Add(new Boss(100, 0.01f, new Vector2(-130, 720), "horisontal")); //left
+                    spears.Add(new Boss(-100, -0.01f, new Vector2(1000, 720), "horisontal")); //right
+                }
+            }
+
 
             if (timer > 12)
             {
                 stage++;
                 bullets.Clear();
-                //playerCanAttack = true;
+                spears.Clear();
                 animateArenaRetract = true;
                 timer = 0;
             }
@@ -869,7 +1159,7 @@ namespace Adventure_Game_CSharp
             }
 
 
-            if (timer > 21)
+            if (timer > 20)
                 while (bullets.Count < 310)
                     bullets.Add(new Boss(rand.Next(-400, 400), rand.Next(0, 400), new Vector2(450, 350)));
 
@@ -990,7 +1280,7 @@ namespace Adventure_Game_CSharp
 
             bossSprite.Play("death");
             bossDisplayingText = false;
-            if (bossSprite.CurrentFrameIndex == 36)
+            if (bossSprite.CurrentFrameIndex == 37)
             {
                 //bossSprite.Position = new Vector2(1000, 1000);
                 gameOver = true;
