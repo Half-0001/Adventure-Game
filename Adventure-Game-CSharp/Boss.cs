@@ -7,8 +7,6 @@ using System.Collections.Generic;
 using MonoGame.Aseprite.Documents;
 using System;
 using System.Diagnostics;
-using System.Runtime.CompilerServices;
-using System.Linq.Expressions;
 using Microsoft.Xna.Framework.Media;
 
 namespace Adventure_Game_CSharp
@@ -22,6 +20,7 @@ namespace Adventure_Game_CSharp
         AsepriteDocument bossSpriteUpscaled;
         Texture2D _texture;
         Texture2D heart;
+        Texture2D heartDead;
         SpriteFont spriteFont;
         Texture2D bossTextBox;
         Song battleSong;
@@ -29,11 +28,13 @@ namespace Adventure_Game_CSharp
 
         //boss fight stuff//
         Random rand = new Random();
-        int bossHealth = 100;
+        int bossHealth = 18;
         bool bossDisplayingText = true;
         string bossText1 = "You have made a \nterrible mistake \ncoming here today.";
         string bossText2 = "You will not win, \n My power grows \nevery second";
         string bossText3 = "You . . . \n Will . . . \nDIE!";
+        string bossText4 = "You may have won \nthe battle, but the \nwar is yet to come";
+        bool gameOver;
         
         int textDraw; //variables for displaying text letter by letter whilst it appears
         float textDrawTimer;
@@ -49,10 +50,9 @@ namespace Adventure_Game_CSharp
         bool playerCanAttack = false;
         int selectedButton = 1;
         bool playerAttackDelay = false;
+        bool playerIsDead = false;
 
-        //arena 
-        //Rectangle arenaRectWhite = new Rectangle(295, 445, 300, 300);
-        //Rectangle arenaRectBlack = new Rectangle(300, 450, 290, 290);
+        //arena
         Rectangle arenaRectWhite = new Rectangle(295, 445, 0, 0);
         Rectangle arenaRectBlack = new Rectangle(300, 450, 0, 0);
 
@@ -93,6 +93,7 @@ namespace Adventure_Game_CSharp
             bossTextBox = Content.Load<Texture2D>("bossTextBox");
 
             heart = Content.Load<Texture2D>("sprites/heart");
+            heartDead = Content.Load<Texture2D>("sprites/heart-dead");
 
             //blank texture 
             _texture = new Texture2D(_graphics, 1, 1);
@@ -144,111 +145,129 @@ namespace Adventure_Game_CSharp
                 bossSprite = new AnimatedSprite(bossSpriteUpscaled);
                 bossSprite.Position = new Vector2(340, 242);
                 bossSprite.Scale = new Vector2(0.8f, 0.8f);
-                stage = 1;
+                stage = 6;
                 MediaPlayer.Play(battleSong);
             }
-            if (playerCanAttack == false)
-                bossSprite.Play("idle-down");
 
-
-            //set the elapsed game time since last frame 
-            float dt = (float)gameTime.ElapsedGameTime.TotalSeconds;
-            kState = Keyboard.GetState(); //set keyboard state
-
-            if (playerCanAttack)
-                PlayerAttack(gameTime);
-
-            bossSprite.Update(gameTime);
-
-            BossTextManager(gameTime);
-
-            if (playerCanAttack == false)
+            if (playerIsDead)
             {
-                MovePlayer(dt);
+                PlayerDeath(gameTime);
+            }
 
-                //bullet movement and rect
-                if (bullets.Count != 0)
+            if (playerIsDead == false)
+            {
+                if (playerHealth <= 0)
+                    {
+                        timer = 0;
+                        playerIsDead = true;
+                        
+                    }
+
+                if (playerCanAttack == false && bossHealth > 0)
+                    bossSprite.Play("idle-down");
+
+
+                //set the elapsed game time since last frame 
+                float dt = (float)gameTime.ElapsedGameTime.TotalSeconds;
+                kState = Keyboard.GetState(); //set keyboard state
+
+                if (playerCanAttack)
+                    PlayerAttack(gameTime);
+
+                bossSprite.Update(gameTime);
+
+                BossTextManager(gameTime);
+
+                if (playerCanAttack == false && bossHealth > 0)
                 {
+                    MovePlayer(dt);
+
+                    //bullet movement and rect
+                    if (bullets.Count != 0)
+                    {
+                        for (int i = 0; i < bullets.Count; i++)
+                        {
+                            bullets[i].bulletPosition += bullets[i].dir * bulletSpeed * dt;
+
+                            bullets[i].bulletRect.X = (int)bullets[i].bulletPosition.X;
+                            bullets[i].bulletRect.Y = (int)bullets[i].bulletPosition.Y;
+                        }
+                    }
+
+                    //getting hit by bullets
                     for (int i = 0; i < bullets.Count; i++)
                     {
-                        bullets[i].bulletPosition += bullets[i].dir * bulletSpeed * dt;
-
-                        bullets[i].bulletRect.X = (int)bullets[i].bulletPosition.X;
-                        bullets[i].bulletRect.Y = (int)bullets[i].bulletPosition.Y;
-                    }
-                }
-
-                //getting hit by bullets
-                for (int i = 0; i < bullets.Count; i++)
-                {
-                    if (playerRect.Intersects(bullets[i].bulletRect)) //getting hit by enemies
-                    {
-                        if (canBeAttacked)
+                        if (playerRect.Intersects(bullets[i].bulletRect)) //getting hit by enemies
                         {
-                            playerHealth -= 15;
-                            cooldownTimer = 0;
-                            canBeAttacked = false;
-                            break;
+                            if (canBeAttacked)
+                            {
+                                playerHealth -= 101;
+                                cooldownTimer = 0;
+                                canBeAttacked = false;
+                                break;
+                            }
+                        }
+                    }
+
+                    if (canBeAttacked == false)
+                    {
+                        cooldownTimer += (float)gameTime.ElapsedGameTime.TotalSeconds; //cooldown before the player can be attacked again
+                        if (cooldownTimer > 2)
+                            canBeAttacked = true;
+                    }
+
+                    if (animateArenaExpand)
+                    {
+                        AnimateArenaExpand(gameTime);
+                    }
+
+                    if (animateArenaRetract)
+                    {
+                        AnimateArenaRetract(gameTime);
+                    }
+
+                    if (animateArenaExpand == false && animateArenaRetract == false)
+                    {
+                        if (stage == 1)
+                        {
+                            bulletSpeed = 200;
+                            Level1(gameTime);
+                        }
+
+                        if (stage == 2)
+                        {
+                            bulletSpeed = 150;
+                            Level2(gameTime);
+                        }
+
+                        if (stage == 3)
+                        {
+                            bulletSpeed = 150;
+                            Level3(gameTime);
+                        }
+
+                        if (stage == 4)
+                        {
+                            bulletSpeed = 80;
+                            Level4(gameTime);
+                        }
+
+                        if (stage == 5)
+                        {
+                            bulletSpeed = 100;
+                            Level5(gameTime);
+                        }
+
+                        if (stage == 6)
+                        {
+                            bulletSpeed = 150;
+                            Level6(gameTime);
                         }
                     }
                 }
-
-                if (canBeAttacked == false)
-                {
-                    cooldownTimer += (float)gameTime.ElapsedGameTime.TotalSeconds; //cooldown before the player can be attacked again
-                    if (cooldownTimer > 2)
-                        canBeAttacked = true;
-                }
-
-                if (animateArenaExpand)
-                {
-                    AnimateArenaExpand(gameTime);
-                }
-
-                if (animateArenaRetract)
-                {
-                    AnimateArenaRetract(gameTime);
-                }
-                
-                if (animateArenaExpand == false && animateArenaRetract == false)
-                {
-                    if (stage == 1)
-                    {
-                        bulletSpeed = 200;
-                        Level1(gameTime);
-                    }
-
-                    if (stage == 2)
-                    {
-                        bulletSpeed = 150;
-                        Level2(gameTime);
-                    }
-
-                    if (stage == 3)
-                    {
-                        bulletSpeed = 150;
-                        Level3(gameTime);
-                    }
-
-                    if (stage == 4)
-                    {
-                        bulletSpeed = 80;
-                        Level4(gameTime);
-                    }
-
-                    if (stage == 5)
-                    {
-                        bulletSpeed = 100;
-                        Level5(gameTime);
-                    }
-
-                    if (stage == 6)
-                    {
-                        bulletSpeed = 150;
-                        Level6(gameTime);
-                    }
-                }
             }
+
+            
         }
 
         public void Draw(SpriteBatch _spriteBatch)
@@ -260,57 +279,69 @@ namespace Adventure_Game_CSharp
         {
             graphics.Clear(Color.Black);
 
-            //draw boss and health rect
-            bossSprite.Render(_spriteBatch);
-            if (playerCanAttack)
+            if (playerIsDead)
+                DrawPlayerDeath(_spriteBatch);
+
+
+            if (!gameOver && playerIsDead == false)
             {
-                _spriteBatch.DrawString(spriteFont, "Boss Health:", new Vector2(295, 100), Color.White, 0f, new Vector2(0, 0), 1f, SpriteEffects.None, 0f);
-                _spriteBatch.Draw(_texture, new Rectangle(295, 145, 310, 40), Color.White);
-                _spriteBatch.Draw(_texture, new Rectangle(300, 150, 300, 30), Color.Black);
-                _spriteBatch.Draw(_texture, new Rectangle(300, 150, bossHealth * 3, 30), Color.DarkRed);
-            }
-
-            if (bossDisplayingText)
-            {
-                _spriteBatch.Draw(bossTextBox, new Rectangle(530, 270, 207, 90), Color.White);
-                if (stage == 1)
-                    _spriteBatch.DrawString(spriteFont, bossText1.Remove(textDraw, bossText1.Length - textDraw), new Vector2(560, 270), Color.Black, 0f, new Vector2(0, 0), 0.6f, SpriteEffects.None, 0f);
-
-                if (stage == 3)
-                    _spriteBatch.DrawString(spriteFont, bossText2.Remove(textDraw, bossText2.Length - textDraw), new Vector2(560, 270), Color.Black, 0f, new Vector2(0, 0), 0.6f, SpriteEffects.None, 0f);
-
-                if (stage == 6)
-                    _spriteBatch.DrawString(spriteFont, bossText3.Remove(textDraw, bossText3.Length - textDraw), new Vector2(560, 270), Color.Black, 0f, new Vector2(0, 0), 0.6f, SpriteEffects.None, 0f);
-            }
-
-            //draw bounding box 
-            _spriteBatch.Draw(_texture, arenaRectWhite, Color.White);
-            _spriteBatch.Draw(_texture, arenaRectBlack, Color.Black);
-
-            if (playerCanAttack == false)
-            {
-                //draw player rect and health
-                if (animateArenaExpand == false && animateArenaRetract == false)
+                //draw boss and health rect
+                bossSprite.Render(_spriteBatch);
+                if (playerCanAttack)
                 {
-                    _spriteBatch.Draw(heart, playerRect, Color.Red);
-                    _spriteBatch.DrawString(spriteFont, "Health:", new Vector2(295, 760), Color.White, 0f, new Vector2(0, 0), 1f, SpriteEffects.None, 0f);
-                    _spriteBatch.Draw(_texture, new Rectangle(295, 805, 310, 40), Color.White);
-                    _spriteBatch.Draw(_texture, new Rectangle(300, 810, 300, 30), Color.Black);
-                    _spriteBatch.Draw(_texture, new Rectangle(300, 810, playerHealth * 3, 30), Color.DarkGreen);
+                    _spriteBatch.DrawString(spriteFont, "Boss Health:", new Vector2(295, 100), Color.White, 0f, new Vector2(0, 0), 1f, SpriteEffects.None, 0f);
+                    _spriteBatch.Draw(_texture, new Rectangle(295, 145, 310, 40), Color.White);
+                    _spriteBatch.Draw(_texture, new Rectangle(300, 150, 300, 30), Color.Black);
+                    _spriteBatch.Draw(_texture, new Rectangle(300, 150, bossHealth * 3, 30), Color.DarkRed);
                 }
 
-
-                //draw bullets 
-                for (int i = 0; i < bullets.Count; i++)
+                if (bossDisplayingText)
                 {
-                    _spriteBatch.Draw(_texture, bullets[i].bulletRect, Color.White);
+                    _spriteBatch.Draw(bossTextBox, new Rectangle(530, 270, 207, 90), Color.White);
+                    if (stage == 1)
+                        _spriteBatch.DrawString(spriteFont, bossText1.Remove(textDraw, bossText1.Length - textDraw), new Vector2(560, 270), Color.Black, 0f, new Vector2(0, 0), 0.6f, SpriteEffects.None, 0f);
+
+                    if (stage == 3)
+                        _spriteBatch.DrawString(spriteFont, bossText2.Remove(textDraw, bossText2.Length - textDraw), new Vector2(560, 270), Color.Black, 0f, new Vector2(0, 0), 0.6f, SpriteEffects.None, 0f);
+
+                    if (stage == 6)
+                        _spriteBatch.DrawString(spriteFont, bossText3.Remove(textDraw, bossText3.Length - textDraw), new Vector2(560, 270), Color.Black, 0f, new Vector2(0, 0), 0.6f, SpriteEffects.None, 0f);
+
+                    if (stage == 7)
+                        _spriteBatch.DrawString(spriteFont, bossText4.Remove(textDraw, bossText4.Length - textDraw), new Vector2(560, 270), Color.Black, 0f, new Vector2(0, 0), 0.6f, SpriteEffects.None, 0f);
+
+                }
+
+                //draw bounding box 
+                _spriteBatch.Draw(_texture, arenaRectWhite, Color.White);
+                _spriteBatch.Draw(_texture, arenaRectBlack, Color.Black);
+
+                if (playerCanAttack == false)
+                {
+                    //draw player rect and health
+                    if (animateArenaExpand == false && animateArenaRetract == false)
+                    {
+                        _spriteBatch.Draw(heart, playerRect, Color.Red);
+                        _spriteBatch.DrawString(spriteFont, "Health:", new Vector2(295, 760), Color.White, 0f, new Vector2(0, 0), 1f, SpriteEffects.None, 0f);
+                        _spriteBatch.Draw(_texture, new Rectangle(295, 805, 310, 40), Color.White);
+                        _spriteBatch.Draw(_texture, new Rectangle(300, 810, 300, 30), Color.Black);
+                        _spriteBatch.Draw(_texture, new Rectangle(300, 810, playerHealth * 3, 30), Color.DarkGreen);
+                    }
+
+
+                    //draw bullets 
+                    for (int i = 0; i < bullets.Count; i++)
+                    {
+                        _spriteBatch.Draw(_texture, bullets[i].bulletRect, Color.White);
+                    }
+                }
+
+                if (playerCanAttack)
+                {
+                    DrawPlayerAttack(_spriteBatch);
                 }
             }
-
-            if (playerCanAttack)
-            {
-                DrawPlayerAttack(_spriteBatch);
-            }
+            
         }
         private void MovePlayer(float dt)
         {
@@ -486,7 +517,20 @@ namespace Adventure_Game_CSharp
         private void PlayerAttack(GameTime gameTime)
         {
             if (selectedButton == 3)
-            timer += (float)gameTime.ElapsedGameTime.TotalSeconds;
+                timer += (float)gameTime.ElapsedGameTime.TotalSeconds;
+            if (bossHealth <= 0)
+            {
+                if (timer > 2)
+                {
+                    bossDisplayingText = true;
+                }
+
+                if (timer > 6)
+                {
+                    BossDeath(gameTime);
+                    return;
+                }
+            }
 
             if (playerAttackDelay != true)
             {
@@ -532,12 +576,16 @@ namespace Adventure_Game_CSharp
                     textDrawTimer = 0; //tell the game to display text on stages 3 and 6 and reset the variable for it
                 }
 
-                animateArenaExpand = true;
-                playerCanAttack = false;
-                playerAttackDelay = false;
-            }
-            
+                if (bossHealth > 0)
+                {
+                    animateArenaExpand = true;
+                    playerCanAttack = false;
+                    playerAttackDelay = false;
+                }
 
+                //Debug.WriteLine(timer);
+
+            }
         }
 
         private void DrawPlayerAttack(SpriteBatch _spriteBatch)
@@ -596,6 +644,8 @@ namespace Adventure_Game_CSharp
                     arenaRectWhite.Width = 0;
                     arenaRectWhite.Height = 0;
                     selectedButton = 1;
+                    textDraw = 0;
+                    textDrawTimer = 0;
                     playerCanAttack = true;
                     animateArenaRetract = false;
                 }
@@ -911,6 +961,64 @@ namespace Adventure_Game_CSharp
                         textDrawTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
                     }
                 }
+            }
+
+            if (stage == 7)
+            {
+                if (timer > 2)
+                {
+                    if (textDraw < bossText4.Length)
+                    {
+                        textDrawTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
+                        if (textDrawTimer > 0.05)
+                        {
+                            textDraw++;
+                            textDrawTimer = 0;
+                        }
+                    }
+                    if (textDraw == bossText4.Length && textDrawTimer < 4)
+                    {
+                        textDrawTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
+                    }
+                }
+            }
+        }
+
+        private void BossDeath(GameTime gameTime)
+        {
+            //timer += (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+            bossSprite.Play("death");
+            bossDisplayingText = false;
+            if (bossSprite.CurrentFrameIndex == 36)
+            {
+                //bossSprite.Position = new Vector2(1000, 1000);
+                gameOver = true;
+            }
+        }
+
+        private void PlayerDeath(GameTime gameTime)
+        {
+            timer += (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+            if (timer > 5)
+            {
+                stage = 0;
+                playerHealth = 100;
+                bossHealth = 100;
+                playerIsDead = false;
+            }
+        }
+
+        private void DrawPlayerDeath(SpriteBatch _spriteBatch)
+        {
+            if (timer < 2)
+            {
+                _spriteBatch.Draw(heart, playerRect, Color.Red);
+            }
+            if (timer > 2)
+            {
+                _spriteBatch.Draw(heartDead, playerRect, Color.Red);
             }
         }
     }

@@ -4,7 +4,6 @@ using Microsoft.Xna.Framework.Input;
 using Comora;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System;
 
 namespace Adventure_Game_CSharp
 {

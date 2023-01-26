@@ -167,6 +167,18 @@
 /processorParam:TextureFormat=Color
 /build:play_yellow.png
 
+#begin sprites/heart-dead.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:sprites/heart-dead.png
+
 #begin sprites/heart.png
 /importer:TextureImporter
 /processor:TextureProcessor

@@ -8,7 +8,6 @@ using System.Diagnostics;
 using Microsoft.Xna.Framework.Content;
 using MonoGame.Aseprite.Documents;
 using Microsoft.Xna.Framework.Media;
-using System.Threading;
 
 namespace Adventure_Game_CSharp
 {
@@ -44,7 +43,7 @@ namespace Adventure_Game_CSharp
         private bool attacking = false;
         private List<string> inventory = new List<string> { "Bottle 'O Pop ", "Bones" };
         public bool accessingInventory = false;
-        public int level = 0; //0 for game start, 4 for boss fight
+        public int level = 4; //0 for game start, 4 for boss fight
         private bool isMoving;
         public bool restart = false;
         

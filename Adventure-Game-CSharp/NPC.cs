@@ -5,7 +5,6 @@ using Microsoft.Xna.Framework.Graphics;
 using MonoGame.Aseprite.Graphics;
 using System.Collections.Generic;
 using MonoGame.Aseprite.Documents;
-using System;
 using System.Diagnostics;
 
 namespace Adventure_Game_CSharp
