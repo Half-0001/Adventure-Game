@@ -52,7 +52,7 @@ namespace Adventure_Game_CSharp
         int playerHealth = 100;
         bool canBeAttacked = true;
         float cooldownTimer; //timer for invincibility cooldown before the player can be attacked again
-        bool playerCanAttack = true;
+        bool playerCanAttack = false;
         int selectedButton = 1;
         bool playerAttackDelay = false;
         bool playerIsDead = false;
@@ -188,7 +188,7 @@ namespace Adventure_Game_CSharp
                 bossSprite = new AnimatedSprite(bossSpriteUpscaled);
                 bossSprite.Position = new Vector2(340, 242);
                 bossSprite.Scale = new Vector2(0.8f, 0.8f);
-                stage = 1;
+                stage = 6;
                 MediaPlayer.IsRepeating = true;
                 MediaPlayer.Play(battleSong);
             }
@@ -1051,6 +1051,8 @@ namespace Adventure_Game_CSharp
                 bossDisplayingText = false;
                 while (bullets.Count < 30)
                     bullets.Add(new Boss(rand.Next(-400, 400), rand.Next(0, 400), new Vector2(450, 350)));
+                if (spears.Count < 1)
+                    spears.Add(new Boss(100, 0.01f, new Vector2(-130, 600), "horisontal")); //left
             }
 
 
@@ -1071,11 +1073,18 @@ namespace Adventure_Game_CSharp
 
 
             if (timer > 8)
+            {
                 while (bullets.Count < 68)
                     bullets.Add(new Boss(rand.Next(-400, 400), rand.Next(0, 400), new Vector2(450, 350)));
+                if (spears.Count < 2)
+                    spears.Add(new Boss(100, 0.01f, new Vector2(-130, 600), "horisontal")); //left
+            }
+
+
 
             if (timer > 9 && timer < 10)
             {
+
                 int random = rand.Next(1, 3);
                 while (bullets.Count < 76)
                 {
@@ -1088,13 +1097,17 @@ namespace Adventure_Game_CSharp
             }
 
             if (timer > 10)
+            {
                 while (bullets.Count < 106)
                     bullets.Add(new Boss(rand.Next(-400, 400), rand.Next(0, 400), new Vector2(450, 350)));
+                if (spears.Count < 3)
+                    spears.Add(new Boss(100, 0.01f, new Vector2(-130, 600), "horisontal")); //left
+            }
+
 
             if (timer > 11 && timer < 12)
             {
                 int random = rand.Next(1, 3);
-
                 while (bullets.Count < 121)
                 {
                     if (random == 1)
@@ -1107,8 +1120,13 @@ namespace Adventure_Game_CSharp
 
 
             if (timer > 12)
+            {
                 while (bullets.Count < 151)
                     bullets.Add(new Boss(rand.Next(-400, 400), rand.Next(0, 400), new Vector2(450, 350)));
+                if (spears.Count < 4)
+                    spears.Add(new Boss(100, 0.01f, new Vector2(-130, 600), "horisontal")); //left
+            }
+
 
             if (timer > 13 && timer < 14)
             {
@@ -1124,13 +1142,17 @@ namespace Adventure_Game_CSharp
             }
 
             if (timer > 14)
+            {
                 while (bullets.Count < 196)
                     bullets.Add(new Boss(rand.Next(-400, 400), rand.Next(0, 400), new Vector2(450, 350)));
+                if (spears.Count < 5)
+                    spears.Add(new Boss(100, 0.01f, new Vector2(-130, 600), "horisontal")); //left
+            }
+
 
             if (timer > 15 && timer < 16)
             {
                 int random = rand.Next(1, 3);
-
                 while (bullets.Count < 204)
                 {
                     if (random == 1)
@@ -1143,11 +1165,17 @@ namespace Adventure_Game_CSharp
 
 
             if (timer > 16)
+            {
                 while (bullets.Count < 234)
                     bullets.Add(new Boss(rand.Next(-400, 400), rand.Next(0, 400), new Vector2(450, 350)));
+                if (spears.Count < 6)
+                    spears.Add(new Boss(100, 0.01f, new Vector2(-130, 600), "horisontal")); //left
+            }
+
 
             if (timer > 17 && timer < 18)
             {
+
                 int random = rand.Next(1, 3);
                 while (bullets.Count < 242)
                 {
@@ -1160,11 +1188,16 @@ namespace Adventure_Game_CSharp
             }
 
             if (timer > 18)
+            {
+                if (spears.Count < 7)
+                    spears.Add(new Boss(100, 0.01f, new Vector2(-130, 600), "horisontal")); //left
                 while (bullets.Count < 272)
                     bullets.Add(new Boss(rand.Next(-400, 400), rand.Next(0, 400), new Vector2(450, 350)));
+            }
+
 
             if (timer > 19 && timer < 20)
-            {
+            { 
                 int random = rand.Next(1, 3);
 
                 while (bullets.Count < 280)
@@ -1179,11 +1212,17 @@ namespace Adventure_Game_CSharp
 
 
             if (timer > 20)
+            {
                 while (bullets.Count < 310)
                     bullets.Add(new Boss(rand.Next(-400, 400), rand.Next(0, 400), new Vector2(450, 350)));
+                if (spears.Count < 8)
+                    spears.Add(new Boss(100, 0.01f, new Vector2(-130, 600), "horisontal")); //left
+            }
+
 
             if (timer > 21 && timer < 22)
             {
+
                 int random = rand.Next(1, 3);
                 while (bullets.Count < 318)
                 {
@@ -1196,14 +1235,20 @@ namespace Adventure_Game_CSharp
             }
 
             if (timer > 22)
+            {
                 while (bullets.Count < 348)
                     bullets.Add(new Boss(rand.Next(-400, 400), rand.Next(0, 400), new Vector2(450, 350)));
+                if (spears.Count < 9)
+                    spears.Add(new Boss(100, 0.01f, new Vector2(-130, 600), "horisontal")); //left
+            }
+
 
 
             if (timer > 26)
             {
                 stage++;
                 bullets.Clear();
+                spears.Clear();
                 //playerCanAttack = true;
                 animateArenaRetract = true;
                 timer = 0;
