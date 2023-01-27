@@ -32,7 +32,7 @@ namespace Adventure_Game_CSharp
         Random rand = new Random();
 
         //boss variables//
-        int bossHealth = 15;
+        int bossHealth = 100;
         bool bossDisplayingText = true;
         string bossText1 = "You have made a \nterrible mistake \ncoming here today.";
         string bossText2 = "You will not win, \n My power grows \nevery second";
@@ -52,7 +52,7 @@ namespace Adventure_Game_CSharp
         int playerHealth = 100;
         bool canBeAttacked = true;
         float cooldownTimer; //timer for invincibility cooldown before the player can be attacked again
-        bool playerCanAttack = true;
+        bool playerCanAttack = false;
         int selectedButton = 1;
         bool playerAttackDelay = false;
         bool playerIsDead = false;
