@@ -11,7 +11,7 @@ using Microsoft.Xna.Framework.Media;
 
 namespace Adventure_Game_CSharp
 {
-    internal class Boss //boss battle started 2 days before the project was due. turned out to be more work than i was expecting
+    internal class Boss
     {
 
         //textures and sprites
@@ -32,7 +32,7 @@ namespace Adventure_Game_CSharp
         Random rand = new Random();
 
         //boss variables//
-        int bossHealth = 100;
+        int bossHealth = 15;
         bool bossDisplayingText = true;
         string bossText1 = "You have made a \nterrible mistake \ncoming here today.";
         string bossText2 = "You will not win, \n My power grows \nevery second";
@@ -52,7 +52,7 @@ namespace Adventure_Game_CSharp
         int playerHealth = 100;
         bool canBeAttacked = true;
         float cooldownTimer; //timer for invincibility cooldown before the player can be attacked again
-        bool playerCanAttack = false;
+        bool playerCanAttack = true;
         int selectedButton = 1;
         bool playerAttackDelay = false;
         bool playerIsDead = false;
@@ -188,7 +188,7 @@ namespace Adventure_Game_CSharp
                 bossSprite = new AnimatedSprite(bossSpriteUpscaled);
                 bossSprite.Position = new Vector2(340, 242);
                 bossSprite.Scale = new Vector2(0.8f, 0.8f);
-                stage = 6;
+                stage = 1;
                 MediaPlayer.IsRepeating = true;
                 MediaPlayer.Play(battleSong);
             }
@@ -1435,22 +1435,23 @@ namespace Adventure_Game_CSharp
             _spriteBatch.DrawString(spriteFont, "Gnu Image Manipulation Program", new Vector2(150, creditsPosition.Y + 2200), Color.White, 0f, new Vector2(0, 0), 1f, SpriteEffects.None, 0f);
             _spriteBatch.DrawString(spriteFont, "Ableton Live 10", new Vector2(150, creditsPosition.Y + 2250), Color.White, 0f, new Vector2(0, 0), 1f, SpriteEffects.None, 0f);
             _spriteBatch.DrawString(spriteFont, "Github", new Vector2(150, creditsPosition.Y + 2300), Color.White, 0f, new Vector2(0, 0), 1f, SpriteEffects.None, 0f);
+            _spriteBatch.DrawString(spriteFont, "DALL.E 2", new Vector2(150, creditsPosition.Y + 2350), Color.White, 0f, new Vector2(0, 0), 1f, SpriteEffects.None, 0f);
 
 
-            _spriteBatch.DrawString(spriteFont, "Made In C#", new Vector2(450 - (spriteFont.MeasureString("Made In C#").Length() * 0.75f), creditsPosition.Y + 2500), Color.White, 0f, new Vector2(0, 0), 1.5f, SpriteEffects.None, 0f);
-            _spriteBatch.DrawString(spriteFont, "using MicrosoftXNA/Monogame Framework", new Vector2(450 - (spriteFont.MeasureString("using MicrosoftXNA/Monogame Framework").Length() /2), creditsPosition.Y + 2550), Color.White, 0f, new Vector2(0, 0), 1f, SpriteEffects.None, 0f);
+            _spriteBatch.DrawString(spriteFont, "Made In C#", new Vector2(450 - (spriteFont.MeasureString("Made In C#").Length() * 0.75f), creditsPosition.Y + 2550), Color.White, 0f, new Vector2(0, 0), 1.5f, SpriteEffects.None, 0f);
+            _spriteBatch.DrawString(spriteFont, "using MicrosoftXNA/Monogame Framework", new Vector2(450 - (spriteFont.MeasureString("using MicrosoftXNA/Monogame Framework").Length() /2), creditsPosition.Y + 2600), Color.White, 0f, new Vector2(0, 0), 1f, SpriteEffects.None, 0f);
 
-            _spriteBatch.DrawString(spriteFont, "3rd Party Assets Used", new Vector2(450 - (spriteFont.MeasureString("3rd Party Assets Used").Length() * 0.75f), creditsPosition.Y + 2800), Color.White, 0f, new Vector2(0, 0), 1.5f, SpriteEffects.None, 0f);
-            _spriteBatch.DrawString(spriteFont, "PIPOYA FREE RPG Character Sprites", new Vector2(150, creditsPosition.Y + 2900), Color.White, 0f, new Vector2(0, 0), 1f, SpriteEffects.None, 0f);
-            _spriteBatch.DrawString(spriteFont, "EPIC RPG World Pack - Old prison", new Vector2(150, creditsPosition.Y + 2950), Color.White, 0f, new Vector2(0, 0), 1f, SpriteEffects.None, 0f);
-            _spriteBatch.DrawString(spriteFont, "Free Interior Tileset", new Vector2(150, creditsPosition.Y + 3000), Color.White, 0f, new Vector2(0, 0), 1f, SpriteEffects.None, 0f);
-            _spriteBatch.DrawString(spriteFont, "Free Outdoor Tileset", new Vector2(150, creditsPosition.Y + 3050), Color.White, 0f, new Vector2(0, 0), 1f, SpriteEffects.None, 0f);
-            _spriteBatch.DrawString(spriteFont, "Undertale Death Sound", new Vector2(150, creditsPosition.Y + 3100), Color.White, 0f, new Vector2(0, 0), 1f, SpriteEffects.None, 0f);
-            _spriteBatch.DrawString(spriteFont, "Undertale Boss Attack Sound", new Vector2(150, creditsPosition.Y + 3150), Color.White, 0f, new Vector2(0, 0), 1f, SpriteEffects.None, 0f);
-            _spriteBatch.DrawString(spriteFont, "Undertale Boss Death Sound", new Vector2(150, creditsPosition.Y + 3200), Color.White, 0f, new Vector2(0, 0), 1f, SpriteEffects.None, 0f);
-            _spriteBatch.DrawString(spriteFont, "Undertale Heart sprite", new Vector2(150, creditsPosition.Y + 3250), Color.White, 0f, new Vector2(0, 0), 1f, SpriteEffects.None, 0f);
+            _spriteBatch.DrawString(spriteFont, "3rd Party Assets Used", new Vector2(450 - (spriteFont.MeasureString("3rd Party Assets Used").Length() * 0.75f), creditsPosition.Y + 2850), Color.White, 0f, new Vector2(0, 0), 1.5f, SpriteEffects.None, 0f);
+            _spriteBatch.DrawString(spriteFont, "PIPOYA FREE RPG Character Sprites", new Vector2(150, creditsPosition.Y + 2950), Color.White, 0f, new Vector2(0, 0), 1f, SpriteEffects.None, 0f);
+            _spriteBatch.DrawString(spriteFont, "EPIC RPG World Pack - Old prison", new Vector2(150, creditsPosition.Y + 3000), Color.White, 0f, new Vector2(0, 0), 1f, SpriteEffects.None, 0f);
+            _spriteBatch.DrawString(spriteFont, "Free Interior Tileset", new Vector2(150, creditsPosition.Y + 3050), Color.White, 0f, new Vector2(0, 0), 1f, SpriteEffects.None, 0f);
+            _spriteBatch.DrawString(spriteFont, "Free Outdoor Tileset", new Vector2(150, creditsPosition.Y + 3100), Color.White, 0f, new Vector2(0, 0), 1f, SpriteEffects.None, 0f);
+            _spriteBatch.DrawString(spriteFont, "Undertale Death Sound", new Vector2(150, creditsPosition.Y + 3150), Color.White, 0f, new Vector2(0, 0), 1f, SpriteEffects.None, 0f);
+            _spriteBatch.DrawString(spriteFont, "Undertale Boss Attack Sound", new Vector2(150, creditsPosition.Y + 3200), Color.White, 0f, new Vector2(0, 0), 1f, SpriteEffects.None, 0f);
+            _spriteBatch.DrawString(spriteFont, "Undertale Boss Death Sound", new Vector2(150, creditsPosition.Y + 3250), Color.White, 0f, new Vector2(0, 0), 1f, SpriteEffects.None, 0f);
+            _spriteBatch.DrawString(spriteFont, "Undertale Heart sprite", new Vector2(150, creditsPosition.Y + 3300), Color.White, 0f, new Vector2(0, 0), 1f, SpriteEffects.None, 0f);
 
-            _spriteBatch.DrawString(spriteFont, "Copyright 2023 Nyle Holdsworth", new Vector2(450 - (spriteFont.MeasureString("Copyright 2023 Nyle Holdsworth").Length() / 2), creditsPosition.Y + 3550), Color.White, 0f, new Vector2(0, 0), 1f, SpriteEffects.None, 0f);
+            _spriteBatch.DrawString(spriteFont, "Nethaniel Will Return!", new Vector2(450 - (spriteFont.MeasureString("Nathaniel Will Return!").Length() * 0.75f), creditsPosition.Y + 3800), Color.White, 0f, new Vector2(0, 0), 1.5f, SpriteEffects.None, 0f);
         }
     }
 }
