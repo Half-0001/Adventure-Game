@@ -16,150 +16,6 @@
 
 #---------------------------------- Content ---------------------------------#
 
-#begin ../../assets/menu.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:../../assets/menu.png;menu.png
-
-#begin ../../assets/PIPOYA FREE RPG Character Sprites 32x32/Enemy/anim/Enemy 15-1.aseprite
-/importer:AsepriteDocumentImporter
-/processor:AsepriteDocumentProcessor
-/processorParam:SheetType=Packed
-/processorParam:MergeDuplicateFrames=True
-/processorParam:IgnoreEmptyFrames=True
-/processorParam:OnlyVisibleLayers=True
-/processorParam:BorderPadding=0
-/processorParam:Spacing=0
-/processorParam:InnerPadding=0
-/build:../../assets/PIPOYA FREE RPG Character Sprites 32x32/Enemy/anim/Enemy 15-1.aseprite;sprites/Enemy 15-1.aseprite
-
-#begin ../../assets/PIPOYA FREE RPG Character Sprites 32x32/Enemy/anim/Enemy 15-2.aseprite
-/importer:AsepriteDocumentImporter
-/processor:AsepriteDocumentProcessor
-/processorParam:SheetType=Packed
-/processorParam:MergeDuplicateFrames=True
-/processorParam:IgnoreEmptyFrames=True
-/processorParam:OnlyVisibleLayers=True
-/processorParam:BorderPadding=0
-/processorParam:Spacing=0
-/processorParam:InnerPadding=0
-/build:../../assets/PIPOYA FREE RPG Character Sprites 32x32/Enemy/anim/Enemy 15-2.aseprite;sprites/Enemy 15-2.aseprite
-
-#begin ../../assets/PIPOYA FREE RPG Character Sprites 32x32/Male/anim/Male 01.aseprite
-/importer:AsepriteDocumentImporter
-/processor:AsepriteDocumentProcessor
-/processorParam:SheetType=Packed
-/processorParam:MergeDuplicateFrames=True
-/processorParam:IgnoreEmptyFrames=True
-/processorParam:OnlyVisibleLayers=True
-/processorParam:BorderPadding=0
-/processorParam:Spacing=0
-/processorParam:InnerPadding=0
-/build:../../assets/PIPOYA FREE RPG Character Sprites 32x32/Male/anim/Male 01.aseprite;sprites/Male 01.aseprite
-
-#begin ../../assets/PIPOYA FREE RPG Character Sprites 32x32/Male/anim/Male 09-1-Upscaled.aseprite
-/importer:AsepriteDocumentImporter
-/processor:AsepriteDocumentProcessor
-/processorParam:SheetType=Packed
-/processorParam:MergeDuplicateFrames=True
-/processorParam:IgnoreEmptyFrames=True
-/processorParam:OnlyVisibleLayers=True
-/processorParam:BorderPadding=0
-/processorParam:Spacing=0
-/processorParam:InnerPadding=0
-/build:../../assets/PIPOYA FREE RPG Character Sprites 32x32/Male/anim/Male 09-1-Upscaled.aseprite;sprites/Male 09-1-Upscaled.aseprite
-
-#begin ../../assets/PIPOYA FREE RPG Character Sprites 32x32/Male/anim/Male 09-1.aseprite
-/importer:AsepriteDocumentImporter
-/processor:AsepriteDocumentProcessor
-/processorParam:SheetType=Packed
-/processorParam:MergeDuplicateFrames=True
-/processorParam:IgnoreEmptyFrames=True
-/processorParam:OnlyVisibleLayers=True
-/processorParam:BorderPadding=0
-/processorParam:Spacing=0
-/processorParam:InnerPadding=0
-/build:../../assets/PIPOYA FREE RPG Character Sprites 32x32/Male/anim/Male 09-1.aseprite;sprites/Male 09-1.aseprite
-
-#begin ../../assets/PIPOYA FREE RPG Character Sprites 32x32/Male/anim/Male 16-1.aseprite
-/importer:AsepriteDocumentImporter
-/processor:AsepriteDocumentProcessor
-/processorParam:SheetType=Packed
-/processorParam:MergeDuplicateFrames=True
-/processorParam:IgnoreEmptyFrames=True
-/processorParam:OnlyVisibleLayers=True
-/processorParam:BorderPadding=0
-/processorParam:Spacing=0
-/processorParam:InnerPadding=0
-/build:../../assets/PIPOYA FREE RPG Character Sprites 32x32/Male/anim/Male 16-1.aseprite;sprites/Male 16-1.aseprite
-
-#begin ../../assets/play_white.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:../../assets/play_white.png;play_white.png
-
-#begin ../../assets/play_yellow.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:../../assets/play_yellow.png;play_yellow.png
-
-#begin ../../assets/skip_button_white.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:../../assets/skip_button_white.png;skip_button_white.png
-
-#begin ../../assets/skip_button_yellow.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:../../assets/skip_button_yellow.png;skip_button_yellow.png
-
-#begin ../../assets/spear.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:../../assets/spear.png;spear.png
-
 #begin audio/birds.ogg
 /importer:OggImporter
 /processor:SongProcessor
@@ -239,6 +95,102 @@
 /processorParam:TextureFormat=Color
 /build:map.png
 
+#begin menu.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:menu.png
+
+#begin play_white.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:play_white.png
+
+#begin play_yellow.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:play_yellow.png
+
+#begin skip_button_white.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:skip_button_white.png
+
+#begin skip_button_yellow.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:skip_button_yellow.png
+
+#begin spear.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:spear.png
+
+#begin sprites/Enemy 15-1.aseprite
+/importer:AsepriteDocumentImporter
+/processor:AsepriteDocumentProcessor
+/processorParam:SheetType=Packed
+/processorParam:MergeDuplicateFrames=True
+/processorParam:IgnoreEmptyFrames=True
+/processorParam:OnlyVisibleLayers=True
+/processorParam:BorderPadding=0
+/processorParam:Spacing=0
+/processorParam:InnerPadding=0
+/build:sprites/Enemy 15-1.aseprite
+
+#begin sprites/Enemy 15-2.aseprite
+/importer:AsepriteDocumentImporter
+/processor:AsepriteDocumentProcessor
+/processorParam:SheetType=Packed
+/processorParam:MergeDuplicateFrames=True
+/processorParam:IgnoreEmptyFrames=True
+/processorParam:OnlyVisibleLayers=True
+/processorParam:BorderPadding=0
+/processorParam:Spacing=0
+/processorParam:InnerPadding=0
+/build:sprites/Enemy 15-2.aseprite
+
 #begin sprites/heart-dead.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -262,4 +214,52 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:sprites/heart.png
+
+#begin sprites/Male 01.aseprite
+/importer:AsepriteDocumentImporter
+/processor:AsepriteDocumentProcessor
+/processorParam:SheetType=Packed
+/processorParam:MergeDuplicateFrames=True
+/processorParam:IgnoreEmptyFrames=True
+/processorParam:OnlyVisibleLayers=True
+/processorParam:BorderPadding=0
+/processorParam:Spacing=0
+/processorParam:InnerPadding=0
+/build:sprites/Male 01.aseprite
+
+#begin sprites/Male 09-1-Upscaled.aseprite
+/importer:AsepriteDocumentImporter
+/processor:AsepriteDocumentProcessor
+/processorParam:SheetType=Packed
+/processorParam:MergeDuplicateFrames=True
+/processorParam:IgnoreEmptyFrames=True
+/processorParam:OnlyVisibleLayers=True
+/processorParam:BorderPadding=0
+/processorParam:Spacing=0
+/processorParam:InnerPadding=0
+/build:sprites/Male 09-1-Upscaled.aseprite
+
+#begin sprites/Male 09-1.aseprite
+/importer:AsepriteDocumentImporter
+/processor:AsepriteDocumentProcessor
+/processorParam:SheetType=Packed
+/processorParam:MergeDuplicateFrames=True
+/processorParam:IgnoreEmptyFrames=True
+/processorParam:OnlyVisibleLayers=True
+/processorParam:BorderPadding=0
+/processorParam:Spacing=0
+/processorParam:InnerPadding=0
+/build:sprites/Male 09-1.aseprite
+
+#begin sprites/Male 16-1.aseprite
+/importer:AsepriteDocumentImporter
+/processor:AsepriteDocumentProcessor
+/processorParam:SheetType=Packed
+/processorParam:MergeDuplicateFrames=True
+/processorParam:IgnoreEmptyFrames=True
+/processorParam:OnlyVisibleLayers=True
+/processorParam:BorderPadding=0
+/processorParam:Spacing=0
+/processorParam:InnerPadding=0
+/build:sprites/Male 16-1.aseprite
 

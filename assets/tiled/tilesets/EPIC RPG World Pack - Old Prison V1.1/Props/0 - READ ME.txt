@@ -1,3 +1,0 @@
-
--Cell gate
-If you want the gears animation to be loopable for some reason, you can use the version with no door and keep just the first 4 frames of the animation.
