@@ -39,7 +39,7 @@ namespace Adventure_Game_CSharp
         public void LoadContent(ContentManager Content, Point _resolution, GraphicsDevice _graphics)
         {
             //  Load the aseprite file from the content pipeline.
-            AsepriteDocument asepritefile = Content.Load<AsepriteDocument>("Male 16-1"); 
+            AsepriteDocument asepritefile = Content.Load<AsepriteDocument>("sprites/Male 16-1"); 
 
             //add npc
             for (int i = 0; i < 1; i++)

@@ -51,8 +51,8 @@ namespace Adventure_Game_CSharp
         public void LoadContent(ContentManager Content, Point _resolution, GraphicsDevice _graphics)
         {
             //  Load the aseprite file from the content pipeline.
-            asepritefile = Content.Load<AsepriteDocument>("Enemy 15-1");
-            asepritefile2 = Content.Load<AsepriteDocument>("Enemy 15-2");
+            asepritefile = Content.Load<AsepriteDocument>("sprites/Enemy 15-1");
+            asepritefile2 = Content.Load<AsepriteDocument>("sprites/Enemy 15-2");
             resolution = _resolution;
             //add enemies to list
             for (int i = 0; i < 10; i++)

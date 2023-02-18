@@ -32,7 +32,6 @@ C:\Users\nyleh\Documents\GitHub\repos\Adventure-Game\Adventure-Game-CSharp\obj\D
 C:\Users\nyleh\Documents\GitHub\repos\Adventure-Game\Adventure-Game-CSharp\obj\Debug\net6.0\Adventure-Game-CSharp.pdb
 C:\Users\nyleh\Documents\GitHub\repos\Adventure-Game\Adventure-Game-CSharp\obj\Debug\net6.0\Adventure-Game-CSharp.genruntimeconfig.cache
 C:\Users\nyleh\Documents\GitHub\repos\Adventure-Game\Adventure-Game-CSharp\obj\Debug\net6.0\ref\Adventure-Game-CSharp.dll
-C:\Users\nyleh\Documents\GitHub\repos\Adventure-Game\Adventure-Game-CSharp\bin\Debug\net6.0\Content\Male 16-1.xnb
 C:\Users\nyleh\OneDrive\Documents\GitHub\Adventure-Game\Adventure-Game-CSharp\bin\Debug\net6.0\Content\Enemy 15-1.xnb
 C:\Users\nyleh\OneDrive\Documents\GitHub\Adventure-Game\Adventure-Game-CSharp\bin\Debug\net6.0\Content\font.xnb
 C:\Users\nyleh\OneDrive\Documents\GitHub\Adventure-Game\Adventure-Game-CSharp\bin\Debug\net6.0\Content\Male 01.xnb
@@ -68,9 +67,7 @@ C:\Users\nyleh\OneDrive\Documents\GitHub\Adventure-Game\Adventure-Game-CSharp\ob
 C:\Users\nyleh\OneDrive\Documents\GitHub\Adventure-Game\Adventure-Game-CSharp\obj\Debug\net6.0\Adventure-Game-CSharp.pdb
 C:\Users\nyleh\OneDrive\Documents\GitHub\Adventure-Game\Adventure-Game-CSharp\obj\Debug\net6.0\Adventure-Game-CSharp.genruntimeconfig.cache
 C:\Users\nyleh\OneDrive\Documents\GitHub\Adventure-Game\Adventure-Game-CSharp\obj\Debug\net6.0\ref\Adventure-Game-CSharp.dll
-C:\Users\nyleh\Documents\GitHub\repos\Adventure-Game\Adventure-Game-CSharp\bin\Debug\net6.0\Content\text box.xnb
 C:\Users\nyleh\OneDrive\Documents\GitHub\Adventure-Game\Adventure-Game-CSharp\bin\Debug\net6.0\Content\Enemy 15-2.xnb
-C:\Users\nyleh\Documents\GitHub\repos\Adventure-Game\Adventure-Game-CSharp\bin\Debug\net6.0\Content\Enemy 15-2.xnb
 C:\Users\nyleh\Documents\GitHub\repos\Adventure-Game\Adventure-Game-CSharp\bin\Debug\net6.0\Content\menu.xnb
 C:\Users\nyleh\Documents\GitHub\repos\Adventure-Game\Adventure-Game-CSharp\bin\Debug\net6.0\Content\play_white.xnb
 C:\Users\nyleh\Documents\GitHub\repos\Adventure-Game\Adventure-Game-CSharp\bin\Debug\net6.0\Content\play_yellow.xnb
